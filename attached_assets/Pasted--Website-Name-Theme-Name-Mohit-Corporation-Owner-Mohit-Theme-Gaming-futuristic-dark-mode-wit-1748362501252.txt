@@ -1,0 +1,117 @@
+ Website Name & Theme
+Name: Mohit Corporation
+
+Owner: Mohit
+
+Theme: Gaming-futuristic, dark mode with neon-glow effects.
+
+Background: Animated falling particles (cyan & purple shades).
+
+Click Effects: Each click triggers a glowing burst animation.
+
+Loading Animation: Futuristic "system-boot" style animation when the site opens.
+
+🖥️📱 Pages (Fully Responsive: PC + Mobile)
+1. Home
+Animated headline: “Welcome to Mohit Corporation”.
+
+Gaming-style intro animation (3D glowing title or particle morphing).
+
+Subtext: "Powering Panels, Bots & Gaming Tools."
+
+Hero animation or character animation.
+
+2. Products
+Categories:
+
+🛡️ Panels
+
+🤖 Bots
+
+🌐 Websites
+
+📺 YouTube Channels
+
+Each product has:
+
+Image(s)/video preview
+
+Title + Description + Price
+
+✅ Auto-generated Product ID (unique ID for each product)
+
+A search bar: Search by name or Product ID
+
+Glowing hover animation + responsive layout.
+
+3. YouTube Resources
+Filterable, categorized YouTube embeds.
+
+Admin-manageable: Add/edit titles, descriptions, and links.
+
+Animated thumbnails.
+
+4. Contact Us
+Name, Email, Message fields.
+
+Animated, glowing social media icons:
+
+🔴 YouTube
+
+🟪 Discord
+
+📷 Instagram
+
+🟢 WhatsApp (with popup chat option)
+
+Floating WhatsApp contact button with bounce/glow effect.
+
+🔐 Admin Panel Features (No Coding Needed for You)
+Login System (only for Owner – Mohit)
+
+Dashboard Features:
+
+Add/edit/delete:
+
+✅ Products (Panels, Bots, Sites, YT channels)
+
+✅ YouTube resources
+
+✅ Contact/social details
+
+Auto-generate & manage Product IDs
+
+Search and manage products by name or Product ID
+
+Control homepage text, animations, logos
+
+No-code CMS Interface (React Admin or Strapi)
+
+Database: Firebase or MongoDB for backend storage
+
+🛠️ Tech Stack (Suggested for Developers)
+Feature	Tech Stack
+UI/Frontend	HTML5, CSS3, JS, TailwindCSS, React
+Animations	GSAP, Particles.js, Anime.js
+Admin Panel	React Admin / Strapi / Directus
+Backend Database	Firebase / MongoDB
+Auth & Hosting	Firebase Auth, Vercel/Netlify
+
+✅ Features Recap
+✅ Fully responsive (Mobile + PC)
+
+✅ Animated glowing effects + background particles
+
+✅ Click-based animation effects
+
+✅ Animated loading screen
+
+✅ Products: Panels, Bots, Sites, YT Channels
+
+✅ Search by Product ID
+
+✅ Admin Panel (No coding for owner)
+
+✅ Glowing animated social icons
+
+✅ WhatsApp popup button
