@@ -10,6 +10,7 @@ import Products from "@/pages/products";
 import Youtube from "@/pages/youtube";
 import Contact from "@/pages/contact";
 import Admin from "@/pages/admin";
+import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
 import LoadingScreen from "@/components/ui/loading-screen";
 import ParticlesBackground from "@/components/ui/particles-background";
@@ -30,6 +31,7 @@ function Router() {
           <Route path="/products" component={Products} />
           <Route path="/youtube" component={Youtube} />
           <Route path="/contact" component={Contact} />
+          <Route path="/login" component={Login} />
           {isAuthenticated && <Route path="/admin" component={Admin} />}
           <Route component={NotFound} />
         </Switch>
