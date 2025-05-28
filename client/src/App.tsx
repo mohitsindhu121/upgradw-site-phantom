@@ -20,18 +20,20 @@ function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white relative overflow-x-hidden">
+    <div className="min-h-screen text-white relative overflow-x-hidden" style={{ background: 'transparent' }}>
       <ParticlesBackground />
-      <WhatsAppPopup />
-      
-      <Switch>
-        <Route path="/" component={isAuthenticated ? Home : Landing} />
-        <Route path="/products" component={Products} />
-        <Route path="/youtube" component={Youtube} />
-        <Route path="/contact" component={Contact} />
-        {isAuthenticated && <Route path="/admin" component={Admin} />}
-        <Route component={NotFound} />
-      </Switch>
+      <div className="relative z-10">
+        <WhatsAppPopup />
+        
+        <Switch>
+          <Route path="/" component={isAuthenticated ? Home : Landing} />
+          <Route path="/products" component={Products} />
+          <Route path="/youtube" component={Youtube} />
+          <Route path="/contact" component={Contact} />
+          {isAuthenticated && <Route path="/admin" component={Admin} />}
+          <Route component={NotFound} />
+        </Switch>
+      </div>
     </div>
   );
 }
