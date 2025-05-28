@@ -35,9 +35,10 @@ export default function AIChatPopup() {
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
 
+    const userText = message.trim();
     const userMessage: Message = {
-      id: Date.now().toString(),
-      text: message.trim(),
+      id: `user-${Date.now()}`,
+      text: userText,
       isUser: true,
       timestamp: new Date(),
     };
@@ -47,22 +48,38 @@ export default function AIChatPopup() {
     setIsLoading(true);
 
     try {
-      const response = await apiRequest("POST", "/api/ai-chat", {
-        message: userMessage.text,
+      console.log("Sending message to AI:", userText);
+      
+      const response = await fetch("/api/ai-chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: userText }),
       });
 
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: (response as any).response,
-        isUser: false,
-        timestamp: new Date(),
-      };
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
 
-      setMessages(prev => [...prev, aiMessage]);
+      const data = await response.json();
+      console.log("AI response received:", data);
+
+      if (data.response) {
+        const aiMessage: Message = {
+          id: `ai-${Date.now()}`,
+          text: data.response,
+          isUser: false,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      } else {
+        throw new Error("No response from AI");
+      }
     } catch (error) {
       console.error("Error sending message:", error);
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: `error-${Date.now()}`,
         text: "Sorry, I'm having trouble connecting right now. Please try again or contact us directly!",
         isUser: false,
         timestamp: new Date(),
