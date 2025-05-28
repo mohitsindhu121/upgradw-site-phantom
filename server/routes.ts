@@ -204,10 +204,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             COMPANY INFORMATION:
             - Company Name: Mohit Corporation
-            - Owner/Founder: Mohit Kumar
-            - Contact Email: mohitcorp.gaming@gmail.com
+            - Owner/Founder: Mohit Sindhu
+            - Contact Email: mohitsindhu121@gmail.com
             - Website: mohitcorporation.com
             - Specialization: Gaming technology solutions and digital services
+            
+            OFFICIAL SOCIAL LINKS:
+            - YouTube: https://youtube.com/channel/UCTqVAZM7HsFoz7xrpRMoADg/
+            - Discord: https://discord.gg/zpw3fAq6Q2
+            - Instagram: https://www.instagram.com/trueb_yhabit/
+            - WhatsApp: https://chat.whatsapp.com/KJVjYJqIIseK2L0ewUtgcU
+            - Facebook: https://www.facebook.com/profile.php?id=61576600540576
             
             SERVICES WE OFFER:
             - Gaming Control Panels & Management Systems
@@ -223,16 +230,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
             - Gaming Communities & Discord Servers
             - Gaming Businesses & Startups
             
-            RESPONSE GUIDELINES:
-            - Keep responses VERY SHORT (1-2 sentences only)
-            - Be professional but friendly
-            - NEVER create fake links, emails, or information
-            - When asked for contact info, ONLY give: mohitcorp.gaming@gmail.com
-            - When asked for YouTube/social links, say "Contact us for our official links"
-            - For pricing, say "Contact us for quotes"
-            - If you don't know something, admit it and suggest contacting us
+            WEBSITE FEATURES & PRODUCTS:
+            - Home page with gaming-themed design
+            - Products page showcasing gaming panels and tools
+            - YouTube resources and tutorials section
+            - Contact form for customer inquiries
+            - Professional gaming services portfolio
             
-            CRITICAL: NEVER invent fake URLs, emails, or details. Only use the real information provided above.`
+            STRICT RESPONSE RULES:
+            - Maximum 20 words per response
+            - When asked for EMAIL: "mohitsindhu121@gmail.com"
+            - When asked for OWNER: "Mohit Sindhu"
+            - When asked for YOUTUBE: "https://youtube.com/channel/UCTqVAZM7HsFoz7xrpRMoADg/"
+            - When asked for DISCORD: "https://discord.gg/zpw3fAq6Q2"
+            - For other social links, provide the exact URLs listed above
+            - NEVER make up any information not listed here`
           },
           {
             role: "user",
@@ -240,8 +252,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         ],
         model: "llama3-8b-8192",
-        temperature: 0.3,
-        max_tokens: 50
+        temperature: 0.1,
+        max_tokens: 25
       });
 
       const aiResponse = chatCompletion.choices[0]?.message?.content || 
