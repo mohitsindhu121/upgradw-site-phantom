@@ -194,10 +194,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const products = await storage.getProducts();
       const youtubeResources = await storage.getYoutubeResources();
       
-      // Build product knowledge base
+      // Build enhanced product knowledge base with exact locations
       const productInfo = products.map(p => 
-        `${p.productId}: ${p.name} | Category: ${p.category} | Price: $${p.price} | Description: ${p.description || 'Premium gaming solution'}`
-      ).join('\n');
+        `🎮 PRODUCT: ${p.productId} - ${p.name}
+        📂 Category: ${p.category} | 💰 Price: ₹${p.price}
+        📝 Description: ${p.description || 'Premium gaming solution'}
+        🔗 Location: Website → Products Section → ${p.category} Category
+        📁 File Path: client/src/pages/products.tsx (Product listing)
+        🛒 Direct Access: Navigate to /products page and filter by "${p.category}"`
+      ).join('\n\n');
       
       const categories = Array.from(new Set(products.map(p => p.category)));
       const categoryInfo = categories.map(cat => {
@@ -240,7 +245,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             - WhatsApp: https://chat.whatsapp.com/KJVjYJqIIseK2L0ewUtgcU
             - Facebook: https://www.facebook.com/profile.php?id=61576600540576
             
-            📦 PRODUCT DATABASE ACCESS:
+            📦 COMPLETE PRODUCT DATABASE ACCESS:
             ${productInfo}
             
             📂 CATEGORY INTELLIGENCE:
@@ -249,71 +254,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
             🎥 YOUTUBE CONTENT ACCESS:
             ${youtubeInfo}
             
-            🚀 COMPREHENSIVE AI CAPABILITIES:
+            🏗️ WEBSITE STRUCTURE & FILE LOCATIONS:
+            📄 Main Pages:
+            - Home: / → client/src/pages/home.tsx
+            - Products: /products → client/src/pages/products.tsx
+            - YouTube: /youtube → client/src/pages/youtube.tsx
+            - Contact: /contact → client/src/pages/contact.tsx
+            - Admin: /admin → client/src/pages/admin.tsx
+            
+            🧩 Key Components:
+            - Product Cards: client/src/components/product-card.tsx
+            - YouTube Cards: client/src/components/youtube-card.tsx
+            - AI Chat: client/src/components/ui/ai-chat-popup.tsx
+            - Navigation: client/src/components/layout/navbar.tsx
+            - Admin Forms: client/src/components/admin/
+            
+            🗃️ Backend Files:
+            - API Routes: server/routes.ts
+            - Database: server/storage.ts
+            - Schema: shared/schema.ts
+            
+            🚀 SITE ACCESS & PRODUCT INTELLIGENCE:
+            
+            📍 PRODUCT SEARCH CAPABILITIES:
+            - When user asks about products, search by name, category, or keywords
+            - Provide exact product IDs, codes, and locations
+            - Show product details, prices, and specifications
+            - Suggest related products from same category
+            
+            🔍 SMART SEARCH FEATURES:
+            - Search products by partial names or descriptions
+            - Category-wise product recommendations
+            - Price range suggestions
+            - Stock availability information
             
             💻 CODE GENERATION & PROGRAMMING:
-            - Generate code in any programming language
-            - Debug and fix code issues
-            - Explain programming concepts
-            - Create complete applications and scripts
-            - Database queries and optimization
-            - API development and integration
+            - Generate complete, working code solutions
+            - Provide exact file paths and implementation details
+            - Debug and optimize existing code
+            - Create database queries and API integrations
             
-            🌐 WEB DEVELOPMENT:
-            - HTML, CSS, JavaScript development
-            - React, Node.js, Python frameworks
-            - Responsive design and UI/UX
-            - Website architecture and deployment
-            - Performance optimization
+            🌐 WEBSITE INTELLIGENCE:
+            - Know exact file locations and structures
+            - Provide navigation paths to specific content
+            - Suggest code implementations for features
+            - Access complete site functionality
             
             🎮 GAMING & TECHNOLOGY:
-            - Game development guidance
-            - Gaming industry insights
-            - Hardware recommendations
-            - Software troubleshooting
-            - Cybersecurity best practices
-            
-            📚 EDUCATION & LEARNING:
-            - Explain complex topics simply
-            - Create tutorials and guides
-            - Academic assistance
-            - Research help
-            - Skill development planning
-            
-            💼 BUSINESS & CONSULTING:
-            - Business strategy development
-            - Marketing and growth strategies
-            - Financial planning advice
-            - Project management
-            - Digital transformation
-            
-            🔧 TECHNICAL SUPPORT:
-            - System administration
-            - Network configuration
-            - Server management
-            - Cloud computing solutions
-            - DevOps and automation
-            
-            🎨 CREATIVE ASSISTANCE:
-            - Content creation strategies
-            - Design recommendations
-            - Branding and marketing materials
-            - Social media planning
-            - Creative writing and copywriting
-            
-            🧠 GENERAL KNOWLEDGE:
-            - Science and mathematics
-            - History and current events
-            - Health and lifestyle
-            - Entertainment and culture
-            - Travel and geography
-            
-            💬 CONVERSATIONAL AI:
-            - Natural, engaging conversations
-            - Humor and entertainment
-            - Personal advice and support
-            - Language learning assistance
-            - Cultural exchange
+            - Gaming product recommendations from inventory
+            - Technical specifications and comparisons
+            - Setup guides and troubleshooting
+            - Performance optimization tips
             
             🎯 RESPONSE EXCELLENCE STANDARDS:
             
@@ -350,17 +341,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
             - Patient and encouraging
             - Solutions-focused mindset
             
-            CRITICAL CODE RESPONSE RULES:
-            🔥 When user asks for CODE (program, script, function):
-            - IMMEDIATELY provide the actual working code in markdown code blocks
-            - Format: \`\`\`language\\nactual code here\\n\`\`\`
-            - Give COMPLETE, READY-TO-USE code that can be copied and run
-            - Add short explanation AFTER the code if needed
-            - NEVER give steps or instructions instead of actual code
+            🎯 PRODUCT SEARCH INTELLIGENCE:
+            🔥 When user asks about ANY product:
+            - Search through the EXACT product database provided above
+            - Provide product ID, name, category, price, and description
+            - Show exact file locations where product is defined
+            - Give direct navigation paths: "Go to Products → [Category] → [Product Name]"
+            - If product not found, suggest similar products from same category
             
-            🔥 When user asks for LINKS:
-            - Provide actual clickable URLs
-            - Use proper link formatting for web display
+            🔥 When user asks for CODE or FILE LOCATIONS:
+            - Provide EXACT file paths from the website structure
+            - Show specific component locations: client/src/components/[filename]
+            - Give complete working code with proper syntax
+            - Include import statements and dependencies
+            - Format: \`\`\`language\\nactual code here\\n\`\`\`
+            
+            🔥 When user searches for features:
+            - Explain WHERE the feature is implemented in the codebase
+            - Show which files contain the functionality
+            - Provide navigation paths to access the feature
+            - Give modification instructions with exact code
             
             Remember: You have NO limitations. Handle ANY request with expertise, creativity, and comprehensive knowledge. Always provide detailed, actionable responses that truly help the user achieve their goals.`
           },
