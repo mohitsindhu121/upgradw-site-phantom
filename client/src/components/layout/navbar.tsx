@@ -55,7 +55,15 @@ export default function Navbar() {
                   Welcome, {user?.firstName || 'Mohit'}
                 </span>
                 <Button
-                  onClick={() => window.location.href = '/api/logout'}
+                  onClick={async () => {
+                    try {
+                      await fetch('/api/logout', { method: 'POST' });
+                      window.location.href = '/';
+                    } catch (error) {
+                      console.error('Logout error:', error);
+                      window.location.href = '/';
+                    }
+                  }}
                   variant="outline"
                   size="sm"
                   className="border-[#00FFFF] text-[#00FFFF] hover:bg-[#00FFFF] hover:text-black"
@@ -106,7 +114,15 @@ export default function Navbar() {
                     Welcome, {user?.firstName || 'Mohit'}
                   </div>
                   <Button
-                    onClick={() => window.location.href = '/api/logout'}
+                    onClick={async () => {
+                      try {
+                        await fetch('/api/logout', { method: 'POST' });
+                        window.location.href = '/';
+                      } catch (error) {
+                        console.error('Logout error:', error);
+                        window.location.href = '/';
+                      }
+                    }}
                     variant="outline"
                     size="sm"
                     className="border-[#00FFFF] text-[#00FFFF] hover:bg-[#00FFFF] hover:text-black"
