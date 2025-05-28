@@ -5,15 +5,10 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
-// Database URL from environment
-const DATABASE_URL = process.env.DATABASE_URL || process.env.CUSTOM_DATABASE_URL;
+// Database URL - directly using your Neon database
+const DATABASE_URL = process.env.DATABASE_URL || "postgresql://mohit_owner:npg_47yoWupTxNBs@ep-gentle-glade-a8imzvfp-pooler.eastus2.azure.neon.tech/mohit?sslmode=require";
 
 console.log("🗄️ Database connection:", DATABASE_URL ? "✅ Connected" : "❌ No URL provided");
-
-if (!DATABASE_URL) {
-  console.error("⚠️ Please set DATABASE_URL or CUSTOM_DATABASE_URL environment variable");
-  throw new Error("Database URL is required. Please set DATABASE_URL or CUSTOM_DATABASE_URL environment variable.");
-}
 
 export const pool = new Pool({ connectionString: DATABASE_URL });
 export const db = drizzle({ client: pool, schema });
