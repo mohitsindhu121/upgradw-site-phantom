@@ -161,6 +161,49 @@
   .animate-slide-up {
     animation: slide-up 0.5s ease-out;
   }
+
+  .particle-fallback {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(2px 2px at 20px 30px, #00FFFF, transparent),
+      radial-gradient(2px 2px at 40px 70px, #8B5CF6, transparent),
+      radial-gradient(1px 1px at 90px 40px, #10B981, transparent),
+      radial-gradient(1px 1px at 130px 80px, #F59E0B, transparent),
+      radial-gradient(2px 2px at 160px 30px, #00FFFF, transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: particle-move 20s linear infinite;
+    opacity: 0.3;
+    z-index: -1;
+  }
+
+  .cyber-grid {
+    background-image: 
+      linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid-move 10s linear infinite;
+  }
+
+  .neon-border {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .neon-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+    animation: neon-scan 3s infinite;
+  }
 }
 
 @layer utilities {
@@ -207,6 +250,24 @@
 @keyframes loading-gradient {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+@keyframes particle-move {
+  0% { transform: translateY(0px) translateX(0px); }
+  33% { transform: translateY(-10px) translateX(10px); }
+  66% { transform: translateY(5px) translateX(-5px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes grid-move {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+@keyframes neon-scan {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
 }
 
 /* Scrollbar styling */

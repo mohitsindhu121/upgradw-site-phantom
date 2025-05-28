@@ -18,16 +18,16 @@ export default function Footer() {
             <h4 className="font-orbitron font-bold mb-4 text-[#00FFFF]">Quick Links</h4>
             <div className="space-y-2">
               <Link href="/">
-                <a className="block text-gray-400 hover:text-[#00FFFF] transition-colors">Home</a>
+                <span className="block text-gray-400 hover:text-[#00FFFF] transition-colors cursor-pointer">Home</span>
               </Link>
               <Link href="/products">
-                <a className="block text-gray-400 hover:text-[#00FFFF] transition-colors">Products</a>
+                <span className="block text-gray-400 hover:text-[#00FFFF] transition-colors cursor-pointer">Products</span>
               </Link>
               <Link href="/youtube">
-                <a className="block text-gray-400 hover:text-[#00FFFF] transition-colors">YouTube</a>
+                <span className="block text-gray-400 hover:text-[#00FFFF] transition-colors cursor-pointer">YouTube</span>
               </Link>
               <Link href="/contact">
-                <a className="block text-gray-400 hover:text-[#00FFFF] transition-colors">Contact</a>
+                <span className="block text-gray-400 hover:text-[#00FFFF] transition-colors cursor-pointer">Contact</span>
               </Link>
             </div>
           </div>
