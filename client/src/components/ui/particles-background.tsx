@@ -1,6 +1,6 @@
 export default function ParticlesBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: -1 }}>
       {/* Main animated background with gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#000814] via-[#001D3D] to-[#000814]" />
       
