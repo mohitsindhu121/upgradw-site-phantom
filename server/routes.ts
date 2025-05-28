@@ -190,6 +190,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ response: "Message is required" });
       }
 
+      // Get current products and YouTube resources for context
+      const products = await storage.getProducts();
+      const youtubeResources = await storage.getYoutubeResources();
+      
+      // Build product knowledge base
+      const productInfo = products.map(p => 
+        `${p.productId}: ${p.name} | Category: ${p.category} | Price: $${p.price} | Description: ${p.description || 'Premium gaming solution'}`
+      ).join('\n');
+      
+      const categories = [...new Set(products.map(p => p.category))];
+      const categoryInfo = categories.map(cat => {
+        const categoryProducts = products.filter(p => p.category === cat);
+        return `${cat.toUpperCase()}: ${categoryProducts.length} products available - ${categoryProducts.map(p => p.productId).join(', ')}`;
+      }).join('\n');
+      
+      const youtubeInfo = youtubeResources.map(y => 
+        `${y.title} | Category: ${y.category} | ${y.description || 'Educational content'}`
+      ).join('\n');
+
       // Use Groq AI for intelligent responses
       const Groq = (await import('groq-sdk')).default;
       const groq = new Groq({
@@ -216,6 +235,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             - WhatsApp: https://chat.whatsapp.com/KJVjYJqIIseK2L0ewUtgcU
             - Facebook: https://www.facebook.com/profile.php?id=61576600540576
             
+            AVAILABLE PRODUCTS:
+            ${productInfo}
+            
+            PRODUCT CATEGORIES:
+            ${categoryInfo}
+            
+            YOUTUBE RESOURCES:
+            ${youtubeInfo}
+            
             SERVICES WE OFFER:
             - Gaming Control Panels & Management Systems
             - Custom Discord Bots for Gaming Communities  
@@ -224,27 +252,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
             - Gaming Server Hosting & Management
             - Cyberpunk-inspired UI/UX Design
             
-            TARGET AUDIENCE:
-            - Professional Gamers & Esports Teams
-            - Content Creators & Streamers
-            - Gaming Communities & Discord Servers
-            - Gaming Businesses & Startups
+            INTELLIGENT RESPONSE CAPABILITIES:
+            - When asked about specific product IDs (like MCG-001, MCB-001), provide detailed info including name, category, price, description
+            - When asked about categories, explain what products we have in that category and their features
+            - When asked about website processes, explain our services and how they work
+            - For contact info, provide exact details
+            - For general questions, be helpful and informative
             
-            WEBSITE FEATURES & PRODUCTS:
-            - Home page with gaming-themed design
-            - Products page showcasing gaming panels and tools
-            - YouTube resources and tutorials section
-            - Contact form for customer inquiries
-            - Professional gaming services portfolio
-            
-            STRICT RESPONSE RULES:
-            - Maximum 20 words per response
-            - When asked for EMAIL: "mohitsindhu121@gmail.com"
-            - When asked for OWNER: "Mohit Sindhu"
-            - When asked for YOUTUBE: "https://youtube.com/channel/UCTqVAZM7HsFoz7xrpRMoADg/"
-            - When asked for DISCORD: "https://discord.gg/zpw3fAq6Q2"
-            - For other social links, provide the exact URLs listed above
-            - NEVER make up any information not listed here`
+            RESPONSE GUIDELINES:
+            - For product queries: Include product ID, name, category, price, and description
+            - For category queries: List available products and explain category purpose
+            - For contact info: Use exact provided information
+            - For general questions: Keep responses helpful but concise (under 50 words)
+            - Always be professional and enthusiastic about our gaming solutions`
           },
           {
             role: "user",
@@ -252,8 +272,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         ],
         model: "llama3-8b-8192",
-        temperature: 0.1,
-        max_tokens: 25
+        temperature: 0.3,
+        max_tokens: 200
       });
 
       const aiResponse = chatCompletion.choices[0]?.message?.content || 
