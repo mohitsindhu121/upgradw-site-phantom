@@ -185,7 +185,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/users', isAuthenticated, async (req, res) => {
     try {
       // Only allow access for admin users
-      if (req.user?.username !== 'mohit') {
+      if (req.user?.id !== 'mohit') {
         return res.status(403).json({ message: "Access denied" });
       }
       
@@ -204,7 +204,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/users', isAuthenticated, async (req, res) => {
     try {
       // Only allow access for admin users
-      if (req.user?.username !== 'mohit') {
+      if (req.user?.id !== 'mohit') {
         return res.status(403).json({ message: "Access denied" });
       }
       
@@ -216,13 +216,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Create user using storage
       const newUser = await storage.upsertUser({ 
-        id: username, 
-        username: username 
+        id: username
       });
       
       res.status(201).json({ 
         id: newUser.id, 
-        username: newUser.username, 
+        username: username, 
         message: "User created successfully" 
       });
     } catch (error) {
@@ -234,7 +233,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete('/api/users/:id', isAuthenticated, async (req, res) => {
     try {
       // Only allow access for admin users
-      if (req.user?.username !== 'mohit') {
+      if (req.user?.id !== 'mohit') {
         return res.status(403).json({ message: "Access denied" });
       }
       

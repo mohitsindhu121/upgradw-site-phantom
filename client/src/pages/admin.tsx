@@ -138,7 +138,7 @@ export default function Admin() {
             ADMIN COMMAND CENTER
           </h1>
           <p className="text-gray-400 text-lg">
-            Manage your digital empire, {user?.username || 'Mohit'}
+            Manage your digital empire, {user?.id || 'Mohit'}
           </p>
         </div>
 
