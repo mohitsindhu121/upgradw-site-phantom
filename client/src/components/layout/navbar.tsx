@@ -65,7 +65,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Button
-                onClick={() => window.location.href = '/api/login'}
+                onClick={() => window.location.href = '/login'}
                 className="cyber-button px-4 py-2"
               >
                 Admin Login
