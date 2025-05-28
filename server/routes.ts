@@ -353,7 +353,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             CRITICAL CODE RESPONSE RULES:
             🔥 When user asks for CODE (program, script, function):
             - IMMEDIATELY provide the actual working code in markdown code blocks
-            - Format: ```language\nactual code here\n```
+            - Format: \`\`\`language\\nactual code here\\n\`\`\`
             - Give COMPLETE, READY-TO-USE code that can be copied and run
             - Add short explanation AFTER the code if needed
             - NEVER give steps or instructions instead of actual code
