@@ -3,7 +3,8 @@
 // Database Setup Script for Mohit Corporation
 // This script will create all necessary tables in your database
 
-const { Pool } = require('pg');
+import pkg from 'pg';
+const { Pool } = pkg;
 
 // Database configuration
 const DATABASE_URL = process.env.DATABASE_URL || 
