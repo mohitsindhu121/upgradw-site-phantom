@@ -27,8 +27,9 @@ export default function Navbar() {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link href="/">
-            <div className="font-orbitron text-2xl font-bold text-glow cursor-pointer">
-              MOHIT CORP
+            <div className="font-orbitron text-xl md:text-2xl font-bold text-glow cursor-pointer">
+              <span className="hidden sm:inline">MOHIT CORPORATION</span>
+              <span className="sm:hidden">MOHIT CORP</span>
             </div>
           </Link>
           
