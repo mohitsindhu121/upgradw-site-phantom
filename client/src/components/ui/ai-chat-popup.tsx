@@ -27,9 +27,18 @@ export default function AIChatPopup() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
+    // Auto-scroll to bottom when new messages are added
+    const scrollToBottom = () => {
+      if (scrollAreaRef.current) {
+        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollElement) {
+          scrollElement.scrollTop = scrollElement.scrollHeight;
+        }
+      }
+    };
+    
+    // Use setTimeout to ensure DOM is updated
+    setTimeout(scrollToBottom, 100);
   }, [messages]);
 
   const handleSendMessage = async () => {
