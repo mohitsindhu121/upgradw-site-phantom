@@ -206,6 +206,65 @@
     background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
     animation: neon-scan 3s infinite;
   }
+
+  /* Particle System */
+  .particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: particle-fall 8s linear infinite;
+    top: -20px;
+  }
+
+  .particle-cyan {
+    background: #00FFFF;
+    box-shadow: 0 0 15px #00FFFF, 0 0 30px #00FFFF;
+  }
+
+  .particle-purple {
+    background: #8B5CF6;
+    box-shadow: 0 0 15px #8B5CF6, 0 0 30px #8B5CF6;
+  }
+
+  .particle-green {
+    background: #10B981;
+    box-shadow: 0 0 15px #10B981, 0 0 30px #10B981;
+  }
+
+  .particle-orange {
+    background: #F59E0B;
+    box-shadow: 0 0 15px #F59E0B, 0 0 30px #F59E0B;
+  }
+
+  /* Floating Orbs */
+  .floating-orb {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    animation: orb-float 6s ease-in-out infinite;
+  }
+
+  .floating-orb-cyan {
+    background: radial-gradient(circle, #00FFFF, transparent);
+    box-shadow: 0 0 25px #00FFFF, 0 0 50px #00FFFF;
+  }
+
+  .floating-orb-purple {
+    background: radial-gradient(circle, #8B5CF6, transparent);
+    box-shadow: 0 0 25px #8B5CF6, 0 0 50px #8B5CF6;
+  }
+
+  .floating-orb-green {
+    background: radial-gradient(circle, #10B981, transparent);
+    box-shadow: 0 0 25px #10B981, 0 0 50px #10B981;
+  }
+
+  .floating-orb-orange {
+    background: radial-gradient(circle, #F59E0B, transparent);
+    box-shadow: 0 0 25px #F59E0B, 0 0 50px #F59E0B;
+  }
 }
 
 @layer utilities {
@@ -270,6 +329,44 @@
   0% { left: -100%; }
   50% { left: 100%; }
   100% { left: 100%; }
+}
+
+@keyframes particle-fall {
+  0% { 
+    transform: translateY(-20px) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(100vh) scale(1);
+  }
+  100% { 
+    transform: translateY(110vh) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes orb-float {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  25% { 
+    transform: translate(10px, -15px) scale(1.1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translate(-5px, -25px) scale(1.2);
+    opacity: 1;
+  }
+  75% { 
+    transform: translate(-15px, -10px) scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 /* Scrollbar styling */

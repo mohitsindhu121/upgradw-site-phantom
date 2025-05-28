@@ -1,53 +1,61 @@
 export default function ParticlesBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -1 }}>
+    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: -1 }}>
       {/* Main animated background with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#1A1A2E] to-[#0A0A0A]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#000814] via-[#001D3D] to-[#000814]" />
+      
+      {/* Animated particle rain effect */}
+      <div className="absolute inset-0">
+        {/* Top row of falling particles */}
+        <div className="particle particle-cyan" style={{ left: '5%', animationDelay: '0s' }}></div>
+        <div className="particle particle-purple" style={{ left: '15%', animationDelay: '2s' }}></div>
+        <div className="particle particle-green" style={{ left: '25%', animationDelay: '4s' }}></div>
+        <div className="particle particle-orange" style={{ left: '35%', animationDelay: '1s' }}></div>
+        <div className="particle particle-cyan" style={{ left: '45%', animationDelay: '3s' }}></div>
+        <div className="particle particle-purple" style={{ left: '55%', animationDelay: '5s' }}></div>
+        <div className="particle particle-green" style={{ left: '65%', animationDelay: '2.5s' }}></div>
+        <div className="particle particle-orange" style={{ left: '75%', animationDelay: '0.5s' }}></div>
+        <div className="particle particle-cyan" style={{ left: '85%', animationDelay: '4.5s' }}></div>
+        <div className="particle particle-purple" style={{ left: '95%', animationDelay: '1.5s' }}></div>
+        
+        {/* Second row with different timing */}
+        <div className="particle particle-green" style={{ left: '10%', animationDelay: '6s' }}></div>
+        <div className="particle particle-orange" style={{ left: '20%', animationDelay: '7s' }}></div>
+        <div className="particle particle-cyan" style={{ left: '30%', animationDelay: '8s' }}></div>
+        <div className="particle particle-purple" style={{ left: '40%', animationDelay: '6.5s' }}></div>
+        <div className="particle particle-green" style={{ left: '50%', animationDelay: '7.5s' }}></div>
+        <div className="particle particle-orange" style={{ left: '60%', animationDelay: '8.5s' }}></div>
+        <div className="particle particle-cyan" style={{ left: '70%', animationDelay: '9s' }}></div>
+        <div className="particle particle-purple" style={{ left: '80%', animationDelay: '9.5s' }}></div>
+        <div className="particle particle-green" style={{ left: '90%', animationDelay: '10s' }}></div>
+        
+        {/* Third row for denser effect */}
+        <div className="particle particle-orange" style={{ left: '7%', animationDelay: '11s' }}></div>
+        <div className="particle particle-cyan" style={{ left: '17%', animationDelay: '12s' }}></div>
+        <div className="particle particle-purple" style={{ left: '27%', animationDelay: '13s' }}></div>
+        <div className="particle particle-green" style={{ left: '37%', animationDelay: '11.5s' }}></div>
+        <div className="particle particle-orange" style={{ left: '47%', animationDelay: '12.5s' }}></div>
+        <div className="particle particle-cyan" style={{ left: '57%', animationDelay: '13.5s' }}></div>
+        <div className="particle particle-purple" style={{ left: '67%', animationDelay: '14s' }}></div>
+        <div className="particle particle-green" style={{ left: '77%', animationDelay: '14.5s' }}></div>
+        <div className="particle particle-orange" style={{ left: '87%', animationDelay: '15s' }}></div>
+        <div className="particle particle-cyan" style={{ left: '97%', animationDelay: '15.5s' }}></div>
+      </div>
       
       {/* Cyber grid overlay */}
-      <div className="absolute inset-0 cyber-grid opacity-30" />
+      <div className="absolute inset-0 opacity-20">
+        <div className="w-full h-full" style={{
+          backgroundImage: 'linear-gradient(rgba(0, 255, 255, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+          animation: 'grid-move 20s linear infinite'
+        }}></div>
+      </div>
       
-      {/* Large floating particles - Cyan */}
-      <div className="absolute top-[10%] left-[10%] w-4 h-4 bg-[#00FFFF] rounded-full shadow-[0_0_10px_#00FFFF] animate-float" style={{ animationDelay: '0s', animationDuration: '4s' }}></div>
-      <div className="absolute top-[30%] left-[80%] w-3 h-3 bg-[#00FFFF] rounded-full shadow-[0_0_8px_#00FFFF] animate-float" style={{ animationDelay: '1s', animationDuration: '5s' }}></div>
-      <div className="absolute top-[70%] left-[20%] w-5 h-5 bg-[#00FFFF] rounded-full shadow-[0_0_12px_#00FFFF] animate-float" style={{ animationDelay: '2s', animationDuration: '6s' }}></div>
-      <div className="absolute top-[50%] left-[60%] w-3 h-3 bg-[#00FFFF] rounded-full shadow-[0_0_8px_#00FFFF] animate-float" style={{ animationDelay: '3s', animationDuration: '4s' }}></div>
-      
-      {/* Purple particles */}
-      <div className="absolute top-[20%] left-[70%] w-4 h-4 bg-[#8B5CF6] rounded-full shadow-[0_0_10px_#8B5CF6] animate-pulse-glow" style={{ animationDelay: '0.5s', animationDuration: '3s' }}></div>
-      <div className="absolute top-[80%] left-[40%] w-3 h-3 bg-[#8B5CF6] rounded-full shadow-[0_0_8px_#8B5CF6] animate-pulse-glow" style={{ animationDelay: '1.5s', animationDuration: '4s' }}></div>
-      <div className="absolute top-[40%] left-[90%] w-4 h-4 bg-[#8B5CF6] rounded-full shadow-[0_0_10px_#8B5CF6] animate-pulse-glow" style={{ animationDelay: '2.5s', animationDuration: '3.5s' }}></div>
-      
-      {/* Green particles */}
-      <div className="absolute top-[60%] left-[10%] w-3 h-3 bg-[#10B981] rounded-full shadow-[0_0_8px_#10B981] animate-float" style={{ animationDelay: '1s', animationDuration: '5s' }}></div>
-      <div className="absolute top-[15%] left-[50%] w-4 h-4 bg-[#10B981] rounded-full shadow-[0_0_10px_#10B981] animate-float" style={{ animationDelay: '2s', animationDuration: '6s' }}></div>
-      <div className="absolute top-[85%] left-[70%] w-3 h-3 bg-[#10B981] rounded-full shadow-[0_0_8px_#10B981] animate-float" style={{ animationDelay: '0s', animationDuration: '4s' }}></div>
-      
-      {/* Orange particles */}
-      <div className="absolute top-[35%] left-[30%] w-3 h-3 bg-[#F59E0B] rounded-full shadow-[0_0_8px_#F59E0B] animate-pulse-glow" style={{ animationDelay: '1.5s', animationDuration: '3s' }}></div>
-      <div className="absolute top-[75%] left-[85%] w-4 h-4 bg-[#F59E0B] rounded-full shadow-[0_0_10px_#F59E0B] animate-pulse-glow" style={{ animationDelay: '0.5s', animationDuration: '4s' }}></div>
-      
-      {/* Small scattered particles */}
-      <div className="absolute top-[25%] left-[25%] w-2 h-2 bg-[#00FFFF] rounded-full shadow-[0_0_4px_#00FFFF] animate-pulse" style={{ animationDelay: '0s' }}></div>
-      <div className="absolute top-[45%] left-[75%] w-2 h-2 bg-[#8B5CF6] rounded-full shadow-[0_0_4px_#8B5CF6] animate-pulse" style={{ animationDelay: '1s' }}></div>
-      <div className="absolute top-[65%] left-[55%] w-2 h-2 bg-[#10B981] rounded-full shadow-[0_0_4px_#10B981] animate-pulse" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute top-[85%] left-[15%] w-2 h-2 bg-[#F59E0B] rounded-full shadow-[0_0_4px_#F59E0B] animate-pulse" style={{ animationDelay: '3s' }}></div>
-      <div className="absolute top-[5%] left-[95%] w-2 h-2 bg-[#00FFFF] rounded-full shadow-[0_0_4px_#00FFFF] animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-      <div className="absolute top-[55%] left-[5%] w-2 h-2 bg-[#8B5CF6] rounded-full shadow-[0_0_4px_#8B5CF6] animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-      
-      {/* More visible particles scattered around */}
-      <div className="absolute top-[12%] left-[45%] w-3 h-3 bg-[#00FFFF] rounded-full shadow-[0_0_8px_#00FFFF] animate-float" style={{ animationDelay: '2.5s', animationDuration: '5s' }}></div>
-      <div className="absolute top-[88%] left-[25%] w-3 h-3 bg-[#8B5CF6] rounded-full shadow-[0_0_8px_#8B5CF6] animate-pulse-glow" style={{ animationDelay: '1.2s', animationDuration: '3.5s' }}></div>
-      <div className="absolute top-[33%] left-[15%] w-3 h-3 bg-[#10B981] rounded-full shadow-[0_0_8px_#10B981] animate-float" style={{ animationDelay: '0.8s', animationDuration: '4.5s' }}></div>
-      <div className="absolute top-[67%] left-[92%] w-3 h-3 bg-[#F59E0B] rounded-full shadow-[0_0_8px_#F59E0B] animate-pulse-glow" style={{ animationDelay: '2.2s', animationDuration: '3.8s' }}></div>
-      
-      {/* Moving line connections */}
-      <div className="absolute top-[20%] left-[20%] w-32 h-[2px] bg-gradient-to-r from-[#00FFFF] via-[#00FFFF] to-transparent shadow-[0_0_4px_#00FFFF] animate-pulse" style={{ transform: 'rotate(45deg)', animationDelay: '0s' }}></div>
-      <div className="absolute top-[60%] left-[70%] w-24 h-[2px] bg-gradient-to-r from-[#8B5CF6] via-[#8B5CF6] to-transparent shadow-[0_0_4px_#8B5CF6] animate-pulse" style={{ transform: 'rotate(-30deg)', animationDelay: '2s' }}></div>
-      <div className="absolute top-[40%] left-[40%] w-28 h-[2px] bg-gradient-to-r from-[#10B981] via-[#10B981] to-transparent shadow-[0_0_4px_#10B981] animate-pulse" style={{ transform: 'rotate(60deg)', animationDelay: '1s' }}></div>
-      
-      {/* Animated background pattern fallback */}
-      <div className="absolute inset-0 particle-fallback opacity-20"></div>
+      {/* Large floating orbs */}
+      <div className="floating-orb floating-orb-cyan" style={{ top: '20%', left: '20%', animationDelay: '0s' }}></div>
+      <div className="floating-orb floating-orb-purple" style={{ top: '60%', left: '70%', animationDelay: '3s' }}></div>
+      <div className="floating-orb floating-orb-green" style={{ top: '40%', left: '10%', animationDelay: '6s' }}></div>
+      <div className="floating-orb floating-orb-orange" style={{ top: '80%', left: '80%', animationDelay: '9s' }}></div>
     </div>
   );
 }
