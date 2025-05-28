@@ -12,6 +12,7 @@ const categories = [
   { id: "tutorials", name: "Tutorials", icon: "📚" },
   { id: "reviews", name: "Reviews", icon: "⭐" },
   { id: "gaming", name: "Gaming", icon: "🎮" },
+  { id: "files", name: "Files", icon: "📁" },
 ];
 
 export default function Youtube() {

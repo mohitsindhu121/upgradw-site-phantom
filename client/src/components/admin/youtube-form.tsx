@@ -239,6 +239,7 @@ export default function YoutubeForm({ resource, onClose }: YoutubeFormProps) {
                     <SelectItem value="tutorials">📚 Tutorials</SelectItem>
                     <SelectItem value="reviews">⭐ Reviews</SelectItem>
                     <SelectItem value="gaming">🎮 Gaming</SelectItem>
+                    <SelectItem value="files">📁 Files</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
