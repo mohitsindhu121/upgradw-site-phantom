@@ -190,17 +190,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ response: "Message is required" });
       }
 
-      // Simple fallback response for now to test functionality
-      const responses = [
-        "Hi! I'm here to help you with Mohit Corporation's gaming products. What can I assist you with today?",
-        "Thanks for reaching out! We offer gaming panels, bots, websites, and YouTube services. How can I help you?",
-        "Hello! I'm your AI assistant from Mohit Corporation. Feel free to ask me about our gaming solutions!",
-        "Great to hear from you! What gaming products or services are you interested in learning about?"
-      ];
-      
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      
-      res.json({ response: randomResponse });
+      // Use Groq AI for intelligent responses
+      const Groq = (await import('groq-sdk')).default;
+      const groq = new Groq({
+        apiKey: process.env.GROQ_API_KEY
+      });
+
+      const chatCompletion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: `You are a helpful AI assistant for Mohit Corporation, a gaming company. 
+            We specialize in gaming panels, Discord bots, gaming websites, YouTube services, and various gaming solutions.
+            
+            Key information about Mohit Corporation:
+            - We provide premium gaming panels and control systems
+            - We develop custom Discord bots for gaming communities
+            - We create modern gaming websites and web applications
+            - We offer YouTube services including channel management and growth
+            - We focus on cutting-edge technology and cyberpunk-inspired designs
+            - We serve gamers, content creators, and gaming businesses
+            
+            Respond in a friendly, helpful manner. Keep responses concise but informative. 
+            Always try to relate the conversation back to our gaming products and services when appropriate.
+            If asked about technical details, provide helpful information but suggest contacting our team for specific implementation details.`
+          },
+          {
+            role: "user",
+            content: message
+          }
+        ],
+        model: "llama3-8b-8192",
+        temperature: 0.7,
+        max_tokens: 300
+      });
+
+      const aiResponse = chatCompletion.choices[0]?.message?.content || 
+        "I'm having trouble processing that right now. Could you please rephrase your question?";
+
+      res.json({ response: aiResponse });
     } catch (error) {
       console.error("Error in AI chat:", error);
       res.status(500).json({ 
