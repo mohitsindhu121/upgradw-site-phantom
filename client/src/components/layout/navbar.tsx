@@ -64,12 +64,11 @@ export default function Navbar() {
                 </Button>
               </div>
             ) : (
-              <Button
-                onClick={() => window.location.href = '/login'}
-                className="cyber-button px-4 py-2"
-              >
-                Admin Login
-              </Button>
+              <Link href="/login">
+                <Button className="cyber-button px-4 py-2">
+                  Admin Login
+                </Button>
+              </Link>
             )}
           </div>
 
@@ -116,12 +115,11 @@ export default function Navbar() {
                   </Button>
                 </div>
               ) : (
-                <Button
-                  onClick={() => window.location.href = '/api/login'}
-                  className="cyber-button w-full"
-                >
-                  Admin Login
-                </Button>
+                <Link href="/login">
+                  <Button className="cyber-button w-full">
+                    Admin Login
+                  </Button>
+                </Link>
               )}
             </div>
           </div>
