@@ -229,7 +229,7 @@ export default function Admin() {
                           <i className="fas fa-user text-white text-lg"></i>
                         </div>
                         <div>
-                          <h3 className="font-semibold text-lg text-white">{user.id}</h3>
+                          <h3 className="font-semibold text-lg text-white">{user.username || user.id}</h3>
                           <p className="text-gray-400 text-sm">User ID: {user.id}</p>
                         </div>
                       </div>
