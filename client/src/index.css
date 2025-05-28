@@ -222,6 +222,11 @@
     box-shadow: 0 0 15px #00FFFF, 0 0 30px #00FFFF;
   }
 
+  .particle-blue {
+    background: #0064FF;
+    box-shadow: 0 0 20px #0064FF, 0 0 40px #0064FF, 0 0 60px #0064FF;
+  }
+
   .particle-purple {
     background: #8B5CF6;
     box-shadow: 0 0 15px #8B5CF6, 0 0 30px #8B5CF6;
@@ -249,6 +254,11 @@
   .floating-orb-cyan {
     background: radial-gradient(circle, #00FFFF, transparent);
     box-shadow: 0 0 25px #00FFFF, 0 0 50px #00FFFF;
+  }
+
+  .floating-orb-blue {
+    background: radial-gradient(circle, #0064FF, transparent);
+    box-shadow: 0 0 30px #0064FF, 0 0 60px #0064FF, 0 0 90px #0064FF;
   }
 
   .floating-orb-purple {
