@@ -104,7 +104,7 @@ export default function Login() {
             </Button>
           </form>
           <div className="mt-6 text-center text-sm text-gray-500">
-            <p>Username: admin</p>
+            <p>Username: mohit</p>
             <p>Password: 1</p>
           </div>
         </CardContent>

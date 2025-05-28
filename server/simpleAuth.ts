@@ -37,10 +37,10 @@ export async function setupAuth(app: Express) {
   app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     
-    if (username === 'admin' && password === '1') {
+    if (username === 'mohit' && password === '1') {
       (req.session as any).isAuthenticated = true;
-      (req.session as any).user = { id: 'admin', username: 'admin' };
-      res.json({ success: true, user: { username: 'admin' } });
+      (req.session as any).user = { id: 'mohit', username: 'mohit' };
+      res.json({ success: true, user: { username: 'mohit' } });
     } else {
       res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
