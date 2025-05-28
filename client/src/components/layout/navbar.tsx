@@ -36,15 +36,15 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             {currentNavigation.map((item) => (
               <Link key={item.name} href={item.href}>
-                <a 
-                  className={`nav-link transition-colors ${
+                <span 
+                  className={`nav-link transition-colors cursor-pointer ${
                     location === item.href 
                       ? "text-[#00FFFF]" 
                       : "text-white hover:text-[#00FFFF]"
                   }`}
                 >
                   {item.name}
-                </a>
+                </span>
               </Link>
             ))}
             
@@ -86,8 +86,8 @@ export default function Navbar() {
           <div className="md:hidden mt-4 pb-4 border-t border-[#00FFFF]/30 pt-4">
             {currentNavigation.map((item) => (
               <Link key={item.name} href={item.href}>
-                <a 
-                  className={`block py-2 transition-colors ${
+                <span 
+                  className={`block py-2 transition-colors cursor-pointer ${
                     location === item.href 
                       ? "text-[#00FFFF]" 
                       : "text-white hover:text-[#00FFFF]"
@@ -95,7 +95,7 @@ export default function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </span>
               </Link>
             ))}
             

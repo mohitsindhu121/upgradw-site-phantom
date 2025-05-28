@@ -19,32 +19,17 @@ import { useEffect } from "react";
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white relative overflow-x-hidden">
       <ParticlesBackground />
       <WhatsAppPopup />
       
       <Switch>
-        {!isAuthenticated ? (
-          <>
-            <Route path="/" component={Landing} />
-            <Route path="/products" component={Products} />
-            <Route path="/youtube" component={Youtube} />
-            <Route path="/contact" component={Contact} />
-          </>
-        ) : (
-          <>
-            <Route path="/" component={Home} />
-            <Route path="/products" component={Products} />
-            <Route path="/youtube" component={Youtube} />
-            <Route path="/contact" component={Contact} />
-            <Route path="/admin" component={Admin} />
-          </>
-        )}
+        <Route path="/" component={isAuthenticated ? Home : Landing} />
+        <Route path="/products" component={Products} />
+        <Route path="/youtube" component={Youtube} />
+        <Route path="/contact" component={Contact} />
+        {isAuthenticated && <Route path="/admin" component={Admin} />}
         <Route component={NotFound} />
       </Switch>
     </div>
