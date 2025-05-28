@@ -189,11 +189,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Access denied" });
       }
       
-      // For now, return a basic user list - can be enhanced later
+      // Fetch all users from database
+      const dbUsers = await storage.getUsers ? await storage.getUsers() : [];
+      
+      // Include admin user and any database users
       const users = [
         { id: 'mohit', username: 'mohit', role: 'admin' },
-        // Add more users as they are created
+        ...dbUsers.map(user => ({
+          id: user.id,
+          username: user.username || user.id,
+          role: 'user'
+        }))
       ];
+      
       res.json(users);
     } catch (error) {
       console.error("Error fetching users:", error);
