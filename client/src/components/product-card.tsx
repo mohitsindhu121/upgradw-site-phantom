@@ -106,7 +106,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
-        <DialogContent className="max-w-3xl bg-gradient-to-br from-[#0A0A0A]/98 via-[#1A1A2E]/95 to-[#0A0A0A]/98 border-2 border-[#8B5CF6]/40 text-white backdrop-blur-xl shadow-2xl shadow-[#8B5CF6]/20 animate-in zoom-in-95 duration-300">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-[#0A0A0A]/98 via-[#1A1A2E]/95 to-[#0A0A0A]/98 border-2 border-[#8B5CF6]/40 text-white backdrop-blur-xl shadow-2xl shadow-[#8B5CF6]/20 animate-in zoom-in-95 duration-300">
           <DialogHeader>
             <DialogTitle className="font-orbitron text-3xl text-transparent bg-gradient-to-r from-[#00FFFF] via-[#8B5CF6] to-[#00FFFF] bg-clip-text flex items-center gap-3 animate-pulse">
               <span className="text-3xl animate-bounce">{categoryIcons[product.category as keyof typeof categoryIcons]}</span>
