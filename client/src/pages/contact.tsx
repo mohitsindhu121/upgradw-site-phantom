@@ -21,19 +21,25 @@ const socialLinks = [
     name: "Discord",
     icon: "fab fa-discord",
     color: "bg-purple-600/20 border-purple-600/30 hover:bg-purple-600/30 text-purple-400",
-    url: "#"
+    url: "https://discord.gg/zpw3fAq6Q2"
   },
   {
     name: "Instagram",
     icon: "fab fa-instagram",
     color: "bg-pink-600/20 border-pink-600/30 hover:bg-pink-600/30 text-pink-400",
-    url: "#"
+    url: "https://www.instagram.com/trueb_yhabit/"
   },
   {
     name: "WhatsApp",
     icon: "fab fa-whatsapp",
     color: "bg-green-600/20 border-green-600/30 hover:bg-green-600/30 text-green-400",
-    url: "#"
+    url: "https://chat.whatsapp.com/KJVjYJqIIseK2L0ewUtgcU"
+  },
+  {
+    name: "Facebook",
+    icon: "fab fa-facebook",
+    color: "bg-blue-600/20 border-blue-600/30 hover:bg-blue-600/30 text-blue-400",
+    url: "https://www.facebook.com/profile.php?id=61576600540576"
   },
 ];
 
