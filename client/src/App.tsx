@@ -32,7 +32,7 @@ function Router() {
           <Route path="/youtube" component={Youtube} />
           <Route path="/contact" component={Contact} />
           <Route path="/login" component={Login} />
-          {isAuthenticated && <Route path="/admin" component={Admin} />}
+          <Route path="/admin" component={isAuthenticated ? Admin : Login} />
           <Route component={NotFound} />
         </Switch>
       </div>
