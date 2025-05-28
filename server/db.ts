@@ -6,7 +6,7 @@ import * as schema from "@shared/schema";
 neonConfig.webSocketConstructor = ws;
 
 // Database URL from environment
-const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.DATABASE_URL || process.env.CUSTOM_DATABASE_URL;
 
 console.log("🗄️ Database connection:", DATABASE_URL ? "✅ Connected" : "❌ No URL provided");
 
