@@ -324,10 +324,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             - Contact information and social links
             
             ✨ CODE & TECHNICAL REQUESTS:
-            - Complete, working code solutions
-            - Detailed explanations and comments
-            - Best practices and optimization tips
-            - Multiple approach suggestions
+            - Always wrap code in proper markdown code blocks with language: ```python\ncode here\n```
+            - Provide complete, working code solutions
+            - Add detailed explanations before and after code
+            - Include best practices and optimization tips
+            - Format code clearly with proper indentation
             
             ✨ GENERAL KNOWLEDGE:
             - Comprehensive, accurate information

@@ -41,6 +41,104 @@ export default function AIChatPopup() {
     setTimeout(scrollToBottom, 100);
   }, [messages]);
 
+  // Enhanced message formatting function
+  const formatMessage = (text: string) => {
+    // Split text into parts (code blocks, links, regular text)
+    const parts = [];
+    let currentIndex = 0;
+    
+    // First, handle code blocks (```code```)
+    const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
+    let match;
+    
+    while ((match = codeBlockRegex.exec(text)) !== null) {
+      // Add text before code block
+      if (match.index > currentIndex) {
+        parts.push({
+          type: 'text',
+          content: text.slice(currentIndex, match.index)
+        });
+      }
+      
+      // Add code block
+      parts.push({
+        type: 'codeblock',
+        language: match[1] || 'text',
+        content: match[2].trim()
+      });
+      
+      currentIndex = match.index + match[0].length;
+    }
+    
+    // Add remaining text
+    if (currentIndex < text.length) {
+      parts.push({
+        type: 'text',
+        content: text.slice(currentIndex)
+      });
+    }
+    
+    // If no code blocks found, treat as regular text
+    if (parts.length === 0) {
+      parts.push({
+        type: 'text',
+        content: text
+      });
+    }
+    
+    return parts.map((part, index) => {
+      if (part.type === 'codeblock') {
+        return (
+          <div key={index} className="my-3 relative">
+            <div className="bg-[#0A0A0A] border border-[#8B5CF6]/30 rounded-lg overflow-hidden">
+              <div className="bg-[#1A1A2E] px-3 py-2 text-xs text-[#00FFFF] flex items-center justify-between border-b border-[#8B5CF6]/20">
+                <span className="font-mono">{part.language}</span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-6 px-2 text-xs text-gray-400 hover:text-white"
+                  onClick={() => {
+                    navigator.clipboard.writeText(part.content);
+                    // Could add toast notification here
+                  }}
+                >
+                  <i className="fas fa-copy mr-1"></i>
+                  Copy
+                </Button>
+              </div>
+              <pre className="p-3 text-sm text-gray-300 overflow-x-auto">
+                <code className="font-mono">{part.content}</code>
+              </pre>
+            </div>
+          </div>
+        );
+      } else {
+        // Handle inline code and links in regular text
+        const textContent = part.content;
+        
+        // Handle inline code (`code`)
+        const inlineCodeRegex = /`([^`]+)`/g;
+        const linkRegex = /(https?:\/\/[^\s]+)/g;
+        
+        let formattedText = textContent;
+        
+        // Replace inline code
+        formattedText = formattedText.replace(inlineCodeRegex, '<code class="bg-[#1A1A2E] text-[#00FFFF] px-1 py-0.5 rounded text-sm font-mono">$1</code>');
+        
+        // Replace links
+        formattedText = formattedText.replace(linkRegex, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#00FFFF] hover:text-[#8B5CF6] underline transition-colors">$1</a>');
+        
+        return (
+          <div 
+            key={index} 
+            className="whitespace-pre-wrap"
+            dangerouslySetInnerHTML={{ __html: formattedText }}
+          />
+        );
+      }
+    });
+  };
+
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
 
@@ -159,14 +257,22 @@ export default function AIChatPopup() {
                       className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`max-w-[80%] p-3 rounded-lg text-sm ${
+                        className={`max-w-[85%] p-3 rounded-lg text-sm ${
                           msg.isUser
                             ? "bg-gradient-to-r from-[#8B5CF6] to-[#00FFFF] text-white"
                             : "bg-[#1A1A2E]/80 text-gray-300 border border-[#8B5CF6]/30"
                         }`}
                       >
-                        <p className="leading-relaxed">{msg.text}</p>
-                        <p className="text-xs opacity-70 mt-1">
+                        <div className="leading-relaxed">
+                          {msg.isUser ? (
+                            <p className="whitespace-pre-wrap">{msg.text}</p>
+                          ) : (
+                            <div className="space-y-2">
+                              {formatMessage(msg.text)}
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-xs opacity-70 mt-2 pt-2 border-t border-white/10">
                           {msg.timestamp.toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
