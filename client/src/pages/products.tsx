@@ -95,18 +95,27 @@ export default function Products() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="product-card rounded-xl p-6 animate-pulse">
-                <div className="bg-gray-700 h-48 rounded-lg mb-4"></div>
-                <div className="bg-gray-700 h-4 rounded mb-2"></div>
-                <div className="bg-gray-700 h-3 rounded mb-4"></div>
-                <div className="bg-gray-700 h-8 rounded"></div>
+              <div key={i} className="product-card rounded-xl p-6 animate-pulse glow-effect">
+                <div className="bg-gradient-to-r from-gray-700 to-gray-600 h-48 rounded-lg mb-4 animate-shimmer"></div>
+                <div className="bg-gradient-to-r from-gray-700 to-gray-600 h-4 rounded mb-2 animate-shimmer"></div>
+                <div className="bg-gradient-to-r from-gray-700 to-gray-600 h-3 rounded mb-4 animate-shimmer"></div>
+                <div className="bg-gradient-to-r from-gray-700 to-gray-600 h-8 rounded animate-shimmer"></div>
               </div>
             ))}
           </div>
         ) : filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {filteredProducts.map((product, index) => (
+              <div 
+                key={product.id}
+                className="animate-in fade-in slide-in-from-bottom-4"
+                style={{ 
+                  animationDelay: `${index * 100}ms`,
+                  animationDuration: '600ms'
+                }}
+              >
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         ) : (
