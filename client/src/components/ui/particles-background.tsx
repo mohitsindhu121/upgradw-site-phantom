@@ -1,110 +1,50 @@
-import { useEffect, useRef } from "react";
-
-declare global {
-  interface Window {
-    particlesJS: any;
-  }
-}
-
 export default function ParticlesBackground() {
-  const particlesRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const initParticles = () => {
-      if (typeof window !== 'undefined' && window.particlesJS) {
-        window.particlesJS('particles-js', {
-          particles: {
-            number: { 
-              value: 150, 
-              density: { enable: true, value_area: 800 } 
-            },
-            color: { 
-              value: ['#00FFFF', '#8B5CF6', '#10B981', '#F59E0B'] 
-            },
-            shape: { 
-              type: ['circle', 'triangle', 'edge'],
-              stroke: { width: 1, color: '#00FFFF' }
-            },
-            opacity: { 
-              value: 0.7, 
-              random: true,
-              anim: { enable: true, speed: 1.5, opacity_min: 0.1 }
-            },
-            size: { 
-              value: 5, 
-              random: true,
-              anim: { enable: true, speed: 3, size_min: 0.5 }
-            },
-            line_linked: { 
-              enable: true, 
-              distance: 150, 
-              color: '#00FFFF', 
-              opacity: 0.4, 
-              width: 2 
-            },
-            move: { 
-              enable: true, 
-              speed: 4, 
-              direction: 'none', 
-              random: true, 
-              straight: false, 
-              out_mode: 'out', 
-              bounce: false,
-              attract: { enable: false, rotateX: 600, rotateY: 1200 }
-            }
-          },
-          interactivity: {
-            detect_on: 'canvas',
-            events: {
-              onhover: { enable: true, mode: 'grab' },
-              onclick: { enable: true, mode: 'push' },
-              resize: true
-            },
-            modes: {
-              grab: { distance: 250, line_linked: { opacity: 1 } },
-              push: { particles_nb: 6 },
-              repulse: { distance: 120, duration: 0.4 }
-            }
-          },
-          retina_detect: true
-        });
-      }
-    };
-
-    // Multiple attempts to initialize particles
-    const timer1 = setTimeout(initParticles, 100);
-    const timer2 = setTimeout(initParticles, 500);
-    const timer3 = setTimeout(initParticles, 1000);
-    
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, []);
-
   return (
     <>
-      {/* Main particles container */}
-      <div 
-        id="particles-js"
-        ref={particlesRef}
-        className="fixed inset-0 z-[-1] bg-gradient-to-br from-[#0A0A0A] via-[#1A1A2E] to-[#0A0A0A]"
-        style={{ pointerEvents: 'none' }}
-      />
+      {/* Main animated background with gradient */}
+      <div className="fixed inset-0 z-[-1] bg-gradient-to-br from-[#0A0A0A] via-[#1A1A2E] to-[#0A0A0A]" />
       
-      {/* CSS fallback animation */}
-      <div className="particle-fallback cyber-grid"></div>
+      {/* Cyber grid overlay */}
+      <div className="fixed inset-0 z-[-1] cyber-grid opacity-30" />
       
-      {/* Additional animated background elements */}
-      <div className="fixed inset-0 z-[-2] opacity-20">
-        <div className="absolute top-10 left-10 w-2 h-2 bg-[#00FFFF] rounded-full animate-pulse-glow"></div>
-        <div className="absolute top-32 right-20 w-1 h-1 bg-[#8B5CF6] rounded-full animate-float"></div>
-        <div className="absolute bottom-20 left-32 w-1.5 h-1.5 bg-[#10B981] rounded-full animate-pulse-glow"></div>
-        <div className="absolute bottom-40 right-10 w-1 h-1 bg-[#F59E0B] rounded-full animate-float"></div>
-        <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-[#00FFFF] rounded-full animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-[#8B5CF6] rounded-full animate-float"></div>
+      {/* Large floating particles */}
+      <div className="fixed inset-0 z-[-1] overflow-hidden">
+        {/* Cyan particles */}
+        <div className="absolute top-[10%] left-[10%] w-3 h-3 bg-[#00FFFF] rounded-full opacity-60 animate-float" style={{ animationDelay: '0s', animationDuration: '4s' }}></div>
+        <div className="absolute top-[30%] left-[80%] w-2 h-2 bg-[#00FFFF] rounded-full opacity-40 animate-float" style={{ animationDelay: '1s', animationDuration: '5s' }}></div>
+        <div className="absolute top-[70%] left-[20%] w-4 h-4 bg-[#00FFFF] rounded-full opacity-50 animate-float" style={{ animationDelay: '2s', animationDuration: '6s' }}></div>
+        <div className="absolute top-[50%] left-[60%] w-2 h-2 bg-[#00FFFF] rounded-full opacity-30 animate-float" style={{ animationDelay: '3s', animationDuration: '4s' }}></div>
+        
+        {/* Purple particles */}
+        <div className="absolute top-[20%] left-[70%] w-3 h-3 bg-[#8B5CF6] rounded-full opacity-50 animate-pulse-glow" style={{ animationDelay: '0.5s', animationDuration: '3s' }}></div>
+        <div className="absolute top-[80%] left-[40%] w-2 h-2 bg-[#8B5CF6] rounded-full opacity-40 animate-pulse-glow" style={{ animationDelay: '1.5s', animationDuration: '4s' }}></div>
+        <div className="absolute top-[40%] left-[90%] w-3 h-3 bg-[#8B5CF6] rounded-full opacity-60 animate-pulse-glow" style={{ animationDelay: '2.5s', animationDuration: '3.5s' }}></div>
+        
+        {/* Green particles */}
+        <div className="absolute top-[60%] left-[10%] w-2 h-2 bg-[#10B981] rounded-full opacity-50 animate-float" style={{ animationDelay: '1s', animationDuration: '5s' }}></div>
+        <div className="absolute top-[15%] left-[50%] w-3 h-3 bg-[#10B981] rounded-full opacity-40 animate-float" style={{ animationDelay: '2s', animationDuration: '6s' }}></div>
+        <div className="absolute top-[85%] left-[70%] w-2 h-2 bg-[#10B981] rounded-full opacity-60 animate-float" style={{ animationDelay: '0s', animationDuration: '4s' }}></div>
+        
+        {/* Orange particles */}
+        <div className="absolute top-[35%] left-[30%] w-2 h-2 bg-[#F59E0B] rounded-full opacity-40 animate-pulse-glow" style={{ animationDelay: '1.5s', animationDuration: '3s' }}></div>
+        <div className="absolute top-[75%] left-[85%] w-3 h-3 bg-[#F59E0B] rounded-full opacity-50 animate-pulse-glow" style={{ animationDelay: '0.5s', animationDuration: '4s' }}></div>
+        
+        {/* Small scattered particles */}
+        <div className="absolute top-[25%] left-[25%] w-1 h-1 bg-[#00FFFF] rounded-full opacity-60 animate-pulse" style={{ animationDelay: '0s' }}></div>
+        <div className="absolute top-[45%] left-[75%] w-1 h-1 bg-[#8B5CF6] rounded-full opacity-50 animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-[65%] left-[55%] w-1 h-1 bg-[#10B981] rounded-full opacity-40 animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-[85%] left-[15%] w-1 h-1 bg-[#F59E0B] rounded-full opacity-50 animate-pulse" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute top-[5%] left-[95%] w-1 h-1 bg-[#00FFFF] rounded-full opacity-40 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute top-[55%] left-[5%] w-1 h-1 bg-[#8B5CF6] rounded-full opacity-60 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        
+        {/* Moving line connections */}
+        <div className="absolute top-[20%] left-[20%] w-32 h-[1px] bg-gradient-to-r from-[#00FFFF] to-transparent opacity-30 animate-pulse" style={{ transform: 'rotate(45deg)', animationDelay: '0s' }}></div>
+        <div className="absolute top-[60%] left-[70%] w-24 h-[1px] bg-gradient-to-r from-[#8B5CF6] to-transparent opacity-20 animate-pulse" style={{ transform: 'rotate(-30deg)', animationDelay: '2s' }}></div>
+        <div className="absolute top-[40%] left-[40%] w-28 h-[1px] bg-gradient-to-r from-[#10B981] to-transparent opacity-25 animate-pulse" style={{ transform: 'rotate(60deg)', animationDelay: '1s' }}></div>
       </div>
+      
+      {/* Animated background pattern */}
+      <div className="particle-fallback opacity-20"></div>
     </>
   );
 }
