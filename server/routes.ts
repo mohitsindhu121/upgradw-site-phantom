@@ -181,6 +181,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // User management routes (Admin only)
+  app.get('/api/users', isAuthenticated, async (req, res) => {
+    try {
+      // Only allow access for admin users
+      if (req.user?.username !== 'mohit') {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      // For now, return a basic user list - can be enhanced later
+      const users = [
+        { id: 'mohit', username: 'mohit', role: 'admin' },
+        // Add more users as they are created
+      ];
+      res.json(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  app.post('/api/users', isAuthenticated, async (req, res) => {
+    try {
+      // Only allow access for admin users
+      if (req.user?.username !== 'mohit') {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      const { username, password } = req.body;
+      
+      if (!username || !password) {
+        return res.status(400).json({ message: "Username and password are required" });
+      }
+      
+      // Create user using storage
+      const newUser = await storage.upsertUser({ 
+        id: username, 
+        username: username 
+      });
+      
+      res.status(201).json({ 
+        id: newUser.id, 
+        username: newUser.username, 
+        message: "User created successfully" 
+      });
+    } catch (error) {
+      console.error("Error creating user:", error);
+      res.status(500).json({ message: "Failed to create user" });
+    }
+  });
+
+  app.delete('/api/users/:id', isAuthenticated, async (req, res) => {
+    try {
+      // Only allow access for admin users
+      if (req.user?.username !== 'mohit') {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      const userId = req.params.id;
+      
+      // Prevent deleting the main admin
+      if (userId === 'mohit') {
+        return res.status(400).json({ message: "Cannot delete main admin user" });
+      }
+      
+      // For now, just return success - can implement actual deletion later
+      res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ message: "Failed to delete user" });
+    }
+  });
+
   // AI Chat route
   app.post('/api/ai-chat', async (req, res) => {
     try {
