@@ -187,46 +187,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { message } = req.body;
       
       if (!message || typeof message !== 'string') {
-        return res.status(400).json({ message: "Message is required" });
+        return res.status(400).json({ response: "Message is required" });
       }
 
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'mixtral-8x7b-32768',
-          messages: [
-            {
-              role: 'system',
-              content: `You are a helpful AI assistant for Mohit Corporation, a gaming technology company. You help customers with:
-              - Gaming panels and software
-              - Gaming bots and automation tools
-              - Website development services
-              - YouTube services and content creation tools
-              
-              Be friendly, knowledgeable, and helpful. Always mention relevant products when appropriate. Keep responses concise but informative. If asked about pricing or specific details, suggest contacting support for the latest information.`
-            },
-            {
-              role: 'user',
-              content: message
-            }
-          ],
-          max_tokens: 500,
-          temperature: 0.7,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Groq API request failed');
-      }
-
-      const data = await response.json();
-      const aiResponse = data.choices[0]?.message?.content || "I'm sorry, I couldn't process your request right now. Please try again or contact our support team!";
-
-      res.json({ response: aiResponse });
+      // Simple fallback response for now to test functionality
+      const responses = [
+        "Hi! I'm here to help you with Mohit Corporation's gaming products. What can I assist you with today?",
+        "Thanks for reaching out! We offer gaming panels, bots, websites, and YouTube services. How can I help you?",
+        "Hello! I'm your AI assistant from Mohit Corporation. Feel free to ask me about our gaming solutions!",
+        "Great to hear from you! What gaming products or services are you interested in learning about?"
+      ];
+      
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      
+      res.json({ response: randomResponse });
     } catch (error) {
       console.error("Error in AI chat:", error);
       res.status(500).json({ 
