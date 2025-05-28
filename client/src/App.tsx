@@ -14,7 +14,7 @@ import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
 import LoadingScreen from "@/components/ui/loading-screen";
 import ParticlesBackground from "@/components/ui/particles-background";
-import WhatsAppPopup from "@/components/ui/whatsapp-popup";
+import AIChatPopup from "@/components/ui/ai-chat-popup";
 import { useEffect } from "react";
 
 function Router() {
@@ -24,7 +24,7 @@ function Router() {
     <div className="min-h-screen text-white relative overflow-x-hidden" style={{ background: 'transparent' }}>
       <ParticlesBackground />
       <div className="relative z-10">
-        <WhatsAppPopup />
+        <AIChatPopup />
         
         <Switch>
           <Route path="/" component={isAuthenticated ? Home : Landing} />

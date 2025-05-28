@@ -15,7 +15,7 @@ const socialLinks = [
     name: "YouTube",
     icon: "fab fa-youtube",
     color: "bg-red-600/20 border-red-600/30 hover:bg-red-600/30 text-red-500",
-    url: "#"
+    url: "https://youtube.com/channel/UCTqVAZM7HsFoz7xrpRMoADg/"
   },
   {
     name: "Discord",
