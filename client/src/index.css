@@ -210,11 +210,12 @@
   /* Particle System */
   .particle {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     animation: particle-fall 8s linear infinite;
     top: -20px;
+    opacity: 0.9;
   }
 
   .particle-cyan {
@@ -224,7 +225,7 @@
 
   .particle-blue {
     background: #0064FF;
-    box-shadow: 0 0 20px #0064FF, 0 0 40px #0064FF, 0 0 60px #0064FF;
+    box-shadow: 0 0 25px #0064FF, 0 0 50px #0064FF, 0 0 75px #0064FF;
   }
 
   .particle-purple {
@@ -245,10 +246,11 @@
   /* Floating Orbs */
   .floating-orb {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     animation: orb-float 6s ease-in-out infinite;
+    opacity: 0.8;
   }
 
   .floating-orb-cyan {
