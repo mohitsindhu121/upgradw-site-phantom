@@ -169,15 +169,17 @@
     width: 100%;
     height: 100%;
     background: 
-      radial-gradient(2px 2px at 20px 30px, #00FFFF, transparent),
-      radial-gradient(2px 2px at 40px 70px, #8B5CF6, transparent),
-      radial-gradient(1px 1px at 90px 40px, #10B981, transparent),
-      radial-gradient(1px 1px at 130px 80px, #F59E0B, transparent),
-      radial-gradient(2px 2px at 160px 30px, #00FFFF, transparent);
+      radial-gradient(4px 4px at 20px 30px, #00FFFF, transparent),
+      radial-gradient(3px 3px at 40px 70px, #8B5CF6, transparent),
+      radial-gradient(2px 2px at 90px 40px, #10B981, transparent),
+      radial-gradient(3px 3px at 130px 80px, #F59E0B, transparent),
+      radial-gradient(4px 4px at 160px 30px, #00FFFF, transparent),
+      radial-gradient(2px 2px at 50px 150px, #8B5CF6, transparent),
+      radial-gradient(3px 3px at 180px 100px, #10B981, transparent);
     background-repeat: repeat;
-    background-size: 200px 100px;
-    animation: particle-move 20s linear infinite;
-    opacity: 0.3;
+    background-size: 300px 200px;
+    animation: particle-move 15s linear infinite;
+    opacity: 0.6;
     z-index: -1;
   }
 
