@@ -1,6 +1,6 @@
 import type { Express, RequestHandler } from "express";
 import session from "express-session";
-import connectPg from "connect-pg-simple";
+import MemoryStore from "memorystore";
 
 declare module 'express-session' {
   interface SessionData {
@@ -11,14 +11,12 @@ declare module 'express-session' {
 
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
-  const pgStore = connectPg(session);
-  const sessionStore = new pgStore({
-    conString: process.env.DATABASE_URL,
-    createTableIfMissing: false,
-  });
+  const MemoryStoreSession = MemoryStore(session);
 
   return session({
-    store: sessionStore,
+    store: new MemoryStoreSession({
+      checkPeriod: sessionTtl, // prune expired entries every 24h
+    }),
     secret: process.env.SESSION_SECRET || "default-secret-key",
     resave: false,
     saveUninitialized: false,
