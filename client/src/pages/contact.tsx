@@ -224,7 +224,7 @@ export default function Contact() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <i className="fas fa-envelope text-[#00FFFF]"></i>
-                    <span className="text-gray-300">contact@mohitcorp.com</span>
+                    <span className="text-gray-300">mohitsindhu121@gmail.com</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <i className="fas fa-clock text-[#8B5CF6]"></i>
