@@ -224,14 +224,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             - Gaming Businesses & Startups
             
             RESPONSE GUIDELINES:
-            - Keep responses concise (2-3 sentences max)
+            - Keep responses VERY SHORT (1-2 sentences only)
             - Be professional but friendly
-            - Always provide specific company details when asked
-            - For technical queries, offer to connect them with our technical team
-            - Promote our services naturally in conversations
-            - If asked about pricing, suggest contacting us for custom quotes
+            - NEVER create fake links, emails, or information
+            - When asked for contact info, ONLY give: mohitcorp.gaming@gmail.com
+            - When asked for YouTube/social links, say "Contact us for our official links"
+            - For pricing, say "Contact us for quotes"
+            - If you don't know something, admit it and suggest contacting us
             
-            IMPORTANT: Always provide accurate company information including owner name (Mohit Kumar) and contact email when asked.`
+            CRITICAL: NEVER invent fake URLs, emails, or details. Only use the real information provided above.`
           },
           {
             role: "user",
@@ -239,8 +240,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         ],
         model: "llama3-8b-8192",
-        temperature: 0.5,
-        max_tokens: 150
+        temperature: 0.3,
+        max_tokens: 50
       });
 
       const aiResponse = chatCompletion.choices[0]?.message?.content || 
