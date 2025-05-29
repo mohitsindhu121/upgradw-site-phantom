@@ -18,12 +18,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const currentUserId = (req as any).user?.id; // Get current user ID if authenticated
       let products;
       
+      // For admin panel access, ensure user is authenticated
+      const isAdminAccess = req.headers.referer && req.headers.referer.includes('/admin');
+      const userIdForFiltering = isAdminAccess && currentUserId ? currentUserId : undefined;
+      
       if (search) {
-        products = await storage.searchProducts(search as string, currentUserId);
+        products = await storage.searchProducts(search as string, userIdForFiltering);
       } else if (category) {
-        products = await storage.getProductsByCategory(category as string, currentUserId);
+        products = await storage.getProductsByCategory(category as string, userIdForFiltering);
       } else {
-        products = await storage.getProducts(currentUserId);
+        products = await storage.getProducts(userIdForFiltering);
       }
       
       res.json(products);
@@ -106,10 +110,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const currentUserId = (req as any).user?.id; // Get current user ID if authenticated
       let resources;
       
+      // For admin panel access, ensure user is authenticated
+      const isAdminAccess = req.headers.referer && req.headers.referer.includes('/admin');
+      const userIdForFiltering = isAdminAccess && currentUserId ? currentUserId : undefined;
+      
       if (category) {
-        resources = await storage.getYoutubeResourcesByCategory(category as string, currentUserId);
+        resources = await storage.getYoutubeResourcesByCategory(category as string, userIdForFiltering);
       } else {
-        resources = await storage.getYoutubeResources(currentUserId);
+        resources = await storage.getYoutubeResources(userIdForFiltering);
       }
       
       res.json(resources);
