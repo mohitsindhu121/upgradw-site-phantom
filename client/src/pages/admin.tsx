@@ -163,8 +163,9 @@ export default function Admin() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="users" className="space-y-6">
-            <div className="flex justify-between items-center">
+          {user?.id === 'mohit' && (
+            <TabsContent value="users" className="space-y-6">
+              <div className="flex justify-between items-center">
               <h2 className="font-orbitron text-2xl font-bold text-[#00FFFF]">
                 User Management
               </h2>
@@ -269,7 +270,12 @@ export default function Admin() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-400">Access denied. Only admin users can manage users.</p>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="overview" className="space-y-6">
