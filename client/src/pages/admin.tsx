@@ -52,10 +52,7 @@ export default function Admin() {
 
   const createUserMutation = useMutation({
     mutationFn: async (userData: { username: string; password: string }) => {
-      const response = await apiRequest('/api/users', {
-        method: 'POST',
-        body: JSON.stringify(userData),
-      });
+      const response = await apiRequest('POST', '/api/users', userData);
       return response;
     },
     onSuccess: () => {
@@ -78,9 +75,7 @@ export default function Admin() {
 
   const deleteUserMutation = useMutation({
     mutationFn: async (userId: string) => {
-      await apiRequest(`/api/users/${userId}`, {
-        method: 'DELETE',
-      });
+      await apiRequest('DELETE', `/api/users/${userId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
@@ -100,9 +95,7 @@ export default function Admin() {
 
   const deleteProductMutation = useMutation({
     mutationFn: async (productId: number) => {
-      await apiRequest(`/api/products/${productId}`, {
-        method: 'DELETE',
-      });
+      await apiRequest('DELETE', `/api/products/${productId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/products"] });
@@ -122,9 +115,7 @@ export default function Admin() {
 
   const deleteYoutubeMutation = useMutation({
     mutationFn: async (resourceId: number) => {
-      await apiRequest(`/api/youtube-resources/${resourceId}`, {
-        method: 'DELETE',
-      });
+      await apiRequest('DELETE', `/api/youtube-resources/${resourceId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/youtube-resources"] });
