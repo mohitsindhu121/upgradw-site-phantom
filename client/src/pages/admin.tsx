@@ -34,11 +34,11 @@ export default function Admin() {
   });
 
   const { data: products = [] } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
+    queryKey: ["/api/admin/products"],
   });
 
   const { data: youtubeResources = [] } = useQuery<YoutubeResource[]>({
-    queryKey: ["/api/youtube-resources"],
+    queryKey: ["/api/admin/youtube-resources"],
   });
 
   const { data: contactMessages = [] } = useQuery<ContactMessage[]>({
@@ -98,7 +98,7 @@ export default function Admin() {
       await apiRequest('DELETE', `/api/products/${productId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/products"] });
       toast({
         title: "Product deleted successfully",
         description: "Product has been removed.",
@@ -118,7 +118,7 @@ export default function Admin() {
       await apiRequest('DELETE', `/api/youtube-resources/${resourceId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/youtube-resources"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/youtube-resources"] });
       toast({
         title: "YouTube resource deleted successfully",
         description: "Resource has been removed.",

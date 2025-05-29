@@ -11,28 +11,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Auth routes are handled in setupAuth
 
-  // Product routes
+  // Product routes - Public endpoint (for main website)
   app.get('/api/products', async (req, res) => {
     try {
       const { category, search } = req.query;
-      const currentUserId = (req as any).user?.id; // Get current user ID if authenticated
       let products;
       
-      // For admin panel access, ensure user is authenticated
-      const isAdminAccess = req.headers.referer && req.headers.referer.includes('/admin');
-      const userIdForFiltering = isAdminAccess && currentUserId ? currentUserId : undefined;
-      
       if (search) {
-        products = await storage.searchProducts(search as string, userIdForFiltering);
+        products = await storage.searchProducts(search as string);
       } else if (category) {
-        products = await storage.getProductsByCategory(category as string, userIdForFiltering);
+        products = await storage.getProductsByCategory(category as string);
       } else {
-        products = await storage.getProducts(userIdForFiltering);
+        products = await storage.getProducts();
       }
       
       res.json(products);
     } catch (error) {
       console.error("Error fetching products:", error);
+      res.status(500).json({ message: "Failed to fetch products" });
+    }
+  });
+
+  // Admin-specific product routes
+  app.get('/api/admin/products', isAuthenticated, async (req, res) => {
+    try {
+      const { category, search } = req.query;
+      const currentUserId = (req as any).user?.id;
+      let products;
+      
+      if (search) {
+        products = await storage.searchProducts(search as string, currentUserId);
+      } else if (category) {
+        products = await storage.getProductsByCategory(category as string, currentUserId);
+      } else {
+        products = await storage.getProducts(currentUserId);
+      }
+      
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching admin products:", error);
       res.status(500).json({ message: "Failed to fetch products" });
     }
   });
@@ -103,26 +120,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // YouTube resource routes
+  // YouTube resource routes - Public endpoint (for main website)
   app.get('/api/youtube-resources', async (req, res) => {
     try {
       const { category } = req.query;
-      const currentUserId = (req as any).user?.id; // Get current user ID if authenticated
       let resources;
       
-      // For admin panel access, ensure user is authenticated
-      const isAdminAccess = req.headers.referer && req.headers.referer.includes('/admin');
-      const userIdForFiltering = isAdminAccess && currentUserId ? currentUserId : undefined;
-      
       if (category) {
-        resources = await storage.getYoutubeResourcesByCategory(category as string, userIdForFiltering);
+        resources = await storage.getYoutubeResourcesByCategory(category as string);
       } else {
-        resources = await storage.getYoutubeResources(userIdForFiltering);
+        resources = await storage.getYoutubeResources();
       }
       
       res.json(resources);
     } catch (error) {
       console.error("Error fetching YouTube resources:", error);
+      res.status(500).json({ message: "Failed to fetch YouTube resources" });
+    }
+  });
+
+  // Admin-specific YouTube resource routes
+  app.get('/api/admin/youtube-resources', isAuthenticated, async (req, res) => {
+    try {
+      const { category } = req.query;
+      const currentUserId = (req as any).user?.id;
+      let resources;
+      
+      if (category) {
+        resources = await storage.getYoutubeResourcesByCategory(category as string, currentUserId);
+      } else {
+        resources = await storage.getYoutubeResources(currentUserId);
+      }
+      
+      res.json(resources);
+    } catch (error) {
+      console.error("Error fetching admin YouTube resources:", error);
       res.status(500).json({ message: "Failed to fetch YouTube resources" });
     }
   });

@@ -54,7 +54,7 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
         title: product ? "Product Updated" : "Product Created",
         description: `Product has been ${product ? "updated" : "created"} successfully.`,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/products"] });
       onClose();
     },
     onError: (error) => {
@@ -76,7 +76,7 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
         title: "Product Deleted",
         description: "Product has been deleted successfully.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/products"] });
       onClose();
     },
     onError: (error) => {
