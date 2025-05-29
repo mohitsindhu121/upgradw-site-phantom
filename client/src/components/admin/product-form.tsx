@@ -202,15 +202,40 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
               <div>
                 <label className="block text-sm font-medium mb-2">Currency *</label>
                 <Select value={formData.currency} onValueChange={(value) => setFormData(prev => ({ ...prev, currency: value }))}>
-                  <SelectTrigger className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]">
+                  <SelectTrigger className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF] hover:border-[#00FFFF]/50 transition-colors">
                     <SelectValue placeholder="Select currency" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="INR">₹ INR (Indian Rupee)</SelectItem>
-                    <SelectItem value="USD">$ USD (US Dollar)</SelectItem>
-                    <SelectItem value="BDT">৳ BDT (Bangladeshi Taka)</SelectItem>
-                    <SelectItem value="EUR">€ EUR (Euro)</SelectItem>
-                    <SelectItem value="GBP">£ GBP (British Pound)</SelectItem>
+                  <SelectContent className="bg-[#0A0A0A] border-[#00FFFF]/30">
+                    <SelectItem value="INR" className="focus:bg-[#00FFFF]/20">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">₹</span>
+                        <span>INR - Indian Rupee</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="USD" className="focus:bg-[#00FFFF]/20">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">$</span>
+                        <span>USD - US Dollar</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="BDT" className="focus:bg-[#00FFFF]/20">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">৳</span>
+                        <span>BDT - Bangladeshi Taka</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="EUR" className="focus:bg-[#00FFFF]/20">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">€</span>
+                        <span>EUR - Euro</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="GBP" className="focus:bg-[#00FFFF]/20">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">£</span>
+                        <span>GBP - British Pound</span>
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

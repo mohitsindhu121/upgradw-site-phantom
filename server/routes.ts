@@ -255,16 +255,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Access denied" });
       }
       
-      // Fetch all users from database
+      // Fetch all users from database including sellers
       const dbUsers = await storage.getUsers ? await storage.getUsers() : [];
       
-      // Include admin user and any database users
+      // Include admin user and format all database users with complete seller information
       const users = [
-        { id: 'mohit', username: 'mohit', role: 'admin' },
+        { 
+          id: 'mohit', 
+          username: 'mohit', 
+          role: 'admin',
+          email: 'mohitsindhu121@gmail.com',
+          storeName: 'Phantoms Corporation',
+          isVerified: true
+        },
         ...dbUsers.map(user => ({
           id: user.id,
           username: user.username || user.id,
-          role: 'user'
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role || 'user',
+          storeName: user.storeName,
+          storeDescription: user.storeDescription,
+          isVerified: user.isVerified,
+          googleId: user.googleId,
+          createdAt: user.createdAt
         }))
       ];
       
