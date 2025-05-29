@@ -52,14 +52,16 @@ export default function SellerRegister() {
 
       if (data.userExists) {
         toast({
-          title: "Account Found!",
-          description: "You already have an account. Redirecting to admin panel...",
+          title: "Account Already Exists!",
+          description: "You already have a seller account. Redirecting to admin panel...",
         });
-        setLocation("/admin");
+        setTimeout(() => {
+          setLocation("/admin");
+        }, 2000);
       } else {
         toast({
-          title: "Google Sign-in Successful",
-          description: "Please complete your seller profile below.",
+          title: "Google Connected Successfully",
+          description: "Now complete your seller profile below to create your account.",
         });
       }
     } catch (error) {
@@ -158,41 +160,82 @@ export default function SellerRegister() {
             
             <CardContent className="space-y-6">
               {!googleUser ? (
-                <div className="text-center space-y-4">
-                  <div className="bg-gradient-to-r from-[#1A1A2E]/50 to-[#0A0A0A]/50 p-6 rounded-xl border border-[#00FFFF]/20">
-                    <h3 className="text-xl font-semibold mb-3 text-[#00FFFF]">
-                      Step 1: Google Authentication
-                    </h3>
-                    <p className="text-gray-400 mb-4">
-                      Sign in with your Google account to get started
-                    </p>
+                <div className="text-center space-y-6">
+                  <div className="bg-gradient-to-r from-[#1A1A2E]/50 to-[#0A0A0A]/50 p-8 rounded-xl border border-[#00FFFF]/20">
+                    <div className="mb-6">
+                      <div className="w-16 h-16 bg-gradient-to-r from-[#00FFFF] to-[#8B5CF6] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <h3 className="text-2xl font-bold mb-3 text-[#00FFFF]">
+                        Step 1: Connect Your Google Account
+                      </h3>
+                      <p className="text-gray-300 mb-6 text-lg">
+                        First, connect your Google account to create your seller profile securely
+                      </p>
+                    </div>
+                    
                     <Button
                       onClick={handleGoogleSignIn}
                       disabled={isLoading}
-                      className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white px-8 py-3"
+                      className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white px-10 py-4 text-lg font-semibold"
                     >
-                      <i className="fab fa-google mr-3"></i>
-                      {isLoading ? "Signing in..." : "Sign in with Google"}
+                      <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                      </svg>
+                      {isLoading ? "Connecting..." : "Connect with Google"}
                     </Button>
+                    
+                    <div className="mt-6 text-sm text-gray-400">
+                      <p>Your Google account will be used to:</p>
+                      <ul className="mt-2 space-y-1">
+                        <li>• Secure account authentication</li>
+                        <li>• Pre-fill your basic information</li>
+                        <li>• Enable quick admin panel access</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="bg-gradient-to-r from-green-900/20 to-green-700/20 p-4 rounded-xl border border-green-500/30">
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src={googleUser.photoURL}
-                        alt="Profile"
-                        className="w-12 h-12 rounded-full"
-                      />
-                      <div>
-                        <h4 className="font-semibold text-green-400">Google Account Connected</h4>
-                        <p className="text-sm text-gray-400">{googleUser.email}</p>
+                  <div className="bg-gradient-to-r from-green-900/20 to-green-700/20 p-6 rounded-xl border border-green-500/30">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <img
+                          src={googleUser.photoURL}
+                          alt="Profile"
+                          className="w-16 h-16 rounded-full border-2 border-green-400"
+                        />
+                        <div>
+                          <h4 className="text-lg font-semibold text-green-400">✓ Google Account Connected</h4>
+                          <p className="text-gray-400">{googleUser.email}</p>
+                          <p className="text-sm text-green-300">{googleUser.displayName}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="bg-gradient-to-r from-[#1A1A2E]/50 to-[#0A0A0A]/50 p-6 rounded-xl border border-[#8B5CF6]/20">
+                    <h3 className="text-xl font-semibold mb-4 text-[#8B5CF6] flex items-center">
+                      <span className="w-8 h-8 bg-[#8B5CF6] text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</span>
+                      Complete Your Seller Profile
+                    </h3>
+                    <p className="text-gray-400 mb-6">
+                      Fill in your store details to complete your seller account setup
+                    </p>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium mb-2">Username *</label>
                       <Input
@@ -236,6 +279,7 @@ export default function SellerRegister() {
                       {isLoading ? "Creating Account..." : "Create Seller Account"}
                     </Button>
                   </form>
+                  </div>
                 </div>
               )}
             </CardContent>
