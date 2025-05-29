@@ -239,20 +239,37 @@ export class DatabaseStorage implements IStorage {
     return resource;
   }
 
-  async updateYoutubeResource(id: number, resourceData: Partial<InsertYoutubeResource>): Promise<YoutubeResource> {
-    const [resource] = await db
-      .update(youtubeResources)
-      .set({
-        ...resourceData,
-        updatedAt: new Date(),
-      })
-      .where(eq(youtubeResources.id, id))
-      .returning();
-    return resource;
+  async updateYoutubeResource(id: number, resourceData: Partial<InsertYoutubeResource>, ownerId?: string): Promise<YoutubeResource> {
+    if (ownerId && ownerId !== 'mohit') {
+      const [resource] = await db
+        .update(youtubeResources)
+        .set({
+          ...resourceData,
+          updatedAt: new Date(),
+        })
+        .where(and(eq(youtubeResources.id, id), eq(youtubeResources.ownerId, ownerId)))
+        .returning();
+      return resource;
+    } else {
+      const [resource] = await db
+        .update(youtubeResources)
+        .set({
+          ...resourceData,
+          updatedAt: new Date(),
+        })
+        .where(eq(youtubeResources.id, id))
+        .returning();
+      return resource;
+    }
   }
 
-  async deleteYoutubeResource(id: number): Promise<void> {
-    await db.update(youtubeResources).set({ isActive: false }).where(eq(youtubeResources.id, id));
+  async deleteYoutubeResource(id: number, ownerId?: string): Promise<void> {
+    if (ownerId && ownerId !== 'mohit') {
+      await db.update(youtubeResources).set({ isActive: false })
+        .where(and(eq(youtubeResources.id, id), eq(youtubeResources.ownerId, ownerId)));
+    } else {
+      await db.update(youtubeResources).set({ isActive: false }).where(eq(youtubeResources.id, id));
+    }
   }
 
   // Contact message operations

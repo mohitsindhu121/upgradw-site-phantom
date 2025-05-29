@@ -69,7 +69,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const productData = insertProductSchema.partial().parse(req.body);
-      const product = await storage.updateProduct(id, productData);
+      const currentUserId = (req as any).user?.id;
+      if (!currentUserId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+      const product = await storage.updateProduct(id, productData, currentUserId);
       res.json(product);
     } catch (error) {
       console.error("Error updating product:", error);
@@ -83,7 +87,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete('/api/products/:id', isAuthenticated, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      await storage.deleteProduct(id);
+      const currentUserId = (req as any).user?.id;
+      if (!currentUserId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+      await storage.deleteProduct(id, currentUserId);
       res.status(204).send();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -133,7 +141,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const resourceData = insertYoutubeResourceSchema.partial().parse(req.body);
-      const resource = await storage.updateYoutubeResource(id, resourceData);
+      const currentUserId = (req as any).user?.id;
+      if (!currentUserId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+      const resource = await storage.updateYoutubeResource(id, resourceData, currentUserId);
       res.json(resource);
     } catch (error) {
       console.error("Error updating YouTube resource:", error);
@@ -147,7 +159,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete('/api/youtube-resources/:id', isAuthenticated, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      await storage.deleteYoutubeResource(id);
+      const currentUserId = (req as any).user?.id;
+      if (!currentUserId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+      await storage.deleteYoutubeResource(id, currentUserId);
       res.status(204).send();
     } catch (error) {
       console.error("Error deleting YouTube resource:", error);
