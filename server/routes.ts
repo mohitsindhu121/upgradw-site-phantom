@@ -15,14 +15,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/products', async (req, res) => {
     try {
       const { category, search } = req.query;
+      const currentUserId = req.user?.id; // Get current user ID if authenticated
       let products;
       
       if (search) {
-        products = await storage.searchProducts(search as string);
+        products = await storage.searchProducts(search as string, currentUserId);
       } else if (category) {
-        products = await storage.getProductsByCategory(category as string);
+        products = await storage.getProductsByCategory(category as string, currentUserId);
       } else {
-        products = await storage.getProducts();
+        products = await storage.getProducts(currentUserId);
       }
       
       res.json(products);
@@ -49,7 +50,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/products', isAuthenticated, async (req, res) => {
     try {
       const productData = insertProductSchema.parse(req.body);
-      const product = await storage.createProduct(productData);
+      const currentUserId = req.user?.id;
+      if (!currentUserId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+      const product = await storage.createProduct(productData, currentUserId);
       res.status(201).json(product);
     } catch (error) {
       console.error("Error creating product:", error);
@@ -211,9 +216,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/users', isAuthenticated, async (req, res) => {
     try {
-      // Only allow access for admin users
+      // Only allow access for super admin (mohit)
       if (req.user?.id !== 'mohit') {
-        return res.status(403).json({ message: "Access denied" });
+        return res.status(403).json({ message: "Only super admin can create users" });
       }
       
       const { username, password } = req.body;
@@ -226,7 +231,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const newUser = await storage.upsertUser({ 
         id: username,
         username: username,
-        password: password
+        password: password,
+        role: 'user'
       });
       
       res.status(201).json({ 

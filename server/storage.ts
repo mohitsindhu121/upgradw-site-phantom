@@ -21,6 +21,7 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   getUsers(): Promise<User[]>;
   upsertUser(user: UpsertUser): Promise<User>;
+  deleteUser(id: string): Promise<void>;
 
   // Product operations
   getProducts(ownerId?: string): Promise<Product[]>;
@@ -76,36 +77,67 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
+  async deleteUser(id: string): Promise<void> {
+    // Delete user's products first
+    await db.delete(products).where(eq(products.ownerId, id));
+    // Delete user's YouTube resources
+    await db.delete(youtubeResources).where(eq(youtubeResources.ownerId, id));
+    // Delete the user
+    await db.delete(users).where(eq(users.id, id));
+  }
+
   // Product operations
-  async getProducts(): Promise<Product[]> {
+  async getProducts(ownerId?: string): Promise<Product[]> {
+    if (ownerId && ownerId !== 'mohit') {
+      // Regular users see only their own products
+      return await db.select().from(products)
+        .where(and(eq(products.isActive, true), eq(products.ownerId, ownerId)))
+        .orderBy(desc(products.createdAt));
+    }
+    // Super admin (mohit) sees all products, public users see all
     return await db.select().from(products).where(eq(products.isActive, true)).orderBy(desc(products.createdAt));
   }
 
-  async getProductsByCategory(category: string): Promise<Product[]> {
+  async getProductsByCategory(category: string, ownerId?: string): Promise<Product[]> {
+    if (ownerId && ownerId !== 'mohit') {
+      return await db.select().from(products)
+        .where(and(eq(products.category, category), eq(products.ownerId, ownerId)))
+        .orderBy(desc(products.createdAt));
+    }
     return await db.select().from(products)
       .where(eq(products.category, category))
       .orderBy(desc(products.createdAt));
   }
 
-  async searchProducts(query: string): Promise<Product[]> {
+  async searchProducts(query: string, ownerId?: string): Promise<Product[]> {
     const searchTerm = `%${query}%`;
+    const searchCondition = or(
+      like(products.name, searchTerm),
+      like(products.productId, searchTerm),
+      like(products.description, searchTerm)
+    );
+    
+    if (ownerId && ownerId !== 'mohit') {
+      return await db.select().from(products)
+        .where(and(searchCondition, eq(products.ownerId, ownerId)))
+        .orderBy(desc(products.createdAt));
+    }
     return await db.select().from(products)
-      .where(
-        or(
-          like(products.name, searchTerm),
-          like(products.productId, searchTerm),
-          like(products.description, searchTerm)
-        )
-      )
+      .where(searchCondition)
       .orderBy(desc(products.createdAt));
   }
 
-  async getProduct(id: number): Promise<Product | undefined> {
+  async getProduct(id: number, ownerId?: string): Promise<Product | undefined> {
+    if (ownerId && ownerId !== 'mohit') {
+      const [product] = await db.select().from(products)
+        .where(and(eq(products.id, id), eq(products.ownerId, ownerId)));
+      return product;
+    }
     const [product] = await db.select().from(products).where(eq(products.id, id));
     return product;
   }
 
-  async createProduct(productData: InsertProduct): Promise<Product> {
+  async createProduct(productData: InsertProduct, ownerId: string): Promise<Product> {
     // Generate unique product ID
     const categoryPrefix = {
       panels: 'MCG',
@@ -122,13 +154,25 @@ export class DatabaseStorage implements IStorage {
       .values({
         ...productData,
         productId,
+        ownerId,
         updatedAt: new Date(),
       })
       .returning();
     return product;
   }
 
-  async updateProduct(id: number, productData: Partial<InsertProduct>): Promise<Product> {
+  async updateProduct(id: number, productData: Partial<InsertProduct>, ownerId?: string): Promise<Product> {
+    if (ownerId && ownerId !== 'mohit') {
+      const [product] = await db
+        .update(products)
+        .set({
+          ...productData,
+          updatedAt: new Date(),
+        })
+        .where(and(eq(products.id, id), eq(products.ownerId, ownerId)))
+        .returning();
+      return product;
+    }
     const [product] = await db
       .update(products)
       .set({
@@ -140,8 +184,13 @@ export class DatabaseStorage implements IStorage {
     return product;
   }
 
-  async deleteProduct(id: number): Promise<void> {
-    await db.update(products).set({ isActive: false }).where(eq(products.id, id));
+  async deleteProduct(id: number, ownerId?: string): Promise<void> {
+    if (ownerId && ownerId !== 'mohit') {
+      await db.update(products).set({ isActive: false })
+        .where(and(eq(products.id, id), eq(products.ownerId, ownerId)));
+    } else {
+      await db.update(products).set({ isActive: false }).where(eq(products.id, id));
+    }
   }
 
   // YouTube resource operations
