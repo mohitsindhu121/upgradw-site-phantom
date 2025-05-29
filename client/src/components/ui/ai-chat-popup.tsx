@@ -228,7 +228,7 @@ export default function AIChatPopup() {
                   </div>
                   <div>
                     <h3 className="font-orbitron font-bold text-[#00FFFF] text-lg">
-                      Mohit Corporation
+                      Phantoms Corporation
                     </h3>
                     <p className="text-green-400 text-sm flex items-center gap-1">
                       <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>

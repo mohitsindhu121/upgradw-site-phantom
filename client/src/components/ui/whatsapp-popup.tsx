@@ -38,7 +38,7 @@ export default function WhatsAppPopup() {
                   <i className="fab fa-whatsapp text-white"></i>
                 </div>
                 <div>
-                  <div className="font-semibold text-white">Mohit Corporation</div>
+                  <div className="font-semibold text-white">Phantoms Corporation</div>
                   <div className="text-xs text-green-400">Online</div>
                 </div>
               </div>

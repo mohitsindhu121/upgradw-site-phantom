@@ -33,7 +33,11 @@ export const users = pgTable("users", {
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
-  role: varchar("role").default("user"), // Added role field
+  googleId: varchar("google_id").unique(), // Google authentication
+  role: varchar("role").default("user"), // user, seller, admin
+  isVerified: boolean("is_verified").default(false),
+  storeName: varchar("store_name"), // For seller accounts
+  storeDescription: text("store_description"), // For seller accounts
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -45,6 +49,7 @@ export const products = pgTable("products", {
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
   price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default("INR"), // INR, USD, BDT
   category: varchar("category", { length: 50 }).notNull(), // panels, bots, websites, youtube
   imageUrl: varchar("image_url"),
   videoUrl: varchar("video_url"),

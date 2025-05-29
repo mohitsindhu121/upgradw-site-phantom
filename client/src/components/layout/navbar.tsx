@@ -28,8 +28,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <Link href="/">
             <div className="font-orbitron text-xl md:text-2xl font-bold text-glow cursor-pointer">
-              <span className="hidden sm:inline">MOHIT CORPORATION</span>
-              <span className="sm:hidden">MOHIT CORP</span>
+              <span className="hidden sm:inline">PHANTOMS CORPORATION</span>
+              <span className="sm:hidden">PHANTOMS CORP</span>
             </div>
           </Link>
           
@@ -52,7 +52,7 @@ export default function Navbar() {
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-400">
-                  Welcome, {user?.firstName || 'Mohit'}
+                  Welcome, {user?.username || user?.firstName || user?.id || 'User'}
                 </span>
                 <Button
                   onClick={async () => {
