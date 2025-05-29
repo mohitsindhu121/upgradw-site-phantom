@@ -194,15 +194,32 @@ export class DatabaseStorage implements IStorage {
   }
 
   // YouTube resource operations
-  async getYoutubeResources(): Promise<YoutubeResource[]> {
+  async getYoutubeResources(ownerId?: string): Promise<YoutubeResource[]> {
+    if (ownerId && ownerId !== 'mohit') {
+      return await db.select().from(youtubeResources)
+        .where(and(eq(youtubeResources.ownerId, ownerId), eq(youtubeResources.isActive, true)))
+        .orderBy(desc(youtubeResources.createdAt));
+    }
     return await db.select().from(youtubeResources)
       .where(eq(youtubeResources.isActive, true))
       .orderBy(desc(youtubeResources.createdAt));
   }
 
-  async getYoutubeResourcesByCategory(category: string): Promise<YoutubeResource[]> {
+  async getYoutubeResourcesByCategory(category: string, ownerId?: string): Promise<YoutubeResource[]> {
+    if (ownerId && ownerId !== 'mohit') {
+      return await db.select().from(youtubeResources)
+        .where(and(
+          eq(youtubeResources.category, category),
+          eq(youtubeResources.ownerId, ownerId),
+          eq(youtubeResources.isActive, true)
+        ))
+        .orderBy(desc(youtubeResources.createdAt));
+    }
     return await db.select().from(youtubeResources)
-      .where(eq(youtubeResources.category, category))
+      .where(and(
+        eq(youtubeResources.category, category),
+        eq(youtubeResources.isActive, true)
+      ))
       .orderBy(desc(youtubeResources.createdAt));
   }
 
@@ -211,11 +228,12 @@ export class DatabaseStorage implements IStorage {
     return resource;
   }
 
-  async createYoutubeResource(resourceData: InsertYoutubeResource): Promise<YoutubeResource> {
+  async createYoutubeResource(resourceData: InsertYoutubeResource, ownerId: string): Promise<YoutubeResource> {
     const [resource] = await db
       .insert(youtubeResources)
       .values({
         ...resourceData,
+        ownerId,
         updatedAt: new Date(),
       })
       .returning();

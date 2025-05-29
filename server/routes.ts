@@ -95,12 +95,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/youtube-resources', async (req, res) => {
     try {
       const { category } = req.query;
+      const currentUserId = req.user?.id; // Get current user ID if authenticated
       let resources;
       
       if (category) {
-        resources = await storage.getYoutubeResourcesByCategory(category as string);
+        resources = await storage.getYoutubeResourcesByCategory(category as string, currentUserId);
       } else {
-        resources = await storage.getYoutubeResources();
+        resources = await storage.getYoutubeResources(currentUserId);
       }
       
       res.json(resources);
@@ -113,7 +114,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/youtube-resources', isAuthenticated, async (req, res) => {
     try {
       const resourceData = insertYoutubeResourceSchema.parse(req.body);
-      const resource = await storage.createYoutubeResource(resourceData);
+      const currentUserId = req.user?.id;
+      if (!currentUserId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+      const resource = await storage.createYoutubeResource(resourceData, currentUserId);
       res.status(201).json(resource);
     } catch (error) {
       console.error("Error creating YouTube resource:", error);

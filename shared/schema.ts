@@ -89,12 +89,14 @@ export const insertUserSchema = createInsertSchema(users).omit({
 export const insertProductSchema = createInsertSchema(products).omit({
   id: true,
   productId: true,
+  ownerId: true, // Remove ownerId from schema as it will be added by server
   createdAt: true,
   updatedAt: true,
 });
 
 export const insertYoutubeResourceSchema = createInsertSchema(youtubeResources).omit({
   id: true,
+  ownerId: true, // Remove ownerId from schema as it will be added by server
   createdAt: true,
   updatedAt: true,
 });
