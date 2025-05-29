@@ -1,172 +1,216 @@
 import { useEffect, useState, useRef } from "react";
 
 export default function LoadingScreen() {
-  const [currentPhase, setCurrentPhase] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  
-  const bootSequence = [
-    { text: "SYSTEM INITIALIZATION", duration: 800 },
-    { text: "NEURAL NETWORK ACTIVATION", duration: 600 },
-    { text: "QUANTUM PROCESSORS ONLINE", duration: 700 },
-    { text: "HOLOGRAPHIC INTERFACE READY", duration: 500 },
-    { text: "MOHIT CORPORATION ACTIVATED", duration: 1000 }
-  ];
+  const [phase, setPhase] = useState(0);
+  const [rings, setRings] = useState(0);
+  const [hexGrid, setHexGrid] = useState(false);
+  const audioContextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
-    // Create and play loading sound
-    const createLoadingSound = () => {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(440, audioContext.currentTime + 0.3);
-      
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.3);
-    };
-
-    let progressInterval: NodeJS.Timeout;
-    let phaseTimeout: NodeJS.Timeout;
-
-    const runBootSequence = () => {
-      // Play sound
+    // Advanced sound synthesis
+    const createAdvancedSound = () => {
       try {
-        createLoadingSound();
+        const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        audioContextRef.current = ctx;
+
+        // Sci-fi startup sound sequence
+        const playTone = (freq: number, duration: number, delay: number, type: OscillatorType = 'sine') => {
+          setTimeout(() => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            const filter = ctx.createBiquadFilter();
+            
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            osc.type = type;
+            filter.frequency.setValueAtTime(2000, ctx.currentTime);
+            
+            gain.gain.setValueAtTime(0, ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+            
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + duration);
+          }, delay);
+        };
+
+        // Futuristic sound sequence
+        playTone(220, 0.8, 0, 'sawtooth');
+        playTone(330, 0.6, 300, 'square');
+        playTone(440, 0.7, 600, 'triangle');
+        playTone(550, 0.5, 900, 'sine');
+        playTone(660, 1.2, 1200, 'sawtooth');
       } catch (error) {
-        console.log("Audio context not available");
+        console.log("Audio not available");
       }
-
-      // Progress bar animation
-      progressInterval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(progressInterval);
-            setIsComplete(true);
-            return 100;
-          }
-          return prev + 2;
-        });
-      }, 50);
-
-      // Phase progression
-      const runPhase = (index: number) => {
-        if (index < bootSequence.length) {
-          setCurrentPhase(index);
-          phaseTimeout = setTimeout(() => {
-            runPhase(index + 1);
-          }, bootSequence[index].duration);
-        }
-      };
-
-      runPhase(0);
     };
 
-    runBootSequence();
+    // Animation sequence
+    const animationSequence = () => {
+      createAdvancedSound();
+      
+      setTimeout(() => setPhase(1), 500);
+      setTimeout(() => setRings(1), 800);
+      setTimeout(() => setPhase(2), 1200);
+      setTimeout(() => setRings(2), 1600);
+      setTimeout(() => setHexGrid(true), 2000);
+      setTimeout(() => setPhase(3), 2400);
+      setTimeout(() => setRings(3), 2800);
+      setTimeout(() => setPhase(4), 3200);
+    };
+
+    animationSequence();
 
     return () => {
-      clearInterval(progressInterval);
-      clearTimeout(phaseTimeout);
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1A1A2E] to-[#16213E] overflow-hidden">
-      {/* Animated background particles */}
+    <div className="fixed inset-0 z-50 bg-gradient-to-br from-[#0A0A0A] via-[#1A1A2E] to-[#16213E] overflow-hidden">
+      {/* Matrix rain effect */}
       <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(50)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-[#00FFFF] rounded-full animate-pulse"
+            className="absolute w-0.5 bg-gradient-to-b from-[#00FFFF] via-[#8B5CF6] to-transparent animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 3}s`
+              height: `${20 + Math.random() * 40}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${1 + Math.random() * 2}s`
             }}
           />
         ))}
       </div>
 
-      {/* Main loading interface */}
-      <div className="relative text-center max-w-md mx-4">
-        {/* Logo with advanced glow effect */}
-        <div className="relative mb-12">
-          <div className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] animate-pulse">
-            MOHIT
-          </div>
-          <div className="text-lg md:text-xl font-light text-[#00FFFF] mt-2 tracking-[0.3em]">
-            CORPORATION
-          </div>
-          
-          {/* Holographic effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent animate-ping" />
-        </div>
-
-        {/* Boot sequence */}
-        <div className="mb-8 space-y-3">
-          {bootSequence.map((phase, index) => (
-            <div
-              key={index}
-              className={`text-sm md:text-base transition-all duration-500 ${
-                index <= currentPhase 
-                  ? 'opacity-100 text-[#00FFFF] scale-100' 
-                  : 'opacity-30 text-gray-500 scale-95'
-              }`}
-            >
-              <div className="flex items-center justify-center space-x-2">
-                {index === currentPhase && (
-                  <div className="w-2 h-2 bg-[#00FFFF] rounded-full animate-pulse" />
-                )}
-                <span className="font-mono tracking-wider">{phase.text}</span>
-                {index < currentPhase && (
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Advanced progress bar */}
-        <div className="relative">
-          <div className="w-full h-3 bg-gray-800 rounded-full overflow-hidden border border-[#00FFFF]/30">
-            <div 
-              className="h-full bg-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] rounded-full transition-all duration-100 ease-out relative"
-              style={{ width: `${progress}%` }}
-            >
-              <div className="absolute inset-0 bg-white/30 animate-pulse" />
-            </div>
-          </div>
-          
-          {/* Progress percentage */}
-          <div className="mt-3 text-[#00FFFF] font-mono text-sm">
-            {progress.toFixed(0)}%
-          </div>
-        </div>
-
-        {/* Completion animation */}
-        {isComplete && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-2xl text-green-500 font-bold animate-bounce">
-              ✓ READY
-            </div>
-          </div>
-        )}
+      {/* Floating orbs */}
+      <div className="absolute inset-0">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-gradient-radial from-[#00FFFF]/30 to-transparent animate-pulse"
+            style={{
+              width: `${10 + Math.random() * 30}px`,
+              height: `${10 + Math.random() * 30}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${2 + Math.random() * 3}s`,
+              filter: 'blur(1px)'
+            }}
+          />
+        ))}
       </div>
 
-      {/* Corner accents */}
-      <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-[#00FFFF]/50" />
-      <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-[#00FFFF]/50" />
-      <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-[#00FFFF]/50" />
-      <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-[#00FFFF]/50" />
+      {/* Central loading interface */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative">
+          {/* Hexagonal grid background */}
+          {hexGrid && (
+            <div className="absolute inset-0 -m-32">
+              <svg className="w-64 h-64 animate-spin" style={{animationDuration: '20s'}}>
+                {[...Array(12)].map((_, i) => (
+                  <polygon
+                    key={i}
+                    points="30,5 50,15 50,35 30,45 10,35 10,15"
+                    fill="none"
+                    stroke="#00FFFF"
+                    strokeWidth="0.5"
+                    opacity="0.3"
+                    transform={`translate(${i * 20}, ${(i % 3) * 20}) scale(${1 + Math.sin(i) * 0.2})`}
+                    className="animate-pulse"
+                  />
+                ))}
+              </svg>
+            </div>
+          )}
+
+          {/* Rotating rings */}
+          {[...Array(rings + 1)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute inset-0 rounded-full border-2 border-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] animate-spin"
+              style={{
+                width: `${(i + 1) * 80}px`,
+                height: `${(i + 1) * 80}px`,
+                margin: `${-(i + 1) * 40}px`,
+                animationDuration: `${3 + i}s`,
+                animationDirection: i % 2 ? 'reverse' : 'normal',
+                borderColor: i % 2 ? '#00FFFF' : '#8B5CF6',
+                opacity: 0.7 - i * 0.2
+              }}
+            />
+          ))}
+
+          {/* Center logo with phase animations */}
+          <div className="relative z-10 text-center">
+            <div className={`transition-all duration-1000 ${phase >= 1 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
+              <div className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] animate-pulse">
+                M
+              </div>
+            </div>
+            
+            <div className={`transition-all duration-1000 delay-300 ${phase >= 2 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
+              <div className="text-2xl md:text-3xl font-light text-[#00FFFF] tracking-[0.5em] mt-4">
+                OHIT
+              </div>
+            </div>
+
+            <div className={`transition-all duration-1000 delay-600 ${phase >= 3 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
+              <div className="text-lg md:text-xl text-[#8B5CF6] tracking-[0.3em] mt-2">
+                CORPORATION
+              </div>
+            </div>
+
+            {/* Energy pulse effect */}
+            {phase >= 4 && (
+              <div className="absolute inset-0 -m-20">
+                <div className="w-full h-full rounded-full bg-gradient-radial from-[#00FFFF]/20 via-[#8B5CF6]/10 to-transparent animate-ping" />
+                <div className="absolute inset-4 rounded-full bg-gradient-radial from-[#8B5CF6]/20 via-[#00FFFF]/10 to-transparent animate-ping animation-delay-500" />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Scanning lines */}
+      <div className="absolute inset-0">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-full h-px bg-gradient-to-r from-transparent via-[#00FFFF] to-transparent animate-pulse"
+            style={{
+              top: `${20 + i * 30}%`,
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: '2s'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Corner UI elements */}
+      <div className="absolute top-6 left-6">
+        <div className="w-16 h-16 border-l-2 border-t-2 border-[#00FFFF]/60" />
+        <div className="w-4 h-4 bg-[#00FFFF] rounded-full mt-2 animate-pulse" />
+      </div>
+      <div className="absolute top-6 right-6">
+        <div className="w-16 h-16 border-r-2 border-t-2 border-[#8B5CF6]/60" />
+        <div className="w-4 h-4 bg-[#8B5CF6] rounded-full mt-2 ml-12 animate-pulse" />
+      </div>
+      <div className="absolute bottom-6 left-6">
+        <div className="w-16 h-16 border-l-2 border-b-2 border-[#00FFFF]/60" />
+        <div className="w-4 h-4 bg-[#00FFFF] rounded-full -mt-2 animate-pulse" />
+      </div>
+      <div className="absolute bottom-6 right-6">
+        <div className="w-16 h-16 border-r-2 border-b-2 border-[#8B5CF6]/60" />
+        <div className="w-4 h-4 bg-[#8B5CF6] rounded-full -mt-2 ml-12 animate-pulse" />
+      </div>
     </div>
   );
 }
