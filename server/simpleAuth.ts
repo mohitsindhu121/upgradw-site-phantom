@@ -1,6 +1,7 @@
 import type { Express, RequestHandler } from "express";
 import session from "express-session";
 import MemoryStore from "memorystore";
+import { storage } from "./storage";
 
 declare module 'express-session' {
   interface SessionData {
@@ -35,12 +36,20 @@ export async function setupAuth(app: Express) {
   app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     
-    if (username === 'mohit' && password === '1') {
-      (req.session as any).isAuthenticated = true;
-      (req.session as any).user = { id: 'mohit', username: 'mohit' };
-      res.json({ success: true, user: { username: 'mohit' } });
-    } else {
-      res.status(401).json({ success: false, message: 'Invalid credentials' });
+    try {
+      // Check if user exists in database
+      const user = await storage.getUser(username);
+      
+      if (user && user.password === password) {
+        (req.session as any).isAuthenticated = true;
+        (req.session as any).user = { id: user.id, username: user.username };
+        res.json({ success: true, user: { username: user.username } });
+      } else {
+        res.status(401).json({ success: false, message: 'Invalid credentials' });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(500).json({ success: false, message: 'Server error' });
     }
   });
 
