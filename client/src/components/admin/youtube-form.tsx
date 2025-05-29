@@ -56,7 +56,7 @@ export default function YoutubeForm({ resource, onClose }: YoutubeFormProps) {
         title: resource ? "Video Updated" : "Video Created",
         description: `YouTube resource has been ${resource ? "updated" : "created"} successfully.`,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/youtube-resources"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/youtube-resources"] });
       onClose();
     },
     onError: (error) => {
@@ -78,7 +78,7 @@ export default function YoutubeForm({ resource, onClose }: YoutubeFormProps) {
         title: "Video Deleted",
         description: "YouTube resource has been deleted successfully.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/youtube-resources"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/youtube-resources"] });
       onClose();
     },
     onError: (error) => {
