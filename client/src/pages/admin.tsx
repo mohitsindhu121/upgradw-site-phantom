@@ -149,13 +149,21 @@ export default function Admin() {
       <Navbar />
       
       <div className="container mx-auto px-6 pt-24 pb-12">
-        <div className="mb-8">
-          <h1 className="font-orbitron text-4xl font-bold text-glow mb-4">
-            ADMIN COMMAND CENTER
-          </h1>
-          <p className="text-gray-400 text-lg">
-            Manage your digital empire, {(user as any)?.username || (user as any)?.id || 'User'}
-          </p>
+        <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="font-orbitron text-4xl font-bold text-glow mb-4">
+              ADMIN COMMAND CENTER
+            </h1>
+            <p className="text-gray-400 text-lg">
+              Manage your digital empire, {(user as any)?.username || (user as any)?.id || 'User'}
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Badge variant="outline" className="border-[#00FFFF] text-[#00FFFF]">
+              {(user as any)?.id === 'mohit' ? 'Super Admin' : 'Seller'}
+            </Badge>
+          </div>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -497,7 +505,7 @@ export default function Admin() {
                       </div>
                       <p className="text-gray-300">{message.message}</p>
                       <p className="text-xs text-gray-500">
-                        {new Date(message.createdAt).toLocaleDateString()}
+                        {message.createdAt && new Date(message.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                   </CardContent>

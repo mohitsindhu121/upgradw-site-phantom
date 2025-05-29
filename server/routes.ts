@@ -330,6 +330,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Seller registration route
+  app.post('/api/auth/register-seller', async (req, res) => {
+    try {
+      const sellerData = req.body;
+      
+      if (!sellerData.googleId || !sellerData.email) {
+        return res.status(400).json({ message: "Google authentication data is required" });
+      }
+
+      // Create seller account
+      const newSeller = await storage.upsertUser({
+        id: sellerData.googleId,
+        username: sellerData.username,
+        email: sellerData.email,
+        firstName: sellerData.firstName,
+        lastName: sellerData.lastName,
+        profileImageUrl: sellerData.profileImageUrl,
+        googleId: sellerData.googleId,
+        role: "seller",
+        isVerified: true,
+        storeName: sellerData.storeName,
+        storeDescription: sellerData.storeDescription,
+      });
+
+      res.status(201).json({
+        message: "Seller account created successfully",
+        user: {
+          id: newSeller.id,
+          username: newSeller.username,
+          email: newSeller.email,
+          role: newSeller.role,
+          storeName: newSeller.storeName,
+        }
+      });
+    } catch (error) {
+      console.error("Error creating seller account:", error);
+      res.status(500).json({ message: "Failed to create seller account" });
+    }
+  });
+
   // AI Chat route
   app.post('/api/ai-chat', async (req, res) => {
     try {

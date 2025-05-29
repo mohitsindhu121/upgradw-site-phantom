@@ -1,6 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { db } from "./db";
+import { sql } from "drizzle-orm";
 
 // Load environment variables
 if (!process.env.DATABASE_URL) {
@@ -42,6 +44,17 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Fix database schema if needed
+  try {
+    await db.execute(sql`
+      ALTER TABLE products 
+      ADD COLUMN IF NOT EXISTS currency varchar(3) DEFAULT 'INR'
+    `);
+    console.log('✅ Database schema updated successfully');
+  } catch (error) {
+    console.log('Database schema already up to date');
+  }
+
   // Setup API routes first
   const server = await registerRoutes(app);
 

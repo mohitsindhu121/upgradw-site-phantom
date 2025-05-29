@@ -91,15 +91,23 @@ export default function SellerRegister() {
         isVerified: true,
       };
 
-      await apiRequest("POST", "/api/auth/register-seller", sellerData);
+      const response = await apiRequest("POST", "/api/auth/register-seller", sellerData);
       
-      toast({
-        title: "Registration Successful",
-        description: "Your seller account has been created successfully!",
-      });
-      
-      setLocation("/admin");
+      if (response.ok) {
+        toast({
+          title: "Registration Successful",
+          description: "Your seller account has been created successfully!",
+        });
+        
+        // Wait a moment then redirect
+        setTimeout(() => {
+          setLocation("/admin");
+        }, 1500);
+      } else {
+        throw new Error("Registration failed");
+      }
     } catch (error) {
+      console.error("Registration error:", error);
       toast({
         title: "Registration Failed",
         description: "Failed to create seller account. Please try again.",
