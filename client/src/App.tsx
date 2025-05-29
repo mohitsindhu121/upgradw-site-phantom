@@ -15,7 +15,7 @@ import NotFound from "@/pages/not-found";
 import LoadingScreen from "@/components/ui/loading-screen";
 import ParticlesBackground from "@/components/ui/particles-background";
 import AIChatPopup from "@/components/ui/ai-chat-popup";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -41,7 +41,22 @@ function Router() {
 }
 
 function App() {
+  const [showLoading, setShowLoading] = useState(true);
+  const [appReady, setAppReady] = useState(false);
+
   useEffect(() => {
+    // Show loading screen for 5 seconds on first load
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+      setAppReady(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!appReady) return;
+
     // Add click burst effect
     const handleClick = (e: MouseEvent) => {
       const burst = document.createElement('div');
@@ -60,7 +75,11 @@ function App() {
 
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
-  }, []);
+  }, [appReady]);
+
+  if (showLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
