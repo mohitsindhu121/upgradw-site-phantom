@@ -260,7 +260,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Cannot delete main admin user" });
       }
       
-      // For now, just return success - can implement actual deletion later
+      // Delete user and all their data
+      await storage.deleteUser(userId);
       res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
       console.error("Error deleting user:", error);
