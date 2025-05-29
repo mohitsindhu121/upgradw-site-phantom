@@ -519,7 +519,7 @@ export const initializeAnimations = () => {
     }
   }, true);
 
-  console.log('🎮 Mohit Corporation animations initialized');
+  console.log('🎮 Phantoms Corporation animations initialized');
 };
 
 // Auto-initialize when DOM is ready

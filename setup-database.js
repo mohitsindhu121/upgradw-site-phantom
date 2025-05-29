@@ -11,7 +11,7 @@ const DATABASE_URL = process.env.DATABASE_URL ||
   process.env.CUSTOM_DATABASE_URL || 
   "postgresql://username:password@hostname:port/database";
 
-console.log('🚀 Starting Mohit Corporation Database Setup...\n');
+console.log('🚀 Starting Phantoms Corporation Database Setup...\n');
 
 const pool = new Pool({
   connectionString: DATABASE_URL,
@@ -121,7 +121,7 @@ const createTables = async () => {
 // Run the setup
 createTables()
   .then(() => {
-    console.log('\n✨ Your Mohit Corporation database is ready!');
+    console.log('\n✨ Your Phantoms Corporation database is ready!');
     process.exit(0);
   })
   .catch((error) => {
