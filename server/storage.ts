@@ -22,21 +22,21 @@ export interface IStorage {
   upsertUser(user: UpsertUser): Promise<User>;
 
   // Product operations
-  getProducts(): Promise<Product[]>;
-  getProductsByCategory(category: string): Promise<Product[]>;
-  searchProducts(query: string): Promise<Product[]>;
-  getProduct(id: number): Promise<Product | undefined>;
-  createProduct(product: InsertProduct): Promise<Product>;
-  updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product>;
-  deleteProduct(id: number): Promise<void>;
+  getProducts(ownerId?: string): Promise<Product[]>;
+  getProductsByCategory(category: string, ownerId?: string): Promise<Product[]>;
+  searchProducts(query: string, ownerId?: string): Promise<Product[]>;
+  getProduct(id: number, ownerId?: string): Promise<Product | undefined>;
+  createProduct(product: InsertProduct, ownerId: string): Promise<Product>;
+  updateProduct(id: number, product: Partial<InsertProduct>, ownerId?: string): Promise<Product>;
+  deleteProduct(id: number, ownerId?: string): Promise<void>;
 
   // YouTube resource operations
-  getYoutubeResources(): Promise<YoutubeResource[]>;
-  getYoutubeResourcesByCategory(category: string): Promise<YoutubeResource[]>;
-  getYoutubeResource(id: number): Promise<YoutubeResource | undefined>;
-  createYoutubeResource(resource: InsertYoutubeResource): Promise<YoutubeResource>;
-  updateYoutubeResource(id: number, resource: Partial<InsertYoutubeResource>): Promise<YoutubeResource>;
-  deleteYoutubeResource(id: number): Promise<void>;
+  getYoutubeResources(ownerId?: string): Promise<YoutubeResource[]>;
+  getYoutubeResourcesByCategory(category: string, ownerId?: string): Promise<YoutubeResource[]>;
+  getYoutubeResource(id: number, ownerId?: string): Promise<YoutubeResource | undefined>;
+  createYoutubeResource(resource: InsertYoutubeResource, ownerId: string): Promise<YoutubeResource>;
+  updateYoutubeResource(id: number, resource: Partial<InsertYoutubeResource>, ownerId?: string): Promise<YoutubeResource>;
+  deleteYoutubeResource(id: number, ownerId?: string): Promise<void>;
 
   // Contact message operations
   getContactMessages(): Promise<ContactMessage[]>;

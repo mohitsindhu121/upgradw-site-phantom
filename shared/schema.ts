@@ -49,6 +49,7 @@ export const products = pgTable("products", {
   imageUrl: varchar("image_url"),
   videoUrl: varchar("video_url"),
   isActive: boolean("is_active").default(true),
+  ownerId: varchar("owner_id").notNull(), // Links to user who owns this product
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -64,6 +65,7 @@ export const youtubeResources = pgTable("youtube_resources", {
   duration: varchar("duration"), // e.g., "12:45"
   views: varchar("views"), // e.g., "125K views"
   isActive: boolean("is_active").default(true),
+  ownerId: varchar("owner_id").notNull(), // Links to user who owns this resource
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
