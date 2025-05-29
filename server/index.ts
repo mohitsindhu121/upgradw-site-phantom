@@ -50,6 +50,16 @@ app.use((req, res, next) => {
       ALTER TABLE products 
       ADD COLUMN IF NOT EXISTS currency varchar(3) DEFAULT 'INR'
     `);
+    
+    await db.execute(sql`
+      ALTER TABLE users 
+      ADD COLUMN IF NOT EXISTS google_id varchar UNIQUE,
+      ADD COLUMN IF NOT EXISTS store_name varchar,
+      ADD COLUMN IF NOT EXISTS store_description text,
+      ADD COLUMN IF NOT EXISTS role varchar DEFAULT 'user',
+      ADD COLUMN IF NOT EXISTS is_verified boolean DEFAULT false
+    `);
+    
     console.log('✅ Database schema updated successfully');
   } catch (error) {
     console.log('Database schema already up to date');
