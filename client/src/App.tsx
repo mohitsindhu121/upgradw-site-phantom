@@ -45,11 +45,11 @@ function App() {
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
-    // Show loading screen for 5 seconds on first load
+    // Show loading screen for 3 seconds on first load
     const timer = setTimeout(() => {
       setShowLoading(false);
       setAppReady(true);
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);

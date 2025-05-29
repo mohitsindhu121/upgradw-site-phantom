@@ -5,10 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import type { Product, YoutubeResource, ContactMessage } from "@shared/schema";
 
 export default function Home() {
   const { user } = useAuth();
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    setIsVisible(true);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
   
   const { data: products = [] } = useQuery<Product[]>({
     queryKey: ["/api/products"],
@@ -33,69 +42,80 @@ export default function Home() {
     <div className="min-h-screen">
       <Navbar />
       
-      <div className="container mx-auto px-6 pt-24 pb-12">
-        <div className="mb-8">
-          <h1 className="font-orbitron text-4xl font-bold text-glow mb-4">
-            Welcome back, {user?.firstName || 'Mohit'}!
-          </h1>
-          <p className="text-gray-400 text-lg">
-            Manage your gaming empire from the command center
-          </p>
+      {/* Floating particles background */}
+      <div className="fixed inset-0 pointer-events-none">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-[#00FFFF]/30 rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
+      
+      <div className="container mx-auto px-6 pt-24 pb-12 relative z-10">
+        {/* Header with animation */}
+        <div className={`mb-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <div>
+              <h1 className="font-orbitron text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] mb-4 animate-pulse">
+                Welcome back, Mohit!
+              </h1>
+              <p className="text-gray-400 text-lg">
+                Command Center - {currentTime.toLocaleTimeString()}
+              </p>
+            </div>
+            <div className="mt-4 md:mt-0">
+              <div className="px-4 py-2 bg-gradient-to-r from-[#8B5CF6]/20 to-[#00FFFF]/20 rounded-lg border border-[#00FFFF]/30">
+                <div className="text-sm text-[#00FFFF]">System Status</div>
+                <div className="text-lg font-bold text-green-400">● ONLINE</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats with enhanced animations */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Card className="product-card glow-effect">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[#00FFFF] font-orbitron text-lg">
-                Total Products
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-white">
-                {stats.totalProducts}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="product-card glow-effect">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[#8B5CF6] font-orbitron text-lg">
-                YouTube Videos
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-white">
-                {stats.totalVideos}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="product-card glow-effect">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[#10B981] font-orbitron text-lg">
-                Unread Messages
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-white">
-                {stats.unreadMessages}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="product-card glow-effect">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[#F59E0B] font-orbitron text-lg">
-                Active Products
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-white">
-                {stats.activeProducts}
-              </div>
-            </CardContent>
-          </Card>
+          {[
+            { title: "Total Products", value: stats.totalProducts, color: "#00FFFF", delay: "0ms" },
+            { title: "YouTube Videos", value: stats.totalVideos, color: "#8B5CF6", delay: "100ms" },
+            { title: "Unread Messages", value: stats.unreadMessages, color: "#10B981", delay: "200ms" },
+            { title: "Active Products", value: stats.activeProducts, color: "#F59E0B", delay: "300ms" }
+          ].map((stat, index) => (
+            <Card 
+              key={index}
+              className={`product-card glow-effect transform transition-all duration-700 hover:scale-105 hover:rotate-1 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+              style={{ 
+                transitionDelay: stat.delay,
+                background: `linear-gradient(135deg, rgba(${stat.color === '#00FFFF' ? '0,255,255' : stat.color === '#8B5CF6' ? '139,92,246' : stat.color === '#10B981' ? '16,185,129' : '245,158,11'}, 0.1) 0%, transparent 100%)`
+              }}
+            >
+              <CardHeader className="pb-2">
+                <CardTitle className="font-orbitron text-lg" style={{ color: stat.color }}>
+                  {stat.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-white mb-2">
+                  {stat.value}
+                </div>
+                <div className="w-full h-1 bg-gray-700 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full rounded-full transition-all duration-1000 animate-pulse"
+                    style={{ 
+                      backgroundColor: stat.color,
+                      width: `${Math.min(100, (stat.value / 10) * 100)}%`
+                    }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Quick Actions */}

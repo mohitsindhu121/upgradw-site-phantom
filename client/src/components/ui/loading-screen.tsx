@@ -29,7 +29,7 @@ export default function LoadingScreen() {
             filter.frequency.setValueAtTime(2000, ctx.currentTime);
             
             gain.gain.setValueAtTime(0, ctx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.1);
+            gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.05);
             gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
             
             osc.start(ctx.currentTime);
@@ -37,29 +37,27 @@ export default function LoadingScreen() {
           }, delay);
         };
 
-        // Futuristic sound sequence
-        playTone(220, 0.8, 0, 'sawtooth');
-        playTone(330, 0.6, 300, 'square');
-        playTone(440, 0.7, 600, 'triangle');
-        playTone(550, 0.5, 900, 'sine');
-        playTone(660, 1.2, 1200, 'sawtooth');
+        // Optimized sound sequence
+        playTone(330, 0.4, 0, 'sawtooth');
+        playTone(440, 0.3, 200, 'sine');
+        playTone(550, 0.5, 400, 'triangle');
       } catch (error) {
         console.log("Audio not available");
       }
     };
 
-    // Animation sequence
+    // Faster animation sequence
     const animationSequence = () => {
       createAdvancedSound();
       
-      setTimeout(() => setPhase(1), 500);
-      setTimeout(() => setRings(1), 800);
-      setTimeout(() => setPhase(2), 1200);
-      setTimeout(() => setRings(2), 1600);
-      setTimeout(() => setHexGrid(true), 2000);
-      setTimeout(() => setPhase(3), 2400);
-      setTimeout(() => setRings(3), 2800);
-      setTimeout(() => setPhase(4), 3200);
+      setTimeout(() => setPhase(1), 200);
+      setTimeout(() => setRings(1), 400);
+      setTimeout(() => setPhase(2), 600);
+      setTimeout(() => setRings(2), 800);
+      setTimeout(() => setHexGrid(true), 1000);
+      setTimeout(() => setPhase(3), 1200);
+      setTimeout(() => setRings(3), 1400);
+      setTimeout(() => setPhase(4), 1600);
     };
 
     animationSequence();
@@ -75,15 +73,15 @@ export default function LoadingScreen() {
     <div className="fixed inset-0 z-50 bg-gradient-to-br from-[#0A0A0A] via-[#1A1A2E] to-[#16213E] overflow-hidden">
       {/* Matrix rain effect */}
       <div className="absolute inset-0">
-        {[...Array(50)].map((_, i) => (
+        {[...Array(25)].map((_, i) => (
           <div
             key={i}
             className="absolute w-0.5 bg-gradient-to-b from-[#00FFFF] via-[#8B5CF6] to-transparent animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
               height: `${20 + Math.random() * 40}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${1 + Math.random() * 2}s`
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${1.5 + Math.random() * 1}s`
             }}
           />
         ))}
@@ -91,18 +89,17 @@ export default function LoadingScreen() {
 
       {/* Floating orbs */}
       <div className="absolute inset-0">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-gradient-radial from-[#00FFFF]/30 to-transparent animate-pulse"
+            className="absolute rounded-full bg-gradient-radial from-[#00FFFF]/40 to-transparent animate-pulse"
             style={{
-              width: `${10 + Math.random() * 30}px`,
-              height: `${10 + Math.random() * 30}px`,
+              width: `${15 + Math.random() * 25}px`,
+              height: `${15 + Math.random() * 25}px`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 3}s`,
-              filter: 'blur(1px)'
+              animationDelay: `${Math.random() * 1.5}s`,
+              animationDuration: `${2 + Math.random() * 2}s`
             }}
           />
         ))}
