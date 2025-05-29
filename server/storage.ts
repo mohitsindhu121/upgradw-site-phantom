@@ -234,7 +234,6 @@ export class DatabaseStorage implements IStorage {
       .values({
         ...resourceData,
         ownerId,
-        updatedAt: new Date(),
       })
       .returning();
     return resource;

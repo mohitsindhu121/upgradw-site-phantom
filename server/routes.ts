@@ -15,7 +15,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/products', async (req, res) => {
     try {
       const { category, search } = req.query;
-      const currentUserId = req.user?.id; // Get current user ID if authenticated
+      const currentUserId = (req as any).user?.id; // Get current user ID if authenticated
       let products;
       
       if (search) {
@@ -50,7 +50,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/products', isAuthenticated, async (req, res) => {
     try {
       const productData = insertProductSchema.parse(req.body);
-      const currentUserId = req.user?.id;
+      const currentUserId = (req as any).user?.id;
       if (!currentUserId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
@@ -95,7 +95,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/youtube-resources', async (req, res) => {
     try {
       const { category } = req.query;
-      const currentUserId = req.user?.id; // Get current user ID if authenticated
+      const currentUserId = (req as any).user?.id; // Get current user ID if authenticated
       let resources;
       
       if (category) {
@@ -114,7 +114,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/youtube-resources', isAuthenticated, async (req, res) => {
     try {
       const resourceData = insertYoutubeResourceSchema.parse(req.body);
-      const currentUserId = req.user?.id;
+      const currentUserId = (req as any).user?.id;
       if (!currentUserId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
@@ -222,7 +222,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/users', isAuthenticated, async (req, res) => {
     try {
       // Only allow access for super admin (mohit)
-      if (req.user?.id !== 'mohit') {
+      if ((req as any).user?.id !== 'mohit') {
         return res.status(403).json({ message: "Only super admin can create users" });
       }
       
