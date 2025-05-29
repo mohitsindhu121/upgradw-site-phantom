@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="font-orbitron text-2xl font-bold text-glow mb-4">
-              MOHIT CORPORATION
+              PHANTOMS CORPORATION
             </div>
             <p className="text-gray-400">
               Leading provider of gaming solutions, digital products, and automation tools.

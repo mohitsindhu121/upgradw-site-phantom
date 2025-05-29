@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import type { Product, YoutubeResource, ContactMessage } from "@shared/schema";
+import type { Product, YoutubeResource, ContactMessage, User } from "@shared/schema";
 
 export default function Home() {
   const { user } = useAuth();
@@ -64,7 +64,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
               <h1 className="font-orbitron text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] mb-4 animate-pulse">
-                Welcome back, Mohit!
+                Welcome back, {user?.username || user?.id || 'User'}!
               </h1>
               <p className="text-gray-400 text-lg">
                 Command Center - {currentTime.toLocaleTimeString()}

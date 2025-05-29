@@ -40,7 +40,7 @@ export default function Landing() {
           <h1 className="hero-title font-orbitron text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-glow mb-6">
             WELCOME TO<br />
             <span className="bg-gradient-to-r from-[#00FFFF] to-[#8B5CF6] bg-clip-text text-transparent">
-              MOHIT CORPORATION
+              PHANTOMS CORPORATION
             </span>
           </h1>
           

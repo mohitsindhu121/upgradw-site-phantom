@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Database Setup Script for Mohit Corporation
+// Database Setup Script for Phantoms Corporation
 // This script will create all necessary tables in your database
 
 import pkg from 'pg';
