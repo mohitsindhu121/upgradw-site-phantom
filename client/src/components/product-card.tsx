@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
 
 interface ProductCardProps {
@@ -78,7 +79,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <div className="flex flex-col">
                   <span className="text-xs text-gray-500 mb-1">Price</span>
                   <span className="text-3xl font-bold bg-gradient-to-r from-[#10B981] to-[#00FFFF] bg-clip-text text-transparent group-hover:animate-pulse font-mono">
-                    ${product.price}
+                    {formatPrice(product.price, product.currency)}
                   </span>
                 </div>
                 <div className="text-right">
@@ -131,7 +132,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute top-6 right-6">
                   <Badge className="bg-gradient-to-r from-[#10B981]/90 to-[#00FFFF]/90 text-white border-0 text-lg px-4 py-2 font-bold animate-pulse shadow-lg">
-                    ${product.price}
+                    {formatPrice(product.price, product.currency)}
                   </Badge>
                 </div>
                 <div className="absolute bottom-6 left-6">
@@ -201,7 +202,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 }}
               >
                 <i className="fas fa-shopping-cart mr-3 text-lg"></i>
-                Purchase Now - ${product.price}
+                Purchase Now - {formatPrice(product.price, product.currency)}
               </Button>
               <Button 
                 variant="outline" 

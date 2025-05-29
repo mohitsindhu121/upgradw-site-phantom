@@ -184,9 +184,9 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Price ($) *</label>
+                <label className="block text-sm font-medium mb-2">Price *</label>
                 <Input
                   type="number"
                   step="0.01"
@@ -197,6 +197,22 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
                   className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
                   required
                 />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Currency *</label>
+                <Select value={formData.currency} onValueChange={(value) => setFormData(prev => ({ ...prev, currency: value }))}>
+                  <SelectTrigger className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]">
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="INR">₹ INR (Indian Rupee)</SelectItem>
+                    <SelectItem value="USD">$ USD (US Dollar)</SelectItem>
+                    <SelectItem value="BDT">৳ BDT (Bangladeshi Taka)</SelectItem>
+                    <SelectItem value="EUR">€ EUR (Euro)</SelectItem>
+                    <SelectItem value="GBP">£ GBP (British Pound)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
               <div className="flex items-center justify-between">
