@@ -37,13 +37,15 @@ export async function setupAuth(app: Express) {
     const { username, password } = req.body;
     
     try {
-      // Check if user exists in database
-      const user = await storage.getUser(username);
+      // Check if user exists in database by username
+      const user = await storage.getUserByUsername ? await storage.getUserByUsername(username) : await storage.getUser(username);
+      
+      console.log('Login attempt:', { username, password, user: user ? { id: user.id, username: user.username, hasPassword: !!user.password } : 'not found' });
       
       if (user && user.password === password) {
         (req.session as any).isAuthenticated = true;
-        (req.session as any).user = { id: user.id, username: user.username };
-        res.json({ success: true, user: { username: user.username } });
+        (req.session as any).user = { id: user.id, username: user.username, role: user.role };
+        res.json({ success: true, user: { username: user.username, role: user.role } });
       } else {
         res.status(401).json({ success: false, message: 'Invalid credentials' });
       }
