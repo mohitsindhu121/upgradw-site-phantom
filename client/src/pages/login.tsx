@@ -135,17 +135,25 @@ export default function Login() {
                   const data = await response.json();
 
                   if (data.userExists) {
+                    // Invalidate auth cache to refresh authentication state
+                    queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+                    
                     toast({
                       title: "Welcome Back!",
                       description: "Successfully signed in. Redirecting to admin panel...",
                     });
-                    setLocation("/admin");
+                    // Use setTimeout to ensure auth state refreshes then redirect
+                    setTimeout(() => {
+                      setLocation("/admin");
+                    }, 1500);
                   } else {
                     toast({
                       title: "New User Detected",
                       description: "Please complete your seller registration...",
                     });
-                    setLocation("/seller-register");
+                    setTimeout(() => {
+                      setLocation("/seller-register");
+                    }, 1500);
                   }
                 } catch (error) {
                   toast({

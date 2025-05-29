@@ -115,13 +115,16 @@ export default function SellerRegister() {
       const response = await apiRequest("POST", "/api/auth/register-seller", sellerData);
       
       if (response.ok) {
+        // Import queryClient for cache invalidation
+        const { queryClient } = await import("@/lib/queryClient");
+        
+        // Invalidate auth cache to refresh authentication state
+        queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+        
         toast({
           title: "Registration Successful",
           description: "Your seller account has been created successfully!",
         });
-        
-        // Refresh authentication state by checking user status
-        const authCheck = await apiRequest("GET", "/api/auth/user");
         
         // Wait a moment then redirect
         setTimeout(() => {
