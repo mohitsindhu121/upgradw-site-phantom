@@ -111,7 +111,7 @@ export default function Navbar() {
               {isAuthenticated ? (
                 <div className="space-y-2">
                   <div className="text-sm text-gray-400">
-                    Welcome, {user?.firstName || 'Mohit'}
+                    Welcome, {user?.username || user?.firstName || user?.id || 'User'}
                   </div>
                   <Button
                     onClick={async () => {

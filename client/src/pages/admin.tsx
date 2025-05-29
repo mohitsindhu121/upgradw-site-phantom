@@ -138,18 +138,20 @@ export default function Admin() {
             ADMIN COMMAND CENTER
           </h1>
           <p className="text-gray-400 text-lg">
-            Manage your digital empire, {user?.id || 'Mohit'}
+            Manage your digital empire, {user?.username || user?.id || 'User'}
           </p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-[#1A1A2E]">
+          <TabsList className={`grid w-full ${user?.id === 'mohit' ? 'grid-cols-5' : 'grid-cols-4'} bg-[#1A1A2E]`}>
             <TabsTrigger value="overview" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
               Overview
             </TabsTrigger>
-            <TabsTrigger value="users" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
-              Users
-            </TabsTrigger>
+            {user?.id === 'mohit' && (
+              <TabsTrigger value="users" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
+                Users
+              </TabsTrigger>
+            )}
             <TabsTrigger value="products" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
               Products
             </TabsTrigger>
