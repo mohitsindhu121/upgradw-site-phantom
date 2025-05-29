@@ -99,6 +99,9 @@ export default function SellerRegister() {
           description: "Your seller account has been created successfully!",
         });
         
+        // Refresh authentication state by checking user status
+        const authCheck = await apiRequest("GET", "/api/auth/user");
+        
         // Wait a moment then redirect
         setTimeout(() => {
           setLocation("/admin");

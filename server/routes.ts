@@ -369,6 +369,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         storeDescription: sellerData.storeDescription,
       });
 
+      // Automatically log in the user after successful registration
+      (req as any).session.isAuthenticated = true;
+      (req as any).session.user = {
+        id: newSeller.id,
+        username: newSeller.username,
+        email: newSeller.email,
+        role: newSeller.role,
+        storeName: newSeller.storeName,
+      };
+
       res.status(201).json({
         message: "Seller account created successfully",
         user: {
