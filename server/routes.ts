@@ -195,7 +195,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/users', isAuthenticated, async (req, res) => {
     try {
       // Only allow access for admin users
-      if (req.user?.id !== 'mohit') {
+      if ((req as any).user?.id !== 'mohit') {
         return res.status(403).json({ message: "Access denied" });
       }
       
@@ -254,7 +254,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete('/api/users/:id', isAuthenticated, async (req, res) => {
     try {
       // Only allow access for admin users
-      if (req.user?.id !== 'mohit') {
+      if ((req as any).user?.id !== 'mohit') {
         return res.status(403).json({ message: "Access denied" });
       }
       
