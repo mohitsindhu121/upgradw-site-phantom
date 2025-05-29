@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
@@ -78,6 +79,9 @@ export default function Navbar() {
                 </Button>
               </Link>
             )}
+            
+            {/* Theme Toggle */}
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}
