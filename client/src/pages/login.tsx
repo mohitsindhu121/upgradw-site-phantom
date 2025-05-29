@@ -122,12 +122,31 @@ export default function Login() {
               className="w-full mt-4 bg-[#0A0A0A] border-[#8B5CF6]/30 hover:bg-[#8B5CF6]/10"
               onClick={async () => {
                 try {
-                  await signInWithGoogle();
-                  toast({
-                    title: "Google Sign-in Successful",
-                    description: "Redirecting to seller registration...",
+                  const googleUser = await signInWithGoogle();
+                  
+                  // Check if user exists in backend
+                  const response = await apiRequest("POST", "/api/auth/google-login", {
+                    googleId: googleUser.uid,
+                    email: googleUser.email,
+                    displayName: googleUser.displayName,
+                    photoURL: googleUser.photoURL
                   });
-                  setLocation("/seller-register");
+
+                  const data = await response.json();
+
+                  if (data.userExists) {
+                    toast({
+                      title: "Welcome Back!",
+                      description: "Successfully signed in. Redirecting to admin panel...",
+                    });
+                    setLocation("/admin");
+                  } else {
+                    toast({
+                      title: "New User Detected",
+                      description: "Please complete your seller registration...",
+                    });
+                    setLocation("/seller-register");
+                  }
                 } catch (error) {
                   toast({
                     title: "Sign-in Failed",

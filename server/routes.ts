@@ -345,6 +345,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Google authentication route - checks if user exists or needs registration
+  app.post('/api/auth/google-login', async (req, res) => {
+    try {
+      const { googleId, email, displayName, photoURL } = req.body;
+      
+      if (!googleId || !email) {
+        return res.status(400).json({ message: "Google authentication data is required" });
+      }
+
+      // Check if user already exists
+      const existingUser = await storage.getUser(googleId);
+      
+      if (existingUser) {
+        // User exists, log them in
+        (req as any).session.isAuthenticated = true;
+        (req as any).session.user = {
+          id: existingUser.id,
+          username: existingUser.username,
+          email: existingUser.email,
+          role: existingUser.role,
+          storeName: existingUser.storeName,
+        };
+
+        res.json({
+          success: true,
+          userExists: true,
+          user: {
+            id: existingUser.id,
+            username: existingUser.username,
+            email: existingUser.email,
+            role: existingUser.role,
+            storeName: existingUser.storeName,
+          }
+        });
+      } else {
+        // User doesn't exist, needs registration
+        res.json({
+          success: true,
+          userExists: false,
+          googleData: {
+            googleId,
+            email,
+            displayName,
+            photoURL
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error with Google authentication:", error);
+      res.status(500).json({ message: "Failed to authenticate with Google" });
+    }
+  });
+
   // Seller registration route
   app.post('/api/auth/register-seller', async (req, res) => {
     try {

@@ -38,11 +38,30 @@ export default function SellerRegister() {
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
-      await signInWithGoogle();
-      toast({
-        title: "Google Sign-in Successful",
-        description: "Please complete your seller profile below.",
+      const googleUser = await signInWithGoogle();
+      
+      // Check if user already exists
+      const response = await apiRequest("POST", "/api/auth/google-login", {
+        googleId: googleUser.uid,
+        email: googleUser.email,
+        displayName: googleUser.displayName,
+        photoURL: googleUser.photoURL
       });
+
+      const data = await response.json();
+
+      if (data.userExists) {
+        toast({
+          title: "Account Found!",
+          description: "You already have an account. Redirecting to admin panel...",
+        });
+        setLocation("/admin");
+      } else {
+        toast({
+          title: "Google Sign-in Successful",
+          description: "Please complete your seller profile below.",
+        });
+      }
     } catch (error) {
       toast({
         title: "Sign-in Failed",
