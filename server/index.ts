@@ -3,11 +3,10 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { db } from "./db";
 import { sql } from "drizzle-orm";
+import { config, validateConfig } from "./config";
 
-// Load environment variables
-if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = "postgresql://mohit_owner:npg_47yoWupTxNBs@ep-gentle-glade-a8imzvfp-pooler.eastus2.azure.neon.tech/mohit?sslmode=require";
-}
+// Validate environment configuration on startup
+validateConfig();
 
 const app = express();
 app.use(express.json());
