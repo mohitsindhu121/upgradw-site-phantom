@@ -161,7 +161,7 @@ export default function Admin() {
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <Badge variant="outline" className="border-[#00FFFF] text-[#00FFFF]">
-              {(user as any)?.id === 'mohit' ? 'Super Admin' : 'Seller'}
+              {(user as any)?.email === 'mohitsindhu121@gmail.com' || (user as any)?.id === 'mohit' ? 'Super Admin' : 'Seller'}
             </Badge>
           </div>
         </div>
