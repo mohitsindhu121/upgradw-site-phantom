@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { formatPrice } from "@/lib/currency";
+import PaymentOptions from "./payment-options";
+import PaymentGateway from "./payment-gateway";
 import type { Product } from "@shared/schema";
 
 interface ProductCardProps {

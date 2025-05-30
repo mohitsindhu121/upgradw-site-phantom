@@ -706,6 +706,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Payment processing route
+  app.post('/api/process-payment', async (req, res) => {
+    try {
+      const { paymentMethod, amount, productId, customerDetails, paymentOption } = req.body;
+      
+      if (!paymentMethod || !amount || !productId || !customerDetails) {
+        return res.status(400).json({ message: "Missing required payment information" });
+      }
+
+      // Create order record
+      const orderId = `ORD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      // In a real implementation, you would:
+      // 1. Validate payment with actual payment gateway (Razorpay, Stripe, etc.)
+      // 2. Store order in database
+      // 3. Send confirmation emails/SMS
+      
+      const orderData = {
+        orderId,
+        productId,
+        customerDetails,
+        paymentMethod,
+        amount,
+        paymentOption,
+        status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
+        createdAt: new Date().toISOString()
+      };
+
+      // Simulate payment gateway response
+      const paymentResponse = {
+        success: true,
+        orderId,
+        transactionId: `TXN_${Date.now()}`,
+        paymentMethod,
+        amount,
+        status: paymentMethod === 'cod' ? 'confirmed' : 'pending'
+      };
+
+      res.json(paymentResponse);
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      res.status(500).json({ message: "Payment processing failed" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
