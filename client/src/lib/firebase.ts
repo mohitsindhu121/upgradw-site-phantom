@@ -1,13 +1,14 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
 
+// Firebase configuration using your credentials
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyD0wKEUZfyQHNkUN7R-zS_25zU8UoLEiAU",
-  authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID || "phantom-site-e226f"}.firebaseapp.com`,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "phantom-site-e226f",
-  storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID || "phantom-site-e226f"}.firebasestorage.app`,
+  apiKey: "AIzaSyD0wKEUZfyQHNkUN7R-zS_25zU8UoLEiAU",
+  authDomain: "phantom-site-e226f.firebaseapp.com",
+  projectId: "phantom-site-e226f",
+  storageBucket: "phantom-site-e226f.firebasestorage.app",
   messagingSenderId: "147758091170",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:147758091170:web:6aac2a67d75ed92ecbc0fb",
+  appId: "1:147758091170:web:6aac2a67d75ed92ecbc0fb",
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
