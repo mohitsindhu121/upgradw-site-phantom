@@ -106,7 +106,7 @@ export default function SellerRegister() {
       return;
     }
 
-    if (!formData.storeName || !formData.username) {
+    if (!formData.storeName || !formData.username || !formData.phoneNumber || !formData.city || !formData.specialization) {
       toast({
         title: "Error",
         description: "Please fill in all required fields.",
@@ -185,14 +185,14 @@ export default function SellerRegister() {
       <Navbar />
       
       <div className="container mx-auto px-6 pt-24 pb-12">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <Card className="glow-effect">
             <CardHeader>
               <CardTitle className="font-orbitron text-3xl text-center text-glow">
-                🚀 Become a Seller
+                🚀 Become a Professional Seller
               </CardTitle>
-              <p className="text-center text-gray-400">
-                Join Phantoms Corporation and start selling your digital products
+              <p className="text-center text-gray-400 text-lg">
+                Join Phantoms Corporation and start selling your digital products with comprehensive seller profile
               </p>
             </CardHeader>
             
@@ -210,7 +210,7 @@ export default function SellerRegister() {
                         Step 1: Connect Your Google Account
                       </h3>
                       <p className="text-gray-300 mb-6 text-lg">
-                        First, connect your Google account to create your seller profile securely
+                        Secure your seller account with Google authentication
                       </p>
                     </div>
                     
@@ -227,15 +227,6 @@ export default function SellerRegister() {
                       </svg>
                       {isLoading ? "Connecting..." : "Connect with Google"}
                     </Button>
-                    
-                    <div className="mt-6 text-sm text-gray-400">
-                      <p>Your Google account will be used to:</p>
-                      <ul className="mt-2 space-y-1">
-                        <li>• Secure account authentication</li>
-                        <li>• Pre-fill your basic information</li>
-                        <li>• Enable quick admin panel access</li>
-                      </ul>
-                    </div>
                   </div>
                 </div>
               ) : (
@@ -254,69 +245,296 @@ export default function SellerRegister() {
                           <p className="text-sm text-green-300">{googleUser.displayName}</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div className="bg-gradient-to-r from-[#1A1A2E]/50 to-[#0A0A0A]/50 p-6 rounded-xl border border-[#8B5CF6]/20">
                     <h3 className="text-xl font-semibold mb-4 text-[#8B5CF6] flex items-center">
                       <span className="w-8 h-8 bg-[#8B5CF6] text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</span>
-                      Complete Your Seller Profile
+                      Complete Your Professional Seller Profile
                     </h3>
                     <p className="text-gray-400 mb-6">
-                      Fill in your store details to complete your seller account setup
+                      Fill in all details to create your comprehensive seller account
                     </p>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Username *</label>
-                      <Input
-                        type="text"
-                        value={formData.username}
-                        onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                        placeholder="Enter your username"
-                        className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
-                        required
-                      />
-                    </div>
+                    <Tabs defaultValue="basic" className="space-y-6">
+                      <TabsList className="grid w-full grid-cols-4 bg-[#1A1A2E]">
+                        <TabsTrigger value="basic" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
+                          Basic Info
+                        </TabsTrigger>
+                        <TabsTrigger value="contact" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
+                          Contact Details
+                        </TabsTrigger>
+                        <TabsTrigger value="business" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
+                          Business Info
+                        </TabsTrigger>
+                        <TabsTrigger value="professional" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
+                          Professional
+                        </TabsTrigger>
+                      </TabsList>
 
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Store Name *</label>
-                      <Input
-                        type="text"
-                        value={formData.storeName}
-                        onChange={(e) => setFormData(prev => ({ ...prev, storeName: e.target.value }))}
-                        placeholder="Enter your store name"
-                        className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
-                        required
-                      />
-                    </div>
+                      <form onSubmit={handleSubmit}>
+                        <TabsContent value="basic" className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="username">Username *</Label>
+                              <Input
+                                id="username"
+                                type="text"
+                                value={formData.username}
+                                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                                placeholder="Enter your username"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                                required
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="storeName">Store Name *</Label>
+                              <Input
+                                id="storeName"
+                                type="text"
+                                value={formData.storeName}
+                                onChange={(e) => setFormData(prev => ({ ...prev, storeName: e.target.value }))}
+                                placeholder="Enter your store name"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor="storeDescription">Store Description</Label>
+                            <Textarea
+                              id="storeDescription"
+                              value={formData.storeDescription}
+                              onChange={(e) => setFormData(prev => ({ ...prev, storeDescription: e.target.value }))}
+                              placeholder="Describe your store and what you offer..."
+                              className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF] min-h-[120px]"
+                              rows={4}
+                            />
+                          </div>
+                        </TabsContent>
 
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Store Description</label>
-                      <Textarea
-                        value={formData.storeDescription}
-                        onChange={(e) => setFormData(prev => ({ ...prev, storeDescription: e.target.value }))}
-                        placeholder="Describe your store and products..."
-                        className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF] resize-none"
-                        rows={4}
-                      />
-                    </div>
+                        <TabsContent value="contact" className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="phoneNumber">Phone Number *</Label>
+                              <Input
+                                id="phoneNumber"
+                                type="tel"
+                                value={formData.phoneNumber}
+                                onChange={(e) => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
+                                placeholder="+91 98765 43210"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                                required
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="city">City *</Label>
+                              <Input
+                                id="city"
+                                type="text"
+                                value={formData.city}
+                                onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                                placeholder="Enter your city"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor="address">Full Address</Label>
+                            <Textarea
+                              id="address"
+                              value={formData.address}
+                              onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
+                              placeholder="Enter your complete address"
+                              className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              rows={3}
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <Label htmlFor="state">State/Province</Label>
+                              <Input
+                                id="state"
+                                type="text"
+                                value={formData.state}
+                                onChange={(e) => setFormData(prev => ({ ...prev, state: e.target.value }))}
+                                placeholder="e.g., Maharashtra"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="country">Country</Label>
+                              <Select value={formData.country} onValueChange={(value) => setFormData(prev => ({ ...prev, country: value }))}>
+                                <SelectTrigger className="bg-[#0A0A0A] border-[#00FFFF]/30">
+                                  <SelectValue placeholder="Select country" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="India">India</SelectItem>
+                                  <SelectItem value="USA">USA</SelectItem>
+                                  <SelectItem value="UK">UK</SelectItem>
+                                  <SelectItem value="Canada">Canada</SelectItem>
+                                  <SelectItem value="Australia">Australia</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label htmlFor="pincode">Pincode</Label>
+                              <Input
+                                id="pincode"
+                                type="text"
+                                value={formData.pincode}
+                                onChange={(e) => setFormData(prev => ({ ...prev, pincode: e.target.value }))}
+                                placeholder="400001"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              />
+                            </div>
+                          </div>
+                        </TabsContent>
 
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full bg-gradient-to-r from-[#00FFFF] to-[#8B5CF6] hover:from-[#8B5CF6] hover:to-[#00FFFF] text-black font-bold py-3"
-                    >
-                      {isLoading ? "Creating Account..." : "Create Seller Account"}
-                    </Button>
-                  </form>
+                        <TabsContent value="business" className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="businessType">Business Type</Label>
+                              <Select value={formData.businessType} onValueChange={(value) => setFormData(prev => ({ ...prev, businessType: value }))}>
+                                <SelectTrigger className="bg-[#0A0A0A] border-[#00FFFF]/30">
+                                  <SelectValue placeholder="Select business type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Individual">Individual</SelectItem>
+                                  <SelectItem value="Sole Proprietorship">Sole Proprietorship</SelectItem>
+                                  <SelectItem value="Partnership">Partnership</SelectItem>
+                                  <SelectItem value="Private Limited">Private Limited</SelectItem>
+                                  <SelectItem value="LLP">LLP</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label htmlFor="gstNumber">GST Number</Label>
+                              <Input
+                                id="gstNumber"
+                                type="text"
+                                value={formData.gstNumber}
+                                onChange={(e) => setFormData(prev => ({ ...prev, gstNumber: e.target.value }))}
+                                placeholder="22AAAAA0000A1Z5"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor="panNumber">PAN Number</Label>
+                            <Input
+                              id="panNumber"
+                              type="text"
+                              value={formData.panNumber}
+                              onChange={(e) => setFormData(prev => ({ ...prev, panNumber: e.target.value }))}
+                              placeholder="ABCTY1234D"
+                              className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <Label htmlFor="bankName">Bank Name</Label>
+                              <Input
+                                id="bankName"
+                                type="text"
+                                value={formData.bankName}
+                                onChange={(e) => setFormData(prev => ({ ...prev, bankName: e.target.value }))}
+                                placeholder="e.g., HDFC Bank"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="bankAccountNumber">Account Number</Label>
+                              <Input
+                                id="bankAccountNumber"
+                                type="text"
+                                value={formData.bankAccountNumber}
+                                onChange={(e) => setFormData(prev => ({ ...prev, bankAccountNumber: e.target.value }))}
+                                placeholder="Account number"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="bankIfscCode">IFSC Code</Label>
+                              <Input
+                                id="bankIfscCode"
+                                type="text"
+                                value={formData.bankIfscCode}
+                                onChange={(e) => setFormData(prev => ({ ...prev, bankIfscCode: e.target.value }))}
+                                placeholder="HDFC0000123"
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              />
+                            </div>
+                          </div>
+                        </TabsContent>
+
+                        <TabsContent value="professional" className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="specialization">Specialization *</Label>
+                              <Textarea
+                                id="specialization"
+                                value={formData.specialization}
+                                onChange={(e) => setFormData(prev => ({ ...prev, specialization: e.target.value }))}
+                                placeholder="e.g., Web Development, Mobile Apps, Gaming Bots, Digital Marketing..."
+                                className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                                rows={3}
+                                required
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="experience">Years of Experience</Label>
+                              <Select value={formData.experience} onValueChange={(value) => setFormData(prev => ({ ...prev, experience: value }))}>
+                                <SelectTrigger className="bg-[#0A0A0A] border-[#00FFFF]/30">
+                                  <SelectValue placeholder="Select experience" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Less than 1 year">Less than 1 year</SelectItem>
+                                  <SelectItem value="1-2 years">1-2 years</SelectItem>
+                                  <SelectItem value="3-5 years">3-5 years</SelectItem>
+                                  <SelectItem value="5-10 years">5-10 years</SelectItem>
+                                  <SelectItem value="10+ years">10+ years</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor="portfolio">Portfolio/Previous Work</Label>
+                            <Textarea
+                              id="portfolio"
+                              value={formData.portfolio}
+                              onChange={(e) => setFormData(prev => ({ ...prev, portfolio: e.target.value }))}
+                              placeholder="Share links to your previous work, GitHub, websites you've built, etc."
+                              className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              rows={4}
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="socialMediaLinks">Social Media Links</Label>
+                            <Textarea
+                              id="socialMediaLinks"
+                              value={formData.socialMediaLinks}
+                              onChange={(e) => setFormData(prev => ({ ...prev, socialMediaLinks: e.target.value }))}
+                              placeholder="Instagram: @yourhandle, YouTube: youtube.com/c/yourchannel, LinkedIn: linkedin.com/in/yourprofile"
+                              className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
+                              rows={3}
+                            />
+                          </div>
+                        </TabsContent>
+
+                        <div className="mt-6">
+                          <Button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full bg-gradient-to-r from-[#00FFFF] to-[#8B5CF6] hover:from-[#8B5CF6] hover:to-[#00FFFF] text-black font-bold py-3"
+                          >
+                            {isLoading ? "Creating Account..." : "Create Professional Seller Account"}
+                          </Button>
+                        </div>
+                      </form>
+                    </Tabs>
                   </div>
                 </div>
               )}

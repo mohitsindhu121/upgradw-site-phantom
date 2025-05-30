@@ -12,6 +12,7 @@ import Contact from "@/pages/contact";
 import Admin from "@/pages/admin";
 import Login from "@/pages/login";
 import SellerRegister from "@/pages/seller-register";
+import SellerProfile from "@/pages/seller-profile";
 import NotFound from "@/pages/not-found";
 import LoadingScreen from "@/components/ui/loading-screen";
 import ParticlesBackground from "@/components/ui/particles-background";
@@ -34,6 +35,7 @@ function Router() {
           <Route path="/contact" component={Contact} />
           <Route path="/login" component={Login} />
           <Route path="/seller-register" component={SellerRegister} />
+          <Route path="/seller/:id" component={SellerProfile} />
           <Route path="/admin" component={isAuthenticated ? Admin : Login} />
           <Route component={NotFound} />
         </Switch>

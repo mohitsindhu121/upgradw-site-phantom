@@ -249,10 +249,48 @@ export default function Admin() {
                   <Card key={user.id} className="product-card">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-center">
-                        <div>
-                          <h3 className="font-semibold text-[#00FFFF]">{user.username || user.id}</h3>
-                          <p className="text-sm text-gray-400">ID: {user.id}</p>
-                          <p className="text-sm text-gray-400">Role: {(user as any).role || 'user'}</p>
+                        <div className="flex items-center space-x-4">
+                          {(user as any).profileImageUrl && (
+                            <img
+                              src={(user as any).profileImageUrl}
+                              alt="Profile"
+                              className="w-12 h-12 rounded-full border-2 border-[#00FFFF]/30"
+                            />
+                          )}
+                          <div>
+                            <h3 className="font-semibold text-[#00FFFF]">
+                              {user.username || user.id}
+                              {(user as any).storeName && (
+                                <span className="text-sm text-gray-400 ml-2">({(user as any).storeName})</span>
+                              )}
+                            </h3>
+                            <p className="text-sm text-gray-400">Email: {(user as any).email}</p>
+                            <p className="text-sm text-gray-400">Role: {(user as any).role || 'user'}</p>
+                            {(user as any).phoneNumber && (
+                              <p className="text-sm text-gray-400">Phone: {(user as any).phoneNumber}</p>
+                            )}
+                            {(user as any).city && (
+                              <p className="text-sm text-gray-400">Location: {(user as any).city}, {(user as any).state || (user as any).country}</p>
+                            )}
+                            {(user as any).specialization && (
+                              <p className="text-sm text-[#8B5CF6]">Specialization: {(user as any).specialization}</p>
+                            )}
+                            <div className="flex items-center gap-2 mt-1">
+                              {(user as any).isVerified && (
+                                <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">Verified</span>
+                              )}
+                              {(user as any).averageRating > 0 && (
+                                <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs">
+                                  ⭐ {(user as any).averageRating}
+                                </span>
+                              )}
+                              {(user as any).totalSales > 0 && (
+                                <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs">
+                                  {(user as any).totalSales} sales
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
                         <div className="flex gap-2">
                           {user.id !== 'mohit' && (
