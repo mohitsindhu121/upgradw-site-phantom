@@ -22,6 +22,7 @@ export interface IStorage {
   getUsers(): Promise<User[]>;
   upsertUser(user: UpsertUser): Promise<User>;
   deleteUser(id: string): Promise<void>;
+  updateUserPermissions(id: string, permissions: string[]): Promise<User>;
 
   // Product operations
   getProducts(ownerId?: string): Promise<Product[]>;
@@ -94,7 +95,10 @@ export class DatabaseStorage implements IStorage {
         .where(and(eq(products.isActive, true), eq(products.ownerId, ownerId)))
         .orderBy(desc(products.createdAt));
     }
-    // Super admin (mohit) sees all products, public users see all
+    // Super admin (mohit) sees all products including inactive ones, public users see all active
+    if (ownerId === 'mohit') {
+      return await db.select().from(products).orderBy(desc(products.createdAt));
+    }
     return await db.select().from(products).where(eq(products.isActive, true)).orderBy(desc(products.createdAt));
   }
 

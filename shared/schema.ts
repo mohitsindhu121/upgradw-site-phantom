@@ -48,6 +48,7 @@ export const users = pgTable("users", {
   gstNumber: varchar("gst_number"), // GST registration number
   panNumber: varchar("pan_number"), // PAN card number
   bankAccountNumber: varchar("bank_account_number"), // Bank details
+  permissions: text("permissions").array().default([]), // User permissions array
   bankIfscCode: varchar("bank_ifsc_code"), // IFSC code
   bankName: varchar("bank_name"), // Bank name
   specialization: text("specialization"), // What they specialize in

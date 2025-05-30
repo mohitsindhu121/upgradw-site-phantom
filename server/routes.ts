@@ -247,26 +247,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // User management routes (Admin only)
+  // User management routes (Super Admin only)
   app.get('/api/users', isAuthenticated, async (req, res) => {
     try {
-      // Only allow access for admin users
-      if ((req as any).user?.id !== 'mohit') {
-        return res.status(403).json({ message: "Access denied" });
+      const user = (req as any).user;
+      
+      // Only allow access for super admin (mohitsindhu121@gmail.com)
+      if (user?.email !== 'mohitsindhu121@gmail.com' && user?.id !== 'mohit') {
+        return res.status(403).json({ message: "Access denied - Super Admin only" });
       }
       
       // Fetch all users from database including sellers
-      const dbUsers = await storage.getUsers ? await storage.getUsers() : [];
+      const dbUsers = await storage.getUsers();
       
       // Include admin user and format all database users with complete seller information
       const users = [
         { 
           id: 'mohit', 
           username: 'mohit', 
-          role: 'admin',
+          role: 'super_admin',
           email: 'mohitsindhu121@gmail.com',
           storeName: 'Phantoms Corporation',
-          isVerified: true
+          isVerified: true,
+          permissions: ['all']
         },
         ...dbUsers.map(user => ({
           id: user.id,
@@ -274,11 +277,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          role: user.role || 'user',
+          role: user.role || 'seller',
           storeName: user.storeName,
           storeDescription: user.storeDescription,
           isVerified: user.isVerified,
           googleId: user.googleId,
+          permissions: user.permissions || [],
           createdAt: user.createdAt
         }))
       ];
@@ -287,6 +291,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching users:", error);
       res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  // Delete user (Super Admin only)
+  app.delete('/api/users/:id', isAuthenticated, async (req, res) => {
+    try {
+      const user = (req as any).user;
+      const targetUserId = req.params.id;
+      
+      // Only super admin can delete users
+      if (user?.email !== 'mohitsindhu121@gmail.com' && user?.id !== 'mohit') {
+        return res.status(403).json({ message: "Access denied - Super Admin only" });
+      }
+
+      // Prevent deleting super admin
+      if (targetUserId === 'mohit') {
+        return res.status(400).json({ message: "Cannot delete super admin account" });
+      }
+
+      await storage.deleteUser(targetUserId);
+      res.json({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ message: "Failed to delete user" });
+    }
+  });
+
+  // Update user permissions (Super Admin only)
+  app.patch('/api/users/:id/permissions', isAuthenticated, async (req, res) => {
+    try {
+      const user = (req as any).user;
+      const targetUserId = req.params.id;
+      const { permissions } = req.body;
+      
+      // Only super admin can update permissions
+      if (user?.email !== 'mohitsindhu121@gmail.com' && user?.id !== 'mohit') {
+        return res.status(403).json({ message: "Access denied - Super Admin only" });
+      }
+
+      // Prevent modifying super admin permissions
+      if (targetUserId === 'mohit') {
+        return res.status(400).json({ message: "Cannot modify super admin permissions" });
+      }
+
+      const updatedUser = await storage.updateUserPermissions(targetUserId, permissions);
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating user permissions:", error);
+      res.status(500).json({ message: "Failed to update user permissions" });
     }
   });
 
