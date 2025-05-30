@@ -715,39 +715,149 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required payment information" });
       }
 
+      // Get product details to find the seller
+      const product = await storage.getProduct(parseInt(productId));
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+
       // Create order record
       const orderId = `ORD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const transactionId = `TXN_${Date.now()}`;
       
-      // In a real implementation, you would:
-      // 1. Validate payment with actual payment gateway (Razorpay, Stripe, etc.)
-      // 2. Store order in database
-      // 3. Send confirmation emails/SMS
-      
+      // Calculate total amount based on payment option
+      let totalAmount = parseFloat(amount);
+      if (paymentOption === 'emi_3') totalAmount = parseFloat(product.price) * 1.05;
+      else if (paymentOption === 'emi_6') totalAmount = parseFloat(product.price) * 1.08;
+      else if (paymentOption === 'emi_12') totalAmount = parseFloat(product.price) * 1.12;
+      else if (paymentOption === 'advance_booking') totalAmount = parseFloat(product.price) + 500;
+
+      // Create order in database
       const orderData = {
         orderId,
-        productId,
-        customerDetails,
+        productId: product.productId,
+        sellerId: product.ownerId,
+        customerName: customerDetails.name,
+        customerPhone: customerDetails.phone,
+        customerEmail: customerDetails.email || '',
+        customerAddress: customerDetails.address || '',
         paymentMethod,
-        amount,
         paymentOption,
+        amount: parseFloat(amount),
+        totalAmount,
         status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
-        createdAt: new Date().toISOString()
+        transactionId
       };
+
+      const newOrder = await storage.createOrder(orderData);
+
+      // Create notification message for seller
+      const sellerMessage = {
+        sellerId: product.ownerId,
+        orderId,
+        messageType: 'order_notification',
+        subject: `🛒 New Order Received - ${product.name}`,
+        content: `आपको एक नया ऑर्डर मिला है!
+
+📦 Product: ${product.name} (${product.productId})
+💰 Amount: ₹${amount.toLocaleString()}
+💳 Payment Method: ${paymentMethod.toUpperCase()}
+📋 Payment Plan: ${paymentOption}
+📞 Customer: ${customerDetails.name} - ${customerDetails.phone}
+📧 Email: ${customerDetails.email || 'Not provided'}
+🏠 Address: ${customerDetails.address || 'Not provided'}
+🆔 Order ID: ${orderId}
+🔢 Transaction ID: ${transactionId}
+
+कृपया ग्राहक से संपर्क करें और ऑर्डर की पुष्टि करें। आप अपने seller dashboard से ऑर्डर की स्थिति अपडेट कर सकते हैं।`,
+        customerInfo: {
+          name: customerDetails.name,
+          phone: customerDetails.phone,
+          email: customerDetails.email,
+          address: customerDetails.address,
+          paymentMethod,
+          paymentOption,
+          amount,
+          orderId,
+          transactionId
+        },
+        priority: 'high'
+      };
+
+      await storage.createSellerMessage(sellerMessage);
 
       // Simulate payment gateway response
       const paymentResponse = {
         success: true,
         orderId,
-        transactionId: `TXN_${Date.now()}`,
+        transactionId,
         paymentMethod,
         amount,
-        status: paymentMethod === 'cod' ? 'confirmed' : 'pending'
+        status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
+        message: 'Order placed successfully! Seller has been notified.'
       };
 
       res.json(paymentResponse);
     } catch (error) {
       console.error("Error processing payment:", error);
       res.status(500).json({ message: "Payment processing failed" });
+    }
+  });
+
+  // Seller dashboard routes
+  app.get('/api/seller/messages/:sellerId', async (req, res) => {
+    try {
+      const { sellerId } = req.params;
+      const messages = await storage.getSellerMessages(sellerId);
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching seller messages:", error);
+      res.status(500).json({ message: "Failed to fetch messages" });
+    }
+  });
+
+  app.get('/api/seller/orders/:sellerId', async (req, res) => {
+    try {
+      const { sellerId } = req.params;
+      const orders = await storage.getOrders(sellerId);
+      res.json(orders);
+    } catch (error) {
+      console.error("Error fetching seller orders:", error);
+      res.status(500).json({ message: "Failed to fetch orders" });
+    }
+  });
+
+  app.post('/api/seller/messages/:messageId/read', async (req, res) => {
+    try {
+      const { messageId } = req.params;
+      await storage.markSellerMessageAsRead(parseInt(messageId));
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error marking message as read:", error);
+      res.status(500).json({ message: "Failed to mark message as read" });
+    }
+  });
+
+  app.patch('/api/orders/:orderId/status', async (req, res) => {
+    try {
+      const { orderId } = req.params;
+      const { status } = req.body;
+      const updatedOrder = await storage.updateOrderStatus(orderId, status);
+      res.json(updatedOrder);
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      res.status(500).json({ message: "Failed to update order status" });
+    }
+  });
+
+  app.get('/api/seller/unread-count/:sellerId', async (req, res) => {
+    try {
+      const { sellerId } = req.params;
+      const count = await storage.getUnreadMessageCount(sellerId);
+      res.json({ count });
+    } catch (error) {
+      console.error("Error fetching unread message count:", error);
+      res.status(500).json({ message: "Failed to fetch unread count" });
     }
   });
 

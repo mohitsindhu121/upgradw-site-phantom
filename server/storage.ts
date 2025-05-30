@@ -3,6 +3,8 @@ import {
   products,
   youtubeResources,
   contactMessages,
+  orders,
+  sellerMessages,
   type User,
   type UpsertUser,
   type Product,
@@ -11,6 +13,10 @@ import {
   type InsertYoutubeResource,
   type ContactMessage,
   type InsertContactMessage,
+  type Order,
+  type InsertOrder,
+  type SellerMessage,
+  type InsertSellerMessage,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, like, or, desc, and, ilike, sql } from "drizzle-orm";
@@ -45,6 +51,18 @@ export interface IStorage {
   getContactMessages(): Promise<ContactMessage[]>;
   createContactMessage(message: InsertContactMessage): Promise<ContactMessage>;
   markMessageAsRead(id: number): Promise<void>;
+
+  // Order operations
+  createOrder(order: InsertOrder): Promise<Order>;
+  getOrders(sellerId?: string): Promise<Order[]>;
+  getOrder(orderId: string): Promise<Order | undefined>;
+  updateOrderStatus(orderId: string, status: string): Promise<Order>;
+
+  // Seller message operations
+  createSellerMessage(message: InsertSellerMessage): Promise<SellerMessage>;
+  getSellerMessages(sellerId: string): Promise<SellerMessage[]>;
+  markSellerMessageAsRead(id: number): Promise<void>;
+  getUnreadMessageCount(sellerId: string): Promise<number>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -306,6 +324,70 @@ export class DatabaseStorage implements IStorage {
     }
     
     return user;
+  }
+
+  // Order operations
+  async createOrder(orderData: InsertOrder): Promise<Order> {
+    const [order] = await db
+      .insert(orders)
+      .values(orderData)
+      .returning();
+    return order;
+  }
+
+  async getOrders(sellerId?: string): Promise<Order[]> {
+    if (sellerId) {
+      return await db.select().from(orders)
+        .where(eq(orders.sellerId, sellerId))
+        .orderBy(desc(orders.createdAt));
+    }
+    return await db.select().from(orders).orderBy(desc(orders.createdAt));
+  }
+
+  async getOrder(orderId: string): Promise<Order | undefined> {
+    const [order] = await db.select().from(orders).where(eq(orders.orderId, orderId));
+    return order;
+  }
+
+  async updateOrderStatus(orderId: string, status: string): Promise<Order> {
+    const [order] = await db
+      .update(orders)
+      .set({ status, updatedAt: new Date() })
+      .where(eq(orders.orderId, orderId))
+      .returning();
+
+    if (!order) {
+      throw new Error("Order not found");
+    }
+
+    return order;
+  }
+
+  // Seller message operations
+  async createSellerMessage(messageData: InsertSellerMessage): Promise<SellerMessage> {
+    const [message] = await db
+      .insert(sellerMessages)
+      .values(messageData)
+      .returning();
+    return message;
+  }
+
+  async getSellerMessages(sellerId: string): Promise<SellerMessage[]> {
+    return await db.select().from(sellerMessages)
+      .where(eq(sellerMessages.sellerId, sellerId))
+      .orderBy(desc(sellerMessages.createdAt));
+  }
+
+  async markSellerMessageAsRead(id: number): Promise<void> {
+    await db.update(sellerMessages).set({ isRead: true }).where(eq(sellerMessages.id, id));
+  }
+
+  async getUnreadMessageCount(sellerId: string): Promise<number> {
+    const [result] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(sellerMessages)
+      .where(and(eq(sellerMessages.sellerId, sellerId), eq(sellerMessages.isRead, false)));
+    return result.count;
   }
 }
 
