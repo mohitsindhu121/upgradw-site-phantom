@@ -292,6 +292,21 @@ export class DatabaseStorage implements IStorage {
   async markMessageAsRead(id: number): Promise<void> {
     await db.update(contactMessages).set({ isRead: true }).where(eq(contactMessages.id, id));
   }
+
+  // User permissions management
+  async updateUserPermissions(id: string, permissions: string[]): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ permissions, updatedAt: new Date() })
+      .where(eq(users.id, id))
+      .returning();
+    
+    if (!user) {
+      throw new Error('User not found');
+    }
+    
+    return user;
+  }
 }
 
 export const storage = new DatabaseStorage();

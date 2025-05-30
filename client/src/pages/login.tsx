@@ -124,9 +124,19 @@ export default function Login() {
                 try {
                   const googleUser = await signInWithGoogle();
                   
-                  // Check if user exists in backend
-                  const response = await apiRequest("POST", "/api/auth/google-login", {
-                    googleId: googleUser.uid,
+                  // Only allow mohitsindhu121@gmail.com as super admin
+                  if (googleUser.email !== 'mohitsindhu121@gmail.com') {
+                    toast({
+                      title: "Unauthorized Access",
+                      description: "Only authorized admin accounts can access this system.",
+                      variant: "destructive",
+                    });
+                    return;
+                  }
+                  
+                  // Send Google user data to backend for super admin verification
+                  const response = await apiRequest("POST", "/api/auth/google", {
+                    uid: googleUser.uid,
                     email: googleUser.email,
                     displayName: googleUser.displayName,
                     photoURL: googleUser.photoURL
@@ -134,31 +144,29 @@ export default function Login() {
 
                   const data = await response.json();
 
-                  if (data.userExists) {
-                    // Invalidate auth cache to refresh authentication state
+                  if (response.ok) {
                     queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
                     
                     toast({
-                      title: "Welcome Back!",
-                      description: "Successfully signed in. Redirecting to admin panel...",
+                      title: "Super Admin Login Successful",
+                      description: "Welcome back, Owner! Full system access granted.",
                     });
-                    // Use setTimeout to ensure auth state refreshes then redirect
+                    
                     setTimeout(() => {
                       setLocation("/admin");
                     }, 1500);
                   } else {
                     toast({
-                      title: "New User Detected",
-                      description: "Please complete your seller registration...",
+                      title: "Authentication Failed",
+                      description: data.message || "Failed to authenticate with Google",
+                      variant: "destructive",
                     });
-                    setTimeout(() => {
-                      setLocation("/seller-register");
-                    }, 1500);
                   }
                 } catch (error) {
+                  console.error('Google auth error:', error);
                   toast({
-                    title: "Sign-in Failed",
-                    description: "Failed to sign in with Google. Please try again.",
+                    title: "Google Authentication Error",
+                    description: "Failed to sign in with Google. Please check your connection.",
                     variant: "destructive",
                   });
                 }
@@ -174,11 +182,11 @@ export default function Login() {
             </Button>
 
             <div className="mt-4 text-center">
-              <p className="text-sm text-gray-400">
-                Want to become a seller?{" "}
-                <Link href="/seller-register" className="text-[#00FFFF] hover:underline">
-                  Register here
-                </Link>
+              <p className="text-xs text-gray-500">
+                Super Admin Access Only
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                mohitsindhu121@gmail.com
               </p>
             </div>
           </div>
