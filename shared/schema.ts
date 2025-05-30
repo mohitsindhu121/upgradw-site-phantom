@@ -106,6 +106,41 @@ export const contactMessages = pgTable("contact_messages", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Orders table for purchase tracking
+export const orders = pgTable("orders", {
+  id: serial("id").primaryKey(),
+  orderId: varchar("order_id").unique().notNull(),
+  productId: varchar("product_id").notNull(),
+  sellerId: varchar("seller_id").notNull(), // Owner of the product
+  customerName: varchar("customer_name").notNull(),
+  customerPhone: varchar("customer_phone").notNull(),
+  customerEmail: varchar("customer_email"),
+  customerAddress: text("customer_address"),
+  paymentMethod: varchar("payment_method").notNull(), // upi, card, netbanking, cod
+  paymentOption: varchar("payment_option").notNull(), // immediate, emi_3, emi_6, emi_12, advance_booking
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
+  status: varchar("status").default("pending"), // pending, confirmed, processing, shipped, delivered, cancelled
+  transactionId: varchar("transaction_id"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Seller messages table for order notifications and customer communication
+export const sellerMessages = pgTable("seller_messages", {
+  id: serial("id").primaryKey(),
+  sellerId: varchar("seller_id").notNull(), // Seller receiving the message
+  orderId: varchar("order_id"), // Related order if applicable
+  messageType: varchar("message_type").notNull(), // order_notification, customer_inquiry, system_message
+  subject: varchar("subject").notNull(),
+  content: text("content").notNull(),
+  customerInfo: jsonb("customer_info"), // Customer details for contact
+  isRead: boolean("is_read").default(false),
+  priority: varchar("priority").default("normal"), // low, normal, high, urgent
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Export schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
@@ -145,3 +180,20 @@ export type YoutubeResource = typeof youtubeResources.$inferSelect;
 
 export type InsertContactMessage = z.infer<typeof insertContactMessageSchema>;
 export type ContactMessage = typeof contactMessages.$inferSelect;
+
+export const insertOrderSchema = createInsertSchema(orders).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertSellerMessageSchema = createInsertSchema(sellerMessages).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertOrder = z.infer<typeof insertOrderSchema>;
+export type Order = typeof orders.$inferSelect;
+
+export type InsertSellerMessage = z.infer<typeof insertSellerMessageSchema>;
+export type SellerMessage = typeof sellerMessages.$inferSelect;
