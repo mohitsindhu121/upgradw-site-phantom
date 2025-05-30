@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { signInWithGoogle, onAuthStateChange } from "@/lib/firebase";
 import { apiRequest } from "@/lib/queryClient";
@@ -17,6 +20,22 @@ export default function SellerRegister() {
     storeName: "",
     storeDescription: "",
     username: "",
+    phoneNumber: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "India",
+    pincode: "",
+    businessType: "Individual",
+    gstNumber: "",
+    panNumber: "",
+    bankAccountNumber: "",
+    bankIfscCode: "",
+    bankName: "",
+    specialization: "",
+    experience: "",
+    portfolio: "",
+    socialMediaLinks: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -108,6 +127,22 @@ export default function SellerRegister() {
         username: formData.username,
         storeName: formData.storeName,
         storeDescription: formData.storeDescription,
+        phoneNumber: formData.phoneNumber,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        pincode: formData.pincode,
+        businessType: formData.businessType,
+        gstNumber: formData.gstNumber,
+        panNumber: formData.panNumber,
+        bankAccountNumber: formData.bankAccountNumber,
+        bankIfscCode: formData.bankIfscCode,
+        bankName: formData.bankName,
+        specialization: formData.specialization,
+        experience: formData.experience,
+        portfolio: formData.portfolio,
+        socialMediaLinks: formData.socialMediaLinks,
         role: "seller",
         isVerified: true,
       };

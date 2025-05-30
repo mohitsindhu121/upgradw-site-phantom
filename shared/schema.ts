@@ -38,6 +38,26 @@ export const users = pgTable("users", {
   isVerified: boolean("is_verified").default(false),
   storeName: varchar("store_name"), // For seller accounts
   storeDescription: text("store_description"), // For seller accounts
+  phoneNumber: varchar("phone_number"), // Contact information
+  address: text("address"), // Full address
+  city: varchar("city"), // City
+  state: varchar("state"), // State/Province
+  country: varchar("country").default("India"), // Country
+  pincode: varchar("pincode"), // Postal code
+  businessType: varchar("business_type"), // Individual, Company, etc.
+  gstNumber: varchar("gst_number"), // GST registration number
+  panNumber: varchar("pan_number"), // PAN card number
+  bankAccountNumber: varchar("bank_account_number"), // Bank details
+  bankIfscCode: varchar("bank_ifsc_code"), // IFSC code
+  bankName: varchar("bank_name"), // Bank name
+  specialization: text("specialization"), // What they specialize in
+  experience: varchar("experience"), // Years of experience
+  portfolio: text("portfolio"), // Portfolio/previous work
+  socialMediaLinks: text("social_media_links"), // JSON string of social links
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("0"), // Customer rating
+  totalSales: integer("total_sales").default(0), // Number of sales
+  isActive: boolean("is_active").default(true), // Account status
+  lastLoginAt: timestamp("last_login_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
