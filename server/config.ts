@@ -14,9 +14,9 @@ export const config = {
   
   // Server Configuration
   server: {
-    port: parseInt(process.env.PORT || '5000'),
+    port: parseInt(process.env.PORT || '10000'),
     nodeEnv: process.env.NODE_ENV || 'development',
-    sessionSecret: process.env.SESSION_SECRET || 'mohit-corp-secret-key-2024'
+    sessionSecret: process.env.SESSION_SECRET || 'mohit-corp-secret-2024'
   },
   
   // Firebase Configuration (for Google Auth)
