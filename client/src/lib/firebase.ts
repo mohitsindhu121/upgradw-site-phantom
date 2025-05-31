@@ -1,13 +1,7 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
 
-// Firebase configuration - debug environment variables
-console.log("Firebase env check:", {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY ? "✅ Set" : "❌ Missing",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID ? "✅ Set" : "❌ Missing",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID ? "✅ Set" : "❌ Missing"
-});
-
+// Firebase configuration using environment variables
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
@@ -16,8 +10,6 @@ const firebaseConfig = {
   messagingSenderId: "147758091170",
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
-
-console.log("Firebase config:", firebaseConfig);
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 export const auth = getAuth(app);

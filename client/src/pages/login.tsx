@@ -132,11 +132,17 @@ export default function Login() {
                   // Check if this is super admin or regular user
                   if (googleUser.email === 'mohitsindhu121@gmail.com') {
                     // Super admin login
-                    const response = await apiRequest("POST", "/api/auth/google", {
-                      uid: googleUser.uid,
-                      email: googleUser.email,
-                      displayName: googleUser.displayName,
-                      photoURL: googleUser.photoURL
+                    const response = await fetch("/api/auth/google", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        uid: googleUser.uid,
+                        email: googleUser.email,
+                        displayName: googleUser.displayName,
+                        photoURL: googleUser.photoURL
+                      })
                     });
 
                     const data = await response.json();
@@ -161,11 +167,17 @@ export default function Login() {
                     }
                   } else {
                     // Regular user - check if account exists or needs registration
-                    const response = await apiRequest("POST", "/api/auth/google-login", {
-                      googleId: googleUser.uid,
-                      email: googleUser.email,
-                      displayName: googleUser.displayName,
-                      photoURL: googleUser.photoURL
+                    const response = await fetch("/api/auth/google-login", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        googleId: googleUser.uid,
+                        email: googleUser.email,
+                        displayName: googleUser.displayName,
+                        photoURL: googleUser.photoURL
+                      })
                     });
 
                     const data = await response.json();
@@ -193,11 +205,32 @@ export default function Login() {
                       }, 1500);
                     }
                   }
-                } catch (error) {
+                } catch (error: any) {
                   console.error('Google auth error:', error);
+                  
+                  let errorMessage = "Failed to sign in with Google. Please try again.";
+                  
+                  if (error.message) {
+                    errorMessage = error.message;
+                  } else if (error.code) {
+                    switch (error.code) {
+                      case 'auth/popup-closed-by-user':
+                        errorMessage = "Sign-in was cancelled. Please try again.";
+                        break;
+                      case 'auth/popup-blocked':
+                        errorMessage = "Popup was blocked. Please enable popups and try again.";
+                        break;
+                      case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection.";
+                        break;
+                      default:
+                        errorMessage = "Authentication failed. Please try again.";
+                    }
+                  }
+                  
                   toast({
                     title: "Google Authentication Error",
-                    description: "Failed to sign in with Google. Please check your connection.",
+                    description: errorMessage,
                     variant: "destructive",
                   });
                 }
