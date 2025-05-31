@@ -12,7 +12,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
-import { Product, YoutubeResource, ContactMessage, User } from "@shared/schema";
+import { Product, YoutubeResource, ContactMessage, User, Announcement } from "@shared/schema";
 import Navbar from "@/components/layout/navbar";
 import ProductForm from "@/components/admin/product-form";
 import YoutubeForm from "@/components/admin/youtube-form";
@@ -26,8 +26,10 @@ export default function Admin() {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showYoutubeForm, setShowYoutubeForm] = useState(false);
   const [showUserForm, setShowUserForm] = useState(false);
+  const [showAnnouncementForm, setShowAnnouncementForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editingYoutube, setEditingYoutube] = useState<YoutubeResource | null>(null);
+  const [editingAnnouncement, setEditingAnnouncement] = useState<Announcement | null>(null);
   
   // User form state
   const [newUserData, setNewUserData] = useState({
@@ -50,6 +52,10 @@ export default function Admin() {
   const { data: users = [] } = useQuery<User[]>({
     queryKey: ["/api/users"],
     enabled: (user as any)?.id === 'mohit', // Only fetch users if admin
+  });
+
+  const { data: announcements = [] } = useQuery<Announcement[]>({
+    queryKey: ["/api/admin/announcements"],
   });
 
   const createUserMutation = useMutation({
@@ -145,6 +151,11 @@ export default function Admin() {
     setShowYoutubeForm(true);
   };
 
+  const handleEditAnnouncement = (announcement: Announcement) => {
+    setEditingAnnouncement(announcement);
+    setShowAnnouncementForm(true);
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -168,7 +179,7 @@ export default function Admin() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className={`grid w-full ${(user as any)?.id === 'mohit' ? 'grid-cols-5' : 'grid-cols-4'} bg-[#1A1A2E]`}>
+          <TabsList className={`grid w-full ${(user as any)?.id === 'mohit' ? 'grid-cols-6' : 'grid-cols-5'} bg-[#1A1A2E]`}>
             <TabsTrigger value="overview" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
               Overview
             </TabsTrigger>
@@ -182,6 +193,9 @@ export default function Admin() {
             </TabsTrigger>
             <TabsTrigger value="youtube" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
               YouTube
+            </TabsTrigger>
+            <TabsTrigger value="announcements" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
+              Announcements
             </TabsTrigger>
             <TabsTrigger value="messages" className="data-[state=active]:bg-[#00FFFF] data-[state=active]:text-black">
               Messages
@@ -573,6 +587,17 @@ export default function Admin() {
           onClose={() => {
             setShowYoutubeForm(false);
             setEditingYoutube(null);
+          }}
+        />
+      )}
+
+      {/* Announcement Form Dialog */}
+      {showAnnouncementForm && (
+        <AnnouncementForm
+          announcement={editingAnnouncement}
+          onClose={() => {
+            setShowAnnouncementForm(false);
+            setEditingAnnouncement(null);
           }}
         />
       )}

@@ -126,7 +126,7 @@ export default function Home() {
                         </AlertDescription>
                         <div className="mt-3 text-xs text-gray-500 flex items-center gap-2">
                           <i className="fas fa-clock"></i>
-                          {new Date(announcement.createdAt).toLocaleDateString('en-IN', {
+                          {new Date(announcement.createdAt || new Date()).toLocaleDateString('en-IN', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric',
