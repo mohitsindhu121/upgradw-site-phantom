@@ -274,10 +274,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!currentUserId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      const announcementData = insertAnnouncementSchema.parse({
+      
+      // Process the request body to handle date conversion
+      const processedBody = {
         ...req.body,
         createdBy: currentUserId
-      });
+      };
+      
+      // Convert expiresAt string to Date if provided
+      if (processedBody.expiresAt && typeof processedBody.expiresAt === 'string') {
+        processedBody.expiresAt = new Date(processedBody.expiresAt);
+      }
+      
+      const announcementData = insertAnnouncementSchema.parse(processedBody);
       const announcement = await storage.createAnnouncement(announcementData);
       res.status(201).json(announcement);
     } catch (error) {
@@ -292,7 +301,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put('/api/announcements/:id', isAuthenticated, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const announcementData = insertAnnouncementSchema.partial().parse(req.body);
+      
+      // Process the request body to handle date conversion
+      const processedBody = { ...req.body };
+      
+      // Convert expiresAt string to Date if provided
+      if (processedBody.expiresAt && typeof processedBody.expiresAt === 'string') {
+        processedBody.expiresAt = new Date(processedBody.expiresAt);
+      }
+      
+      const announcementData = insertAnnouncementSchema.partial().parse(processedBody);
       const announcement = await storage.updateAnnouncement(id, announcementData);
       res.json(announcement);
     } catch (error) {

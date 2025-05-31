@@ -100,15 +100,21 @@ export default function AnnouncementForm({ announcement, onClose }: Announcement
       return;
     }
 
-    mutation.mutate({
+    const submitData: any = {
       title: formData.title,
       content: formData.content,
       type: formData.type,
       priority: formData.priority,
       isActive: formData.isActive,
-      expiresAt: formData.expiresAt ? new Date(formData.expiresAt) : null,
       createdBy: "admin", // This will be overridden by the server
-    } as InsertAnnouncement);
+    };
+
+    // Only include expiresAt if it has a value
+    if (formData.expiresAt) {
+      submitData.expiresAt = formData.expiresAt;
+    }
+
+    mutation.mutate(submitData);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
