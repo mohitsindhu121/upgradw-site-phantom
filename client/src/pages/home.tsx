@@ -3,10 +3,12 @@ import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import type { Product, YoutubeResource, ContactMessage, User } from "@shared/schema";
+import type { Product, YoutubeResource, ContactMessage, User, Announcement } from "@shared/schema";
 
 export default function Home() {
   const { user } = useAuth();
@@ -29,6 +31,10 @@ export default function Home() {
 
   const { data: contactMessages = [] } = useQuery<ContactMessage[]>({
     queryKey: ["/api/contact-messages"],
+  });
+
+  const { data: announcements = [] } = useQuery<Announcement[]>({
+    queryKey: ["/api/announcements"],
   });
 
   const stats = {
@@ -78,6 +84,64 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Announcements Section */}
+        {announcements.length > 0 && (
+          <div className={`mb-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <h2 className="font-orbitron text-2xl font-bold text-[#00FFFF] mb-6 flex items-center gap-3">
+              <i className="fas fa-bullhorn text-[#8B5CF6] animate-pulse"></i>
+              Latest Announcements
+            </h2>
+            <div className="space-y-4">
+              {announcements.slice(0, 3).map((announcement, index) => {
+                const typeConfig = {
+                  info: { color: 'from-blue-500/20 to-blue-400/20', icon: 'fas fa-info-circle', textColor: 'text-blue-400', borderColor: 'border-blue-400/30' },
+                  success: { color: 'from-green-500/20 to-green-400/20', icon: 'fas fa-check-circle', textColor: 'text-green-400', borderColor: 'border-green-400/30' },
+                  warning: { color: 'from-yellow-500/20 to-yellow-400/20', icon: 'fas fa-exclamation-triangle', textColor: 'text-yellow-400', borderColor: 'border-yellow-400/30' },
+                  error: { color: 'from-red-500/20 to-red-400/20', icon: 'fas fa-exclamation-circle', textColor: 'text-red-400', borderColor: 'border-red-400/30' }
+                };
+                const config = typeConfig[announcement.type as keyof typeof typeConfig] || typeConfig.info;
+                
+                return (
+                  <Alert 
+                    key={announcement.id}
+                    className={`bg-gradient-to-r ${config.color} border ${config.borderColor} backdrop-blur-sm transform transition-all duration-700 hover:scale-105 hover:shadow-lg animate-in slide-in-from-left-5`}
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className={`p-2 rounded-full bg-black/30 border ${config.borderColor}`}>
+                        <i className={`${config.icon} ${config.textColor} text-lg`}></i>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className={`font-bold text-lg ${config.textColor}`}>{announcement.title}</h3>
+                          {(announcement.priority ?? 0) > 0 && (
+                            <Badge variant="outline" className={`${config.textColor} ${config.borderColor} animate-pulse`}>
+                              Priority: {announcement.priority}
+                            </Badge>
+                          )}
+                        </div>
+                        <AlertDescription className="text-gray-300 leading-relaxed text-base">
+                          {announcement.content}
+                        </AlertDescription>
+                        <div className="mt-3 text-xs text-gray-500 flex items-center gap-2">
+                          <i className="fas fa-clock"></i>
+                          {new Date(announcement.createdAt).toLocaleDateString('en-IN', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </Alert>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Quick Stats with enhanced animations */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">

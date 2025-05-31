@@ -16,6 +16,7 @@ import { Product, YoutubeResource, ContactMessage, User } from "@shared/schema";
 import Navbar from "@/components/layout/navbar";
 import ProductForm from "@/components/admin/product-form";
 import YoutubeForm from "@/components/admin/youtube-form";
+import AnnouncementForm from "@/components/admin/announcement-form";
 
 export default function Admin() {
   const { user } = useAuth();
