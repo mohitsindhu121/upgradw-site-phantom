@@ -24,6 +24,7 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
     category: "",
     imageUrl: "",
     videoUrl: "",
+    purchaseLink: "",
     isActive: true,
   });
 
@@ -40,6 +41,7 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
         category: product.category,
         imageUrl: product.imageUrl || "",
         videoUrl: product.videoUrl || "",
+        purchaseLink: product.purchaseLink || "",
         isActive: product.isActive ?? true,
       });
     }
@@ -110,6 +112,7 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
       category: formData.category,
       imageUrl: formData.imageUrl,
       videoUrl: formData.videoUrl,
+      purchaseLink: formData.purchaseLink,
       isActive: formData.isActive,
     });
   };
@@ -271,6 +274,24 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
                 placeholder="https://youtube.com/watch?v=..."
                 className="bg-[#0A0A0A] border-[#00FFFF]/30 focus:border-[#00FFFF]"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                <i className="fas fa-shopping-cart mr-2 text-[#00FFFF]"></i>
+                Purchase Link (कस्टम खरीदारी लिंक)
+              </label>
+              <Input
+                type="url"
+                name="purchaseLink"
+                value={formData.purchaseLink}
+                onChange={handleInputChange}
+                placeholder="https://example.com/buy-now या WhatsApp लिंक"
+                className="bg-[#0A0A0A] border-[#8B5CF6]/30 focus:border-[#8B5CF6]"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                जब कोई Purchase button पर click करेगा तो यहाँ भरा गया link खुलेगा। अगर खाली छोड़ेंगे तो normal payment form दिखेगा।
+              </p>
             </div>
 
             <div className="flex gap-4 pt-4">

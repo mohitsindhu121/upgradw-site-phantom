@@ -203,8 +203,14 @@ export default function ProductCard({ product }: ProductCardProps) {
               <Button 
                 className="flex-1 bg-gradient-to-r from-[#00FFFF] to-[#8B5CF6] hover:from-[#8B5CF6] hover:to-[#00FFFF] text-black font-bold text-lg py-4 transition-all duration-300 hover:shadow-2xl hover:shadow-[#00FFFF]/30"
                 onClick={() => {
-                  setShowDetails(false);
-                  setShowPaymentOptions(true);
+                  if (product.purchaseLink) {
+                    // If seller has set a custom purchase link, redirect to it
+                    window.open(product.purchaseLink, '_blank');
+                  } else {
+                    // Otherwise show normal payment options
+                    setShowDetails(false);
+                    setShowPaymentOptions(true);
+                  }
                 }}
               >
                 <i className="fas fa-shopping-cart mr-3 text-lg"></i>

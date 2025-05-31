@@ -74,6 +74,7 @@ export const products = pgTable("products", {
   category: varchar("category", { length: 50 }).notNull(), // panels, bots, websites, youtube
   imageUrl: varchar("image_url"),
   videoUrl: varchar("video_url"),
+  purchaseLink: varchar("purchase_link"), // Custom purchase link set by seller
   isActive: boolean("is_active").default(true),
   ownerId: varchar("owner_id").notNull(), // Links to user who owns this product
   createdAt: timestamp("created_at").defaultNow(),
