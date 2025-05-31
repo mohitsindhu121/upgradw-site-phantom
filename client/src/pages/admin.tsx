@@ -534,6 +534,82 @@ export default function Admin() {
             </div>
           </TabsContent>
 
+          <TabsContent value="announcements" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="font-orbitron text-2xl font-bold text-[#F59E0B]">
+                📢 Announcements Management
+              </h2>
+              <Button 
+                onClick={() => setShowAnnouncementForm(true)}
+                className="cyber-button"
+              >
+                Create Announcement
+              </Button>
+            </div>
+
+            <div className="grid gap-4">
+              {announcements.map((announcement) => {
+                const typeConfig = {
+                  info: { color: 'text-blue-400', bgColor: 'bg-blue-500/20', icon: 'fas fa-info-circle' },
+                  success: { color: 'text-green-400', bgColor: 'bg-green-500/20', icon: 'fas fa-check-circle' },
+                  warning: { color: 'text-yellow-400', bgColor: 'bg-yellow-500/20', icon: 'fas fa-exclamation-triangle' },
+                  error: { color: 'text-red-400', bgColor: 'bg-red-500/20', icon: 'fas fa-exclamation-circle' }
+                };
+                const config = typeConfig[announcement.type as keyof typeof typeConfig] || typeConfig.info;
+                
+                return (
+                  <Card key={announcement.id} className="product-card">
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className={`p-2 rounded-full ${config.bgColor}`}>
+                              <i className={`${config.icon} ${config.color}`}></i>
+                            </div>
+                            <div>
+                              <h3 className={`font-semibold text-lg ${config.color}`}>{announcement.title}</h3>
+                              <div className="flex items-center gap-4 text-sm text-gray-400">
+                                <span>Priority: {announcement.priority || 0}</span>
+                                <span className={announcement.isActive ? 'text-green-400' : 'text-red-400'}>
+                                  {announcement.isActive ? '● Active' : '● Inactive'}
+                                </span>
+                                {announcement.expiresAt && (
+                                  <span className="text-yellow-400">
+                                    Expires: {new Date(announcement.expiresAt).toLocaleDateString()}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-gray-300 mb-3 leading-relaxed">{announcement.content}</p>
+                          <div className="text-xs text-gray-500">
+                            Created: {new Date(announcement.createdAt || new Date()).toLocaleDateString('en-IN', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </div>
+                        </div>
+                        <div className="flex gap-2 ml-4">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEditAnnouncement(announcement)}
+                            className="border-[#F59E0B] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </TabsContent>
+
           <TabsContent value="messages" className="space-y-6">
             <h2 className="font-orbitron text-2xl font-bold text-[#FF6B6B]">
               Contact Messages
