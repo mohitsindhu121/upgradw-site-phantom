@@ -1,14 +1,14 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
 
-// Firebase configuration using your credentials
+// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyD0wKEUZfyQHNkUN7R-zS_25zU8UoLEiAU",
-  authDomain: "phantom-site-e226f.firebaseapp.com",
-  projectId: "phantom-site-e226f",
-  storageBucket: "phantom-site-e226f.firebasestorage.app",
-  messagingSenderId: "147758091170",
-  appId: "1:147758091170:web:6aac2a67d75ed92ecbc0fb",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebasestorage.app`,
+  messagingSenderId: "147758091170", // Using existing value since it's working
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
