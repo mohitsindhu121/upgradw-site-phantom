@@ -716,7 +716,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Get product details to find the seller
-      const product = await storage.getProduct(parseInt(productId));
+      const products = await storage.getProducts();
+      const product = products.find(p => p.productId === productId);
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
       }
@@ -743,8 +744,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         customerAddress: customerDetails.address || '',
         paymentMethod,
         paymentOption,
-        amount: parseFloat(amount),
-        totalAmount,
+        amount: amount.toString(),
+        totalAmount: totalAmount.toString(),
         status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
         transactionId
       };
