@@ -122,6 +122,11 @@ export default function Login() {
               className="w-full mt-4 bg-[#0A0A0A] border-[#8B5CF6]/30 hover:bg-[#8B5CF6]/10"
               onClick={async () => {
                 try {
+                  toast({
+                    title: "Connecting to Google...",
+                    description: "Please wait while we authenticate you",
+                  });
+                  
                   const googleUser = await signInWithGoogle();
                   
                   // Check if this is super admin or regular user
