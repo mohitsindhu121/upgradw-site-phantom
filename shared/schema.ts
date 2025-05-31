@@ -142,6 +142,20 @@ export const sellerMessages = pgTable("seller_messages", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Announcements table for admin announcements on home page
+export const announcements = pgTable("announcements", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  content: text("content").notNull(),
+  type: varchar("type").default("info"), // info, warning, success, error
+  isActive: boolean("is_active").default(true),
+  priority: integer("priority").default(0), // Higher number = higher priority
+  expiresAt: timestamp("expires_at"), // Optional expiry date
+  createdBy: varchar("created_by").notNull(), // Admin user ID
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Export schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
@@ -193,8 +207,17 @@ export const insertSellerMessageSchema = createInsertSchema(sellerMessages).omit
   createdAt: true,
 });
 
+export const insertAnnouncementSchema = createInsertSchema(announcements).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type InsertOrder = z.infer<typeof insertOrderSchema>;
 export type Order = typeof orders.$inferSelect;
 
 export type InsertSellerMessage = z.infer<typeof insertSellerMessageSchema>;
 export type SellerMessage = typeof sellerMessages.$inferSelect;
+
+export type InsertAnnouncement = z.infer<typeof insertAnnouncementSchema>;
+export type Announcement = typeof announcements.$inferSelect;

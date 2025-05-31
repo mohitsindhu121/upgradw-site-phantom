@@ -5,6 +5,7 @@ import {
   contactMessages,
   orders,
   sellerMessages,
+  announcements,
   type User,
   type UpsertUser,
   type Product,
@@ -17,9 +18,11 @@ import {
   type InsertOrder,
   type SellerMessage,
   type InsertSellerMessage,
+  type Announcement,
+  type InsertAnnouncement,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, like, or, desc, and, ilike, sql } from "drizzle-orm";
+import { eq, like, or, desc, and, ilike, sql, isNull, gt } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (required for Replit Auth)
@@ -63,6 +66,13 @@ export interface IStorage {
   getSellerMessages(sellerId: string): Promise<SellerMessage[]>;
   markSellerMessageAsRead(id: number): Promise<void>;
   getUnreadMessageCount(sellerId: string): Promise<number>;
+
+  // Announcement operations
+  getAnnouncements(): Promise<Announcement[]>;
+  getActiveAnnouncements(): Promise<Announcement[]>;
+  createAnnouncement(announcement: InsertAnnouncement): Promise<Announcement>;
+  updateAnnouncement(id: number, announcement: Partial<InsertAnnouncement>): Promise<Announcement>;
+  deleteAnnouncement(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -388,6 +398,62 @@ export class DatabaseStorage implements IStorage {
       .from(sellerMessages)
       .where(and(eq(sellerMessages.sellerId, sellerId), eq(sellerMessages.isRead, false)));
     return result.count;
+  }
+
+  // Announcement operations
+  async getAnnouncements(): Promise<Announcement[]> {
+    const result = await db
+      .select()
+      .from(announcements)
+      .orderBy(desc(announcements.priority), desc(announcements.createdAt));
+    
+    return result;
+  }
+
+  async getActiveAnnouncements(): Promise<Announcement[]> {
+    const now = new Date();
+    const result = await db
+      .select()
+      .from(announcements)
+      .where(
+        and(
+          eq(announcements.isActive, true),
+          or(
+            isNull(announcements.expiresAt),
+            gt(announcements.expiresAt, now)
+          )
+        )
+      )
+      .orderBy(desc(announcements.priority), desc(announcements.createdAt));
+    
+    return result;
+  }
+
+  async createAnnouncement(announcementData: InsertAnnouncement): Promise<Announcement> {
+    const [announcement] = await db
+      .insert(announcements)
+      .values(announcementData)
+      .returning();
+    
+    return announcement;
+  }
+
+  async updateAnnouncement(id: number, announcementData: Partial<InsertAnnouncement>): Promise<Announcement> {
+    const [announcement] = await db
+      .update(announcements)
+      .set({ ...announcementData, updatedAt: new Date() })
+      .where(eq(announcements.id, id))
+      .returning();
+    
+    if (!announcement) {
+      throw new Error("Announcement not found");
+    }
+    
+    return announcement;
+  }
+
+  async deleteAnnouncement(id: number): Promise<void> {
+    await db.delete(announcements).where(eq(announcements.id, id));
   }
 }
 
