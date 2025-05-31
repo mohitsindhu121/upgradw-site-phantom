@@ -398,6 +398,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Super admin Google authentication route
+  app.post('/api/auth/google', async (req, res) => {
+    try {
+      const { uid, email, displayName, photoURL } = req.body;
+      
+      if (!uid || !email) {
+        return res.status(400).json({ message: "Google authentication data is required" });
+      }
+
+      // Check if this is the super admin
+      if (email === 'mohitsindhu121@gmail.com') {
+        // Set session for super admin
+        (req as any).session.isAuthenticated = true;
+        (req as any).session.user = {
+          id: 'mohit',
+          username: 'mohit',
+          email: email,
+          role: 'super_admin',
+          storeName: 'Phantoms Corporation',
+        };
+
+        res.json({
+          success: true,
+          user: {
+            id: 'mohit',
+            username: 'mohit',
+            email: email,
+            role: 'super_admin',
+            storeName: 'Phantoms Corporation',
+          }
+        });
+      } else {
+        res.status(403).json({ message: "Access denied - Super Admin only" });
+      }
+    } catch (error) {
+      console.error("Error with Google super admin authentication:", error);
+      res.status(500).json({ message: "Failed to authenticate with Google" });
+    }
+  });
+
   // Google authentication route - checks if user exists or needs registration
   app.post('/api/auth/google-login', async (req, res) => {
     try {
