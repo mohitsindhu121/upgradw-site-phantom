@@ -148,8 +148,8 @@ export default function LoadingScreen() {
           {/* Center logo with phase animations */}
           <div className="relative z-10 text-center">
             <div className={`transition-all duration-1000 ${phase >= 1 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
-              <div className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] animate-pulse tracking-wider">
-                MOHIT
+              <div className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] via-[#00FFFF] to-[#8B5CF6] animate-pulse tracking-wider">
+                PHANTOM
               </div>
             </div>
 
