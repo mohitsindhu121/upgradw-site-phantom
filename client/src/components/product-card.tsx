@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { formatPrice } from "@/lib/currency";
-import PaymentOptions from "./payment-options";
-import PaymentGateway from "./payment-gateway";
+import { useToast } from "@/hooks/use-toast";
 import type { Product } from "@shared/schema";
 
 interface ProductCardProps {
@@ -13,9 +12,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [showDetails, setShowDetails] = useState(false);
-  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
-  const [showPaymentGateway, setShowPaymentGateway] = useState(false);
-  const [selectedPaymentOption, setSelectedPaymentOption] = useState<any>(null);
+  const { toast } = useToast();
   const categoryIcons = {
     panels: "🛡️",
     bots: "🤖",
@@ -204,12 +201,15 @@ export default function ProductCard({ product }: ProductCardProps) {
                 className="flex-1 bg-gradient-to-r from-[#00FFFF] to-[#8B5CF6] hover:from-[#8B5CF6] hover:to-[#00FFFF] text-black font-bold text-lg py-4 transition-all duration-300 hover:shadow-2xl hover:shadow-[#00FFFF]/30"
                 onClick={() => {
                   if (product.purchaseLink) {
-                    // If seller has set a custom purchase link, redirect to it
+                    // Redirect to seller's custom purchase link
                     window.open(product.purchaseLink, '_blank');
                   } else {
-                    // Otherwise show normal payment options
-                    setShowDetails(false);
-                    setShowPaymentOptions(true);
+                    // Show message if no purchase link is set
+                    toast({
+                      title: "Purchase link not available",
+                      description: "Seller has not set up a purchase link yet. Please contact them directly.",
+                      variant: "destructive",
+                    });
                   }
                 }}
               >
@@ -229,59 +229,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </DialogContent>
       </Dialog>
 
-      {/* Payment Options Dialog */}
-      <Dialog open={showPaymentOptions} onOpenChange={setShowPaymentOptions}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-[#0A0A0A]/98 via-[#1A1A2E]/95 to-[#0A0A0A]/98 border-2 border-[#8B5CF6]/40 text-white backdrop-blur-xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-[#8B5CF6] to-[#00FFFF] bg-clip-text text-transparent">
-              Choose Payment Plan for {product.name}
-            </DialogTitle>
-            <DialogDescription className="text-gray-400">
-              Select the payment option that best fits your budget
-            </DialogDescription>
-          </DialogHeader>
-          
-          <PaymentOptions 
-            product={product}
-            onPaymentSelect={(option) => {
-              setSelectedPaymentOption(option);
-              setShowPaymentOptions(false);
-              setShowPaymentGateway(true);
-            }}
-          />
-        </DialogContent>
-      </Dialog>
 
-      {/* Payment Gateway Dialog */}
-      <Dialog open={showPaymentGateway} onOpenChange={setShowPaymentGateway}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-[#0A0A0A]/98 via-[#1A1A2E]/95 to-[#0A0A0A]/98 border-2 border-[#8B5CF6]/40 text-white backdrop-blur-xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-[#8B5CF6] to-[#00FFFF] bg-clip-text text-transparent">
-              Complete Your Payment
-            </DialogTitle>
-            <DialogDescription className="text-gray-400">
-              Secure payment processing for {product.name}
-            </DialogDescription>
-          </DialogHeader>
-          
-          {selectedPaymentOption && (
-            <PaymentGateway 
-              paymentOption={selectedPaymentOption}
-              product={product}
-              onPaymentSuccess={(transactionId) => {
-                setShowPaymentGateway(false);
-                setSelectedPaymentOption(null);
-                // Handle success - could show success dialog or redirect
-                alert(`Payment successful! Transaction ID: ${transactionId}`);
-              }}
-              onCancel={() => {
-                setShowPaymentGateway(false);
-                setShowPaymentOptions(true);
-              }}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
