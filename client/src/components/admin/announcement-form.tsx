@@ -112,9 +112,10 @@ export default function AnnouncementForm({ announcement, onClose }: Announcement
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: name === 'priority' ? parseInt(value) || 0 : value
     }));
   };
 
